@@ -1,6 +1,5 @@
 package Main.Controllers;
 
-import Main.Main;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -30,16 +29,18 @@ public class Login_controller implements Initializable  {
                 passwordField.clear();
             } else {
                 label.setText("Loading...");
-//                System.out.println(passwordField.getText());
-//                System.out.println(usernameField.getText());
-                if(usernameField.getText().equals("admin") && passwordField.getText().equals("admin"))
+
+                if(usernameField.getText().equals("admin") && passwordField.getText().equals("admin")
+//                        verifyAcc(usernameField.getText(),passwordField.getText())
+                )
                 {
                     Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
-                    
+
                     FXMLLoader loader = new FXMLLoader(Objects.requireNonNull(getClass().getClassLoader().getResource("scenes/admin.fxml")));
                     Parent root = loader.load();
                     AdminController admin = loader.getController();
-                    admin.username_label.setText("I CHALLENGE YOU TO FIND THE USERNAME");
+                    admin.username_label.setText("<username>");
+
                     Scene scene = new Scene (root);
                     stage.setResizable(false);
                     stage.setScene(scene);
@@ -48,6 +49,7 @@ public class Login_controller implements Initializable  {
             }
         }
     }
+
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
