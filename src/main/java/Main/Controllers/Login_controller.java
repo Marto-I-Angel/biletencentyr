@@ -29,6 +29,7 @@ public class Login_controller implements Initializable  {
                 passwordField.clear();
             } else {
                 label.setText("Loading...");
+
                 if(usernameField.getText().equals("admin") && passwordField.getText().equals("admin")
 //                        verifyAcc(usernameField.getText(),passwordField.getText())
                 )
@@ -39,6 +40,7 @@ public class Login_controller implements Initializable  {
                     Parent root = loader.load();
                     AdminController admin = loader.getController();
                     admin.username_label.setText("<username>");
+
                     Scene scene = new Scene (root);
                     stage.setResizable(false);
                     stage.setScene(scene);
@@ -47,14 +49,7 @@ public class Login_controller implements Initializable  {
             }
         }
     }
-//    // Check for username and password in the database
-//    private boolean verifyAcc(String name, String pass)
-//    {
-//        Tuk si pishesh funkciqta, Marto
-//        if(true)
-//        return true;
-//        return false;
-//    }
+
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
