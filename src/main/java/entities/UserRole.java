@@ -1,6 +1,7 @@
 package entities;
 
 import javax.persistence.*;
+import java.util.Objects;
 
 @Entity
 @Table(name = "userRole")
@@ -19,6 +20,11 @@ public class UserRole {
 
     public UserRole(String role){
         this.role = role;
+    }
+
+    @Override
+    public String toString() {
+        return role;
     }
 
     public int getUserRoleId() {
