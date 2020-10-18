@@ -18,6 +18,11 @@ public class Host {
 
     }
 
+    @Override
+    public String toString() {
+        return "Host: " + user;
+    }
+
     public Host(User user) {
         this.user = user;
     }

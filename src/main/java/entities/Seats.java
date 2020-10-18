@@ -14,24 +14,39 @@ public class Seats {
 
     @ManyToOne
     @JoinColumn(name="seatsTypeId", nullable=false)
-    private Seatstype seatsTypeId;
+    private Seatstype seatsType;
 
     @OneToMany(mappedBy = "seats")
-    private List<Reservation> event = new ArrayList<>();
+    private List<Reservation> events = new ArrayList<>();
 
     public Seats() {
 
+    }
+
+    @Override
+    public String toString() {
+        return "SeatsID: " + seatsId + "\n" +
+                "SeatsType: " + seatsType + "\n" +
+                "Events: " + events + "\n\n";
     }
 
     public int getSeatsId() {
         return seatsId;
     }
 
-    public Seatstype getSeatsTypeId() {
-        return seatsTypeId;
+    public Seatstype getSeatsType() {
+        return seatsType;
     }
 
-    public void setSeatsTypeId(Seatstype seatsTypeId) {
-        this.seatsTypeId = seatsTypeId;
+    public void setSeatsType(Seatstype seatsType) {
+        this.seatsType = seatsType;
+    }
+
+    public List<Reservation> getEvents() {
+        return events;
+    }
+
+    public void setEvents(List<Reservation> events) {
+        this.events = events;
     }
 }
