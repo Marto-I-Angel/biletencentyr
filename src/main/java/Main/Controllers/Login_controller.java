@@ -98,6 +98,7 @@ public class Login_controller implements Initializable  {
                     admin.username_label.setText(username);
 
                     Scene scene = new Scene (root);
+                    stage.setTitle("Admin");
                     stage.setResizable(false);
                     stage.setScene(scene);
                     stage.show();
