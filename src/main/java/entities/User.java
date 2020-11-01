@@ -17,6 +17,12 @@ public class User {
     @Column(name = "password", nullable = false)
     private String password;
 
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Host host;
+
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Distributor distributor;
+
     @ManyToOne
     @JoinColumn(name = "userRole")
     private UserRole userRole;

@@ -10,8 +10,8 @@ public class Distributor {
     @Column(name = "distributorId", unique = true, updatable = false, nullable = false)
     private int distributorId;
 
-    @ManyToOne
-    @JoinColumn(name = "userId", nullable = false)
+    @OneToOne(targetEntity = User.class)
+    @JoinColumn(name = "userId", nullable = true, unique = true)
     private User user;
 
     @Column(name = "fee")
@@ -19,6 +19,11 @@ public class Distributor {
 
     public Distributor(){
 
+    }
+
+    public Distributor(User user) {
+        this.user = user;
+        this.fee = 0;
     }
 
     public Distributor(User user, float fee) {
