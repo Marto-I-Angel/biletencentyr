@@ -10,8 +10,8 @@ public class Host {
     @Column(name = "hostId", unique = true, updatable = false, nullable = false)
     private int hostId;
 
-    @ManyToOne
-    @JoinColumn(name = "userId", nullable = false)
+    @OneToOne(targetEntity = User.class)
+    @JoinColumn(name = "userId", nullable = true, unique = true)
     private User user;
 
     public Host() {

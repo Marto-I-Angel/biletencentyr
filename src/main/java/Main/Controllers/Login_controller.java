@@ -83,22 +83,33 @@ public class Login_controller implements Initializable  {
                         }
                     }
                 }
-                if(itsadmin == false && itshost == false && itsdistributor == false){
+                if(!itsadmin && !itshost && !itsdistributor){
                     label.setText("Incorrect username or password!");
                 }
 
                 if(itsadmin)
                 {
-                    Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
 
+                    Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
                     FXMLLoader loader = new FXMLLoader(Objects.requireNonNull(getClass().getClassLoader().getResource("scenes/admin.fxml")));
                     Parent root = loader.load();
                     AdminController admin = loader.getController();
-
                     admin.username_label.setText(username);
-
                     Scene scene = new Scene (root);
                     stage.setTitle("Admin");
+                    stage.setResizable(false);
+                    stage.setScene(scene);
+                    stage.show();
+                }
+                if(itshost)
+                {
+                    Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
+                    FXMLLoader loader = new FXMLLoader(Objects.requireNonNull(getClass().getClassLoader().getResource("scenes/host.fxml")));
+                    Parent root = loader.load();
+                    HostController host = loader.getController();
+                    host.lb_username.setText(username);
+                    Scene scene = new Scene (root);
+                    stage.setTitle("Host-control");
                     stage.setResizable(false);
                     stage.setScene(scene);
                     stage.show();

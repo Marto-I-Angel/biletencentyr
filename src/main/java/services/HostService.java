@@ -2,6 +2,7 @@ package services;
 
 import dao.HostDao;
 import entities.Host;
+import entities.User;
 
 import java.util.List;
 
@@ -27,6 +28,12 @@ public class HostService {
     public Host findById(int id) {
         hostDao.openCurrentSession();
         Host host = hostDao.findById(id);
+        hostDao.closeCurrentSession();
+        return host;
+    }
+    public Host findByUser(User user) {
+        hostDao.openCurrentSession();
+        Host host = hostDao.findByUser(user);
         hostDao.closeCurrentSession();
         return host;
     }

@@ -7,6 +7,9 @@ import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
+import services.DistributorService;
+import services.HostService;
+import services.UserService;
 import util.HibernateUtil;
 
 import java.util.List;
@@ -78,7 +81,17 @@ public class UserDao implements UserDaoInterface<User> {
     }
 
     public void delete(User entity) {
+//        if(entity.checkRole("host")){
+//            HostService hostDaoService = new HostService();
+//            getCurrentSession().delete(hostDaoService.findByUser(entity));
+//        }
+//        else if(entity.checkRole("distributor")){
+//            DistributorService distributorDaoService = new DistributorService();
+//            getCurrentSession().delete(distributorDaoService.findByUser(entity));
+//        }
+//
         getCurrentSession().delete(entity);
+
     }
 
     @SuppressWarnings("unchecked")

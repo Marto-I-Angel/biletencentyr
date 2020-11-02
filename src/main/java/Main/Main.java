@@ -41,7 +41,7 @@ public class Main extends Application {
 
         stage.setTitle("Login Screen");
         Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getClassLoader().getResource("scenes/login.fxml")));
-        Scene scene = new Scene (root, 350, 500);
+        Scene scene = new Scene (root);
         stage.setResizable(false);
         stage.setScene(scene);
         stage.show();
