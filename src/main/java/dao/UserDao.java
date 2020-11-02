@@ -81,17 +81,7 @@ public class UserDao implements UserDaoInterface<User> {
     }
 
     public void delete(User entity) {
-//        if(entity.checkRole("host")){
-//            HostService hostDaoService = new HostService();
-//            getCurrentSession().delete(hostDaoService.findByUser(entity));
-//        }
-//        else if(entity.checkRole("distributor")){
-//            DistributorService distributorDaoService = new DistributorService();
-//            getCurrentSession().delete(distributorDaoService.findByUser(entity));
-//        }
-//
         getCurrentSession().delete(entity);
-
     }
 
     @SuppressWarnings("unchecked")
