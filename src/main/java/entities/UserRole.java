@@ -8,7 +8,7 @@ import java.util.Objects;
 public class UserRole {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "userRoleId", unique = true, updatable = false, nullable = false)
+    @Column(name = "userRoleId", unique = true, nullable = false)
     private int userRoleId;
 
     @Column(name = "role", nullable = false)

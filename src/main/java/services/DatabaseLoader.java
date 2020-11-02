@@ -9,9 +9,9 @@ import util.HibernateUtil;
 import java.util.List;
 
 public class DatabaseLoader {
-    public final static UserRole role_admin = new UserRole("admin");
-    public final static UserRole role_host = new UserRole("host");
-    public final static UserRole role_distributor = new UserRole("distributor");
+    public static UserRole role_admin = new UserRole("admin");
+    public static UserRole role_host = new UserRole("host");
+    public static UserRole role_distributor = new UserRole("distributor");
 
     public static UserRole getRole(String role_name) {
         switch(role_name)
@@ -30,15 +30,22 @@ public class DatabaseLoader {
 
 
         UserRoleService service = new UserRoleService();
+        Transaction tx = session.beginTransaction();
+
         List<UserRole> a = service.findAll();
         if(a.isEmpty()){
-            Transaction tx = session.beginTransaction();
             session.saveOrUpdate(DatabaseLoader.role_admin);
             session.saveOrUpdate(DatabaseLoader.role_host);
             session.saveOrUpdate(DatabaseLoader.role_distributor);
-            User user = new User("admin", "admin", DatabaseLoader.role_admin);
-            session.saveOrUpdate(user);
-            tx.commit();
+            User user = new User("admin", "admin", role_admin);
+            session.save(user);
+
         }
+        else {
+            role_admin = session.load(UserRole.class,1);
+            role_host = session.load(UserRole.class,2);
+            role_distributor = session.load(UserRole.class,3);
+        }
+        tx.commit();
     }
 }
