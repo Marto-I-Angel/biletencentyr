@@ -31,7 +31,7 @@ public class HibernateUtil {
 
                 settings.put(Environment.USER, "root");
 
-                settings.put(Environment.PASS, "1234");
+                settings.put(Environment.PASS, "");
 
                 settings.put(Environment.DIALECT, "org.hibernate.dialect.MySQL57InnoDBDialect");
 

@@ -7,6 +7,9 @@ import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
+import services.DistributorService;
+import services.HostService;
+import services.UserService;
 import util.HibernateUtil;
 
 import java.util.List;
