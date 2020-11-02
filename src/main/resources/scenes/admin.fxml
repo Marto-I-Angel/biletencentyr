@@ -18,13 +18,13 @@
         <bottom>
           <ButtonBar nodeOrientation="RIGHT_TO_LEFT" prefHeight="56.0" prefWidth="600.0" BorderPane.alignment="CENTER">
               <buttons>
-                  <ImageView id="refresh-bt" fitHeight="30.0" fitWidth="30.0" onMouseClicked="#refresh_db" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fitHeight="30.0" fitWidth="30.0" onMouseClicked="#refresh_db" pickOnBounds="true" preserveRatio="true">
                       <Image url="@../Images/Refresh_button.png" />
                   </ImageView>
-                  <ImageView id="refresh-bt" fitHeight="30.0" fitWidth="30.0" onMouseClicked="#delete_db" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fitHeight="30.0" fitWidth="30.0" onMouseClicked="#delete_db" pickOnBounds="true" preserveRatio="true">
                       <Image url="@../Images/Delete_button.png" />
                   </ImageView>
-                  <ImageView id="refresh-bt" fitHeight="30.0" fitWidth="30.0" onMouseClicked="#add_to_db" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fitHeight="30.0" fitWidth="30.0" onMouseClicked="#add_to_db" pickOnBounds="true" preserveRatio="true">
                       <Image url="@../Images/Add_button.png" />
                   </ImageView>
               </buttons>
