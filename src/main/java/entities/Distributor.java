@@ -21,6 +21,11 @@ public class Distributor {
 
     }
 
+    public Distributor(User user) {
+        this.user = user;
+        this.fee = 0;
+    }
+
     public Distributor(User user, float fee) {
         this.user = user;
         this.fee = fee;

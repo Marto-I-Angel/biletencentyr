@@ -18,14 +18,15 @@ public class Host {
 
     }
 
+    public Host(User user) {
+        this.user = user;
+    }
+
     @Override
     public String toString() {
         return "Host: " + user;
     }
 
-    public Host(User user) {
-        this.user = user;
-    }
 
     public int getHostId() {
         return hostId;

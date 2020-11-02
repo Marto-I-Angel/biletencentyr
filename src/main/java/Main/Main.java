@@ -20,6 +20,7 @@ public class Main extends Application {
     @Override
     public void start(Stage stage) throws Exception {
         DatabaseLoader.createUserRoles();
+
         stage.setTitle("Login Screen");
         Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getClassLoader().getResource("scenes/login.fxml")));
         Scene scene = new Scene (root);
