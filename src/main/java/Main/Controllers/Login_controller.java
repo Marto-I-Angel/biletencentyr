@@ -47,17 +47,6 @@ public class Login_controller implements Initializable  {
             } else {
                 label.setText("Loading...");
 
-//                System.out.println(passwordField.getText());
-//                System.out.println(usernameField.getText());
-
-//                String loginRole;
-//                UserService userService1 = new UserService();
-//                List<User> list = userService1.findAll();
-//                for (User iter:list) {
-//                    if(iter.equals(user)){
-//                        loginRole = iter.getUserRole();
-//                    }
-//                }
                 UserService userService = new UserService();
                 List<User> list = userService.findAll();
 
