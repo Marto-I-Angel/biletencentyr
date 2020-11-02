@@ -11,6 +11,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -94,5 +95,15 @@ public class AdminController implements Initializable {
         table.setItems(obs);
         table.setEditable(true);
         table.setVisible(true);
+    }
+
+    public void logout(ActionEvent actionEvent) throws IOException {
+        Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
+        stage.setTitle("Login Screen");
+        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getClassLoader().getResource("scenes/login.fxml")));
+        Scene scene = new Scene (root);
+        stage.setResizable(false);
+        stage.setScene(scene);
+        stage.show();
     }
 }

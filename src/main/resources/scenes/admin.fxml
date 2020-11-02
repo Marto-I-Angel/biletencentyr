@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ButtonBar?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableColumn?>
@@ -17,16 +18,12 @@
         <bottom>
           <ButtonBar nodeOrientation="RIGHT_TO_LEFT" prefHeight="56.0" prefWidth="600.0" BorderPane.alignment="CENTER">
               <buttons>
-               <ImageView id="refresh-bt" fitHeight="30.0" fitWidth="30.0" onMouseClicked="#refresh_db" pickOnBounds="true" preserveRatio="true">
-                  <image>
-                     <Image url="@../Images/Refresh_button.png" />
-                  </image>
-               </ImageView>
-               <ImageView id="refresh-bt" fitHeight="30.0" fitWidth="30.0" onMouseClicked="#delete_db" pickOnBounds="true" preserveRatio="true">
-                  <image>
-                     <Image url="@../Images/Delete_button.png" />
-                  </image>
-               </ImageView>
+                  <ImageView id="refresh-bt" fitHeight="30.0" fitWidth="30.0" onMouseClicked="#refresh_db" pickOnBounds="true" preserveRatio="true">
+                      <Image url="@../Images/Refresh_button.png" />
+                  </ImageView>
+                  <ImageView id="refresh-bt" fitHeight="30.0" fitWidth="30.0" onMouseClicked="#delete_db" pickOnBounds="true" preserveRatio="true">
+                      <Image url="@../Images/Delete_button.png" />
+                  </ImageView>
                   <ImageView id="refresh-bt" fitHeight="30.0" fitWidth="30.0" onMouseClicked="#add_to_db" pickOnBounds="true" preserveRatio="true">
                       <Image url="@../Images/Add_button.png" />
                   </ImageView>
@@ -41,16 +38,12 @@
         </bottom>
         <right>
             <Pane prefHeight="344.0" prefWidth="133.0" BorderPane.alignment="CENTER">
-                <Label fx:id="username_label" alignment="TOP_LEFT" layoutX="5.0" layoutY="64.0" prefHeight="50.0" prefWidth="123.0" text="Username:" textAlignment="CENTER">
+                <Label fx:id="username_label" alignment="CENTER" layoutX="6.0" layoutY="28.0" prefHeight="24.0" prefWidth="121.0" text="Username:" textAlignment="CENTER">
                     <font>
                         <Font size="14.0" />
                     </font>
                 </Label>
-                <Label layoutX="5.0" layoutY="31.0" text="Logged in user:">
-                    <font>
-                        <Font size="18.0" />
-                    </font>
-                </Label>
+            <Button layoutX="41.0" layoutY="62.0" mnemonicParsing="false" onAction="#logout" text="Logout" />
             </Pane>
         </right>
         <left>
