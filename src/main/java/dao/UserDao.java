@@ -7,7 +7,7 @@ import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
-import services.DistributorService;
+//import services.DistributorService;
 import services.HostService;
 import services.UserService;
 import util.HibernateUtil;
@@ -76,18 +76,15 @@ public class UserDao implements UserDaoInterface<User> {
     }
 
     public User findById(int id) {
-        User user = (User) getCurrentSession().get(User.class, id);
-        return user;
+        return getCurrentSession().get(User.class, id);
     }
-
     public void delete(User entity) {
         getCurrentSession().delete(entity);
     }
 
     @SuppressWarnings("unchecked")
     public List<User> findAll() {
-        List<User> users = (List<User>) getCurrentSession().createQuery("from User").list();
-        return users;
+        return (List<User>) getCurrentSession().createQuery("from User").list();
     }
 
     public void deleteAll() {

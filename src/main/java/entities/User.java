@@ -27,13 +27,6 @@ public class User {
     @JoinColumn(name = "userRole")
     private UserRole userRole;
 
-
-    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Host host;
-
-    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Distributor distributor;
-
     public User(){
 
     }
