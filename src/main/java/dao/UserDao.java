@@ -1,14 +1,20 @@
 package dao;
 
-import dao.interfaces.DaoInterface;
+import dao.Interfaces.UserDaoInterface;
 import entities.User;
 import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
+import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
+import org.hibernate.cfg.Configuration;
+//import services.DistributorService;
+import services.HostService;
+import services.UserService;
 import util.HibernateUtil;
 
 import java.util.List;
 
-public class UserDao implements DaoInterface<User> {
+public class UserDao implements UserDaoInterface<User> {
     private Session currentSession;
 
     private Transaction currentTransaction;

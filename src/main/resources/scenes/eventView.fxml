@@ -13,48 +13,59 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="558.0" prefWidth="562.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Main.Controllers.EventViewController">
+<AnchorPane prefHeight="558.0" prefWidth="562.0" xmlns="http://javafx.com/javafx/11.0.1"
+            xmlns:fx="http://javafx.com/fxml/1" fx:controller="Main.Controllers.EventViewController">
     <Pane layoutX="60.0" layoutY="63.0" prefHeight="470.0" prefWidth="468.0" style="-fx-border-color: #888888;">
-        <TextField fx:id="eventName_id" layoutX="28.0" layoutY="26.0" promptText="Event Name" />
-        <DatePicker fx:id="StartDate_Id" layoutX="22.0" layoutY="342.0" promptText="Start Date" />
-        <DatePicker fx:id="EndDate_Id" layoutX="280.0" layoutY="342.0" promptText="End Date" />
-        <Button layoutX="214.0" layoutY="431.0" mnemonicParsing="false" onAction="#SaveEvent" text="Save" />
-        <CheckBox fx:id="isLimitedPerPerson" layoutX="21.0" layoutY="386.0" mnemonicParsing="false" text="One ticket per person limit" />
-        <TabPane layoutX="14.0" layoutY="71.0" prefHeight="248.0" prefWidth="441.0" tabClosingPolicy="UNAVAILABLE">
+        <TextField fx:id="eventName_id" layoutX="28.0" layoutY="26.0" promptText="Event Name"/>
+        <DatePicker fx:id="StartDate_Id" layoutX="22.0" layoutY="342.0" promptText="Start Date"/>
+        <DatePicker fx:id="EndDate_Id" layoutX="280.0" layoutY="342.0" promptText="End Date"/>
+        <Button layoutX="214.0" layoutY="431.0" mnemonicParsing="false" onAction="#SaveEvent" text="Save"/>
+        <CheckBox fx:id="isLimitedPerPerson" layoutX="160.0" layoutY="384.0" mnemonicParsing="false"
+                  text="One ticket per person limit"/>
+        <ComboBox fx:id="EventTypeCB" editable="true" layoutX="294.0" layoutY="26.0" prefWidth="150.0"
+                  promptText="Event Type"/>
+        <TabPane layoutX="14.0" layoutY="71.0" prefHeight="248.0" prefWidth="444.0" tabClosingPolicy="UNAVAILABLE">
             <Tab text="Seats">
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="221.0" prefWidth="443.0">
-                    <Button alignment="CENTER" contentDisplay="CENTER" layoutX="330.0" layoutY="185.0" mnemonicParsing="false" onAction="#createNewSeatsType" text="Add" textAlignment="CENTER" />
-                    <TableView fx:id="SeatTypesTable" prefHeight="169.0" prefWidth="441.0">
+                    <Button alignment="CENTER" contentDisplay="CENTER" layoutX="330.0" layoutY="185.0"
+                            mnemonicParsing="false" onAction="#createNewSeatsType" text="Add"
+                            textAlignment="CENTER"/>
+                    <TableView fx:id="SeatTypesTable" prefHeight="169.0" prefWidth="437.0">
                         <columns>
-                            <TableColumn fx:id="ColNumSeats" prefWidth="140.0" text="Number of seats" />
-                            <TableColumn fx:id="ColPrice" prefWidth="158.0" text="Price per ticket" />
-                            <TableColumn fx:id="ColTypeSeats" prefWidth="142.0" text="Type of seats" />
+                            <TableColumn fx:id="ColNumSeats" prefWidth="140.0" text="Number of seats"/>
+                            <TableColumn fx:id="ColPrice" prefWidth="158.0" text="Price per ticket"/>
+                            <TableColumn fx:id="ColTypeSeats" prefWidth="138.0" text="Type of seats"/>
                         </columns>
                     </TableView>
-                    <TextField fx:id="type_txt" layoutX="20.0" layoutY="185.0" prefHeight="25.0" prefWidth="107.0" promptText="Type Seats" />
-                    <TextField fx:id="count_txt" layoutX="138.0" layoutY="185.0" prefHeight="25.0" prefWidth="107.0" promptText="Count" />
-                    <TextField fx:id="price_txt" layoutX="256.0" layoutY="185.0" prefHeight="25.0" prefWidth="68.0" promptText="Price" />
-                    <Button layoutX="380.0" layoutY="185.0" mnemonicParsing="false" onAction="#removeSelected" text="Remove" />
+                    <TextField fx:id="type_txt" layoutX="20.0" layoutY="185.0" prefHeight="25.0"
+                               prefWidth="107.0" promptText="Type Seats"/>
+                    <TextField fx:id="count_txt" layoutX="138.0" layoutY="185.0" prefHeight="25.0"
+                               prefWidth="107.0" promptText="Count"/>
+                    <TextField fx:id="price_txt" layoutX="256.0" layoutY="185.0" prefHeight="25.0"
+                               prefWidth="68.0" promptText="Price"/>
+                    <Button layoutX="380.0" layoutY="185.0" mnemonicParsing="false"
+                            onAction="#removeSelected" text="Remove"/>
                 </AnchorPane>
             </Tab>
             <Tab text="Distributors">
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                     <TableView fx:id="DistributorTable" prefHeight="169.0" prefWidth="437.0">
                         <columns>
-                            <TableColumn fx:id="ColDistributorId" prefWidth="132.0" text="DistributorID" />
-                            <TableColumn fx:id="ColDistributorName" prefWidth="131.0" text="Name" />
-                     <TableColumn fx:id="ColDistributorFee" prefWidth="75.0" text="Fee" />
+                            <TableColumn fx:id="ColDistributorId" prefWidth="132.0"
+                                         text="DistributorID"/>
+                            <TableColumn fx:id="ColDistributorName" prefWidth="131.0" text="Name"/>
                         </columns>
                     </TableView>
-                    <ComboBox fx:id="DistributorCB" layoutX="20.0" layoutY="185.0" prefHeight="25.0" prefWidth="185.0" promptText="Choose a Distributor" />
-                    <Button layoutX="330.0" layoutY="185.0" mnemonicParsing="false" onAction="#AddDistributor" text="Add" />
-                    <Button layoutX="380.0" layoutY="185.0" mnemonicParsing="false" onAction="#RemoveDistributor" text="Remove" />
-               <TextField fx:id="Fee" layoutX="219.0" layoutY="185.0" prefHeight="25.0" prefWidth="100.0" promptText="Fee" />
+                    <ComboBox fx:id="DistributorCB" layoutX="20.0" layoutY="185.0" prefHeight="25.0"
+                              prefWidth="185.0" promptText="Choose a Distributor"/>
+                    <Button layoutX="330.0" layoutY="185.0" mnemonicParsing="false"
+                            onAction="#AddDistributor" text="Add"/>
+                    <Button layoutX="380.0" layoutY="185.0" mnemonicParsing="false"
+                            onAction="#RemoveDistributor" text="Remove"/>
                 </AnchorPane>
             </Tab>
         </TabPane>
-      <ComboBox fx:id="statusCB" layoutX="304.0" layoutY="382.0" prefWidth="150.0" promptText="Status" />
-      <TextField fx:id="EventType" layoutX="305.0" layoutY="26.0" promptText="Event Type" />
     </Pane>
-    <Text layoutX="255.0" layoutY="42.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Add/Edit Event" textAlignment="CENTER" />
+    <Text layoutX="255.0" layoutY="42.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Add/Edit Event"
+          textAlignment="CENTER"/>
 </AnchorPane>
