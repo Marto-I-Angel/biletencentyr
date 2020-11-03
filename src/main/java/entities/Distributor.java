@@ -31,11 +31,6 @@ public class Distributor {
         this.fee = fee;
     }
 
-    public Distributor(User user) {
-        this.user = user;
-        this.fee = 0;
-    }
-
     public int getDistributorId() {
         return distributorId;
     }

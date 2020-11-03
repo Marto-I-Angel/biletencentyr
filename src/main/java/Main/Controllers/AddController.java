@@ -19,7 +19,7 @@ import services.DatabaseLoader;
 public class AddController {
 
     public TextField username;
-    public ComboBox roles;
+    public ComboBox<UserRole> roles;
     public Button add_btn;
     public PasswordField pass;
     public PasswordField confirm_pass;

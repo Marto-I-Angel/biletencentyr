@@ -1,9 +1,6 @@
 package Main.Controllers;
 
-
-import Main.Main;
 import entities.User;
-import entities.UserRole;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
@@ -13,12 +10,9 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
-import org.hibernate.Session;
-import org.hibernate.Transaction;
+import services.HostService;
+import services.SessionService;
 import services.UserService;
-import util.HibernateUtil;
-
-import javax.management.relation.Role;
 import java.io.IOException;
 import java.net.URL;
 import java.util.List;
@@ -46,7 +40,7 @@ public class Login_controller implements Initializable  {
                 passwordField.clear();
             } else {
                 label.setText("Loading...");
-
+                HostService hostService = new HostService();
                 UserService userService = new UserService();
                 List<User> list = userService.findAll();
 
@@ -63,6 +57,7 @@ public class Login_controller implements Initializable  {
                         if(iter.checkRole("host"))
                         {
                             itshost = true;
+                            SessionService.setHost(hostService.findByUser(iter));
                             break;
                         }
                         if(iter.checkRole("distributor"))
@@ -83,7 +78,11 @@ public class Login_controller implements Initializable  {
                     FXMLLoader loader = new FXMLLoader(Objects.requireNonNull(getClass().getClassLoader().getResource("scenes/admin.fxml")));
                     Parent root = loader.load();
                     AdminController admin = loader.getController();
+
+
                     admin.username_label.setText(username);
+
+
                     Scene scene = new Scene (root);
                     stage.setTitle("Admin");
                     stage.setResizable(false);
@@ -96,7 +95,11 @@ public class Login_controller implements Initializable  {
                     FXMLLoader loader = new FXMLLoader(Objects.requireNonNull(getClass().getClassLoader().getResource("scenes/host.fxml")));
                     Parent root = loader.load();
                     HostController host = loader.getController();
+
+
                     host.lb_username.setText(username);
+
+
                     Scene scene = new Scene (root);
                     stage.setTitle("Host-control");
                     stage.setResizable(false);
