@@ -2,7 +2,7 @@ package services;
 
 import dao.DistributorDao;
 import entities.Distributor;
-
+import entities.User;
 
 import java.util.List;
 
@@ -31,10 +31,11 @@ public class DistributorService {
         distributorDao.closeCurrentSession();
         return distributor;
     }
-    public Distributor getByUsername(String username)
-    {
+    public Distributor findByUser(User user) {
         distributorDao.openCurrentSession();
-        return distributorDao.getByUsername(username);
+        Distributor distributor = distributorDao.findByUser(user);
+        distributorDao.closeCurrentSession();
+        return distributor;
     }
 
     public void delete(int id) {
