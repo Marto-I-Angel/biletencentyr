@@ -57,7 +57,7 @@ public class Login_controller implements Initializable  {
                         if(iter.checkRole("host"))
                         {
                             itshost = true;
-                            SessionService.setHost(hostService.findByUser(iter));
+                            SessionService.setHost(hostService.getByUsername(iter.getUsername()));
                             break;
                         }
                         if(iter.checkRole("distributor"))

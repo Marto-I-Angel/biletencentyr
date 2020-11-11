@@ -2,6 +2,7 @@ package entities;
 
 import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -18,6 +19,12 @@ public class Event {
     @ManyToOne
     @JoinColumn(name="hostId", nullable=false)
     private Host host;
+
+    @Column(name = "beginDate")
+    private Date beginDate;
+
+    @Column(name = "endDate")
+    private Date endDate;
 
     @Column(name="statusId", nullable=false)
     private String status;
@@ -75,6 +82,22 @@ public class Event {
 
     public void setRating(int rating) {
         this.rating = rating;
+    }
+
+    public Date getBeginDate() {
+        return beginDate;
+    }
+
+    public void setBeginDate(Date beginDate) {
+        this.beginDate = beginDate;
+    }
+
+    public Date getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(Date endDate) {
+        this.endDate = endDate;
     }
 
     public List<Distributor> getListDist() {

@@ -1,22 +1,20 @@
 package dao;
 
 import dao.interfaces.DaoInterface;
-import entities.Distributor;
-import entities.Host;
+import entities.Seats;
 import entities.User;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
-import services.DistributorService;
 import util.HibernateUtil;
 
 import java.util.List;
 
-public class DistributorDao implements DaoInterface<Distributor> {
+public class SeatsDao implements DaoInterface<Seats> {
     private Session currentSession;
 
     private Transaction currentTransaction;
 
-    public DistributorDao(){
+    public SeatsDao(){
 
     }
 
@@ -40,6 +38,14 @@ public class DistributorDao implements DaoInterface<Distributor> {
         currentSession.close();
     }
 
+//    private static SessionFactory getSessionFactory() {
+//        Configuration configuration = new Configuration().configure();
+//        StandardServiceRegistryBuilder builder = new StandardServiceRegistryBuilder()
+//                .applySettings(configuration.getProperties());
+//        SessionFactory sessionFactory = configuration.buildSessionFactory(builder.build());
+//        return sessionFactory;
+//    }
+
     public Session getCurrentSession() {
         return currentSession;
     }
@@ -56,36 +62,29 @@ public class DistributorDao implements DaoInterface<Distributor> {
         this.currentTransaction = currentTransaction;
     }
 
-    public void persist(Distributor entity) {
+    public void persist(Seats entity) {
         getCurrentSession().save(entity);
     }
 
-    public void update(Distributor entity) {
+    public void update(Seats entity) {
         getCurrentSession().update(entity);
     }
 
-    public Distributor findById(int id) {
-        return getCurrentSession().get(Distributor.class, id);
+    public Seats findById(int id) {
+        return getCurrentSession().get(Seats.class, id);
     }
-
-    public void delete(Distributor entity) {
+    public void delete(Seats entity) {
         getCurrentSession().delete(entity);
     }
 
-    public Distributor getByUsername(String username)
-    {
-        return (Distributor) getCurrentSession().createNativeQuery("SELECT * FROM distributor JOIN user on user.userId = distributor.userId WHERE username = '" + username + "';", Distributor.class).getSingleResult();
-
-    }
-
     @SuppressWarnings("unchecked")
-    public List<Distributor> findAll() {
-        return (List<Distributor>) getCurrentSession().createQuery("from Distributor").list();
+    public List<Seats> findAll() {
+        return (List<Seats>) getCurrentSession().createQuery("from User").list();
     }
 
     public void deleteAll() {
-        List<Distributor> entityList = findAll();
-        for (Distributor entity : entityList) {
+        List<Seats> entityList = findAll();
+        for (Seats entity : entityList) {
             delete(entity);
         }
     }
