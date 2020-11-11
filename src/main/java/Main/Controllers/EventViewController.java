@@ -1,9 +1,9 @@
 package Main.Controllers;
 
-import Main.Controllers.VisualClasses.SeatTypeRow;
 import entities.Distributor;
 import entities.Event;
 import entities.Reservation;
+import entities.Seats;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.Initializable;
@@ -14,6 +14,7 @@ import services.EventService;
 import services.SessionService;
 
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -24,10 +25,10 @@ public class EventViewController implements Initializable {
     public CheckBox isLimitedPerPerson;
     public TextField EventType;
     //Seat Table
-    public TableView<SeatTypeRow> SeatTypesTable;
-    public TableColumn<SeatTypeRow,String> ColTypeSeats;
-    public TableColumn<SeatTypeRow,String> ColPrice;
-    public TableColumn<SeatTypeRow,String> ColNumSeats;
+    public TableView<Seats> SeatTypesTable;
+    public TableColumn<Seats,String> ColTypeSeats;
+    public TableColumn<Seats,String> ColPrice;
+    public TableColumn<Seats,String> ColNumSeats;
     public TextField type_txt;
     public TextField count_txt;
     public TextField price_txt;
@@ -42,7 +43,7 @@ public class EventViewController implements Initializable {
     public ComboBox<String> statusCB;
 
 
-    ObservableList<SeatTypeRow> seats = FXCollections.observableArrayList();
+    ObservableList<entities.Seats> seats = FXCollections.observableArrayList();
     ObservableList<Distributor> assignedDistributors =  FXCollections.observableArrayList();
     List<Distributor> allDistributors;
 
@@ -67,7 +68,7 @@ public class EventViewController implements Initializable {
 
 
 //        Set up seats type table
-        ColTypeSeats.setCellValueFactory(new PropertyValueFactory<>("seatType"));
+        ColTypeSeats.setCellValueFactory(new PropertyValueFactory<>("seatsType"));
         ColNumSeats.setCellValueFactory(new PropertyValueFactory<>("numberOfSeats"));
         ColPrice.setCellValueFactory(new PropertyValueFactory<>("price"));
 //        Set up distributor table
@@ -88,8 +89,8 @@ public class EventViewController implements Initializable {
             event.setHost(SessionService.getHost());
             System.out.println(SessionService.getHost());
             event.setListDist(assignedDistributors);
-//            List<Reservation> reservations =  ;
-//            event.setSeats(reservations);
+            List<Reservation> reservations = new ArrayList<>();
+            event.setSeats(reservations);
             event.setStatus(statusCB.getValue());
 
             EventService service = new EventService();
@@ -98,7 +99,7 @@ public class EventViewController implements Initializable {
         }
     }
     public void createNewSeatsType() {
-        SeatTypeRow row1 = new SeatTypeRow(type_txt.getText(),count_txt.getText(),price_txt.getText());
+        entities.Seats row1 = new entities.Seats(type_txt.getText(),count_txt.getText(),price_txt.getText());
         seats.add(row1);
         refreshTable();
     }

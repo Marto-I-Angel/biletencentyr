@@ -1,8 +1,8 @@
 package dao;
 
-import dao.interfaces.CustomerDaoInterface;
 import dao.interfaces.DaoInterface;
 import entities.Distributor;
+import entities.Host;
 import entities.User;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
@@ -11,7 +11,7 @@ import util.HibernateUtil;
 
 import java.util.List;
 
-public class DistributorDao implements DaoInterface<Distributor>, CustomerDaoInterface<Distributor> {
+public class DistributorDao implements DaoInterface<Distributor> {
     private Session currentSession;
 
     private Transaction currentTransaction;
@@ -67,23 +67,16 @@ public class DistributorDao implements DaoInterface<Distributor>, CustomerDaoInt
     public Distributor findById(int id) {
         return getCurrentSession().get(Distributor.class, id);
     }
-    public Distributor findByUser(User user) {
-        DistributorService distributorService = new DistributorService();
-        List<Distributor> distributors = distributorService.findAll();
-        int id1=0;
-        for (Distributor distributorit:distributors) {
-            if(distributorit.getUser().equals(user)){
-                id1=distributorit.getDistributorId();
-                break;
-            }
-        }
-        return getCurrentSession().get(Distributor.class, id1);
-    }
 
     public void delete(Distributor entity) {
         getCurrentSession().delete(entity);
     }
 
+    public Distributor getByUsername(String username)
+    {
+        return (Distributor) getCurrentSession().createNativeQuery("SELECT * FROM distributor JOIN user on user.userId = distributor.userId WHERE username = '" + username + "';", Distributor.class).getSingleResult();
+
+    }
     @SuppressWarnings("unchecked")
     public List<Distributor> findAll() {
         return (List<Distributor>) getCurrentSession().createQuery("from Distributor").list();
