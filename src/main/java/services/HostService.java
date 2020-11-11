@@ -31,12 +31,6 @@ public class HostService {
         hostDao.closeCurrentSession();
         return host;
     }
-    public Host findByUser(User user) {
-        hostDao.openCurrentSession();
-        Host host = hostDao.findByUser(user);
-        hostDao.closeCurrentSession();
-        return host;
-    }
 
     public void delete(int id) {
         hostDao.openCurrentSessionwithTransaction();
@@ -52,6 +46,12 @@ public class HostService {
         return hosts;
     }
 
+    public Host getByUsername(String username)
+    {
+        hostDao.openCurrentSession();
+        return hostDao.getByUsername(username);
+    }
+
     public void deleteAll() {
         hostDao.openCurrentSessionwithTransaction();
         hostDao.deleteAll();
@@ -61,4 +61,5 @@ public class HostService {
     public HostDao hostDao() {
         return hostDao;
     }
+
 }

@@ -19,12 +19,6 @@ public class Reservation {
     @JoinColumn(name = "seatsId")
     private Seats seats;
 
-    @Column(name = "beginDate")
-    private Date beginDate;
-
-    @Column(name = "endDate")
-    private Date endDate;
-
     @Column(name = "price")
     private float price;
 
@@ -32,11 +26,9 @@ public class Reservation {
 
     }
 
-    public Reservation(Event event, Seats seats, Date beginDate, Date endDate, float price) {
+    public Reservation(Event event, Seats seats, float price) {
         this.event = event;
         this.seats = seats;
-        this.beginDate = beginDate;
-        this.endDate = endDate;
         this.price = price;
     }
 
@@ -56,21 +48,6 @@ public class Reservation {
         this.seats = seats;
     }
 
-    public Date getBeginDate() {
-        return beginDate;
-    }
-
-    public void setBeginDate(Date beginDate) {
-        this.beginDate = beginDate;
-    }
-
-    public Date getEndDate() {
-        return endDate;
-    }
-
-    public void setEndDate(Date endDate) {
-        this.endDate = endDate;
-    }
 
     public float getPrice() {
         return price;

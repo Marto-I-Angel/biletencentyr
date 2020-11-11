@@ -1,21 +1,20 @@
 package dao;
 
 import dao.interfaces.DaoInterface;
-import entities.Host;
+import entities.Seats;
 import entities.User;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
-import services.HostService;
 import util.HibernateUtil;
 
 import java.util.List;
 
-public class HostDao implements DaoInterface<Host> {
+public class SeatsDao implements DaoInterface<Seats> {
     private Session currentSession;
 
     private Transaction currentTransaction;
 
-    public HostDao(){
+    public SeatsDao(){
 
     }
 
@@ -39,6 +38,14 @@ public class HostDao implements DaoInterface<Host> {
         currentSession.close();
     }
 
+//    private static SessionFactory getSessionFactory() {
+//        Configuration configuration = new Configuration().configure();
+//        StandardServiceRegistryBuilder builder = new StandardServiceRegistryBuilder()
+//                .applySettings(configuration.getProperties());
+//        SessionFactory sessionFactory = configuration.buildSessionFactory(builder.build());
+//        return sessionFactory;
+//    }
+
     public Session getCurrentSession() {
         return currentSession;
     }
@@ -55,35 +62,29 @@ public class HostDao implements DaoInterface<Host> {
         this.currentTransaction = currentTransaction;
     }
 
-    public void persist(Host entity) {
+    public void persist(Seats entity) {
         getCurrentSession().save(entity);
     }
 
-    public void update(Host entity) {
+    public void update(Seats entity) {
         getCurrentSession().update(entity);
     }
 
-    public Host findById(int id) {
-        return getCurrentSession().get(Host.class, id);
+    public Seats findById(int id) {
+        return getCurrentSession().get(Seats.class, id);
     }
-
-    public void delete(Host entity) {
+    public void delete(Seats entity) {
         getCurrentSession().delete(entity);
     }
 
-    public Host getByUsername(String username)
-    {
-        return (Host) getCurrentSession().createNativeQuery("SELECT * FROM host JOIN user on user.userId = host.userId WHERE username = '" + username + "';", Host.class).getSingleResult();
-
-    }
     @SuppressWarnings("unchecked")
-    public List<Host> findAll() {
-        return (List<Host>) getCurrentSession().createQuery("from Host").list();
+    public List<Seats> findAll() {
+        return (List<Seats>) getCurrentSession().createQuery("from User").list();
     }
 
     public void deleteAll() {
-        List<Host> entityList = findAll();
-        for (Host entity : entityList) {
+        List<Seats> entityList = findAll();
+        for (Seats entity : entityList) {
             delete(entity);
         }
     }
