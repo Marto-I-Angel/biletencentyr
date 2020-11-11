@@ -1,4 +1,6 @@
 package dao;
+
+import dao.interfaces.CustomerDaoInterface;
 import dao.interfaces.DaoInterface;
 import entities.Host;
 import entities.User;
@@ -9,7 +11,7 @@ import util.HibernateUtil;
 
 import java.util.List;
 
-public class HostDao implements DaoInterface<Host> {
+public class HostDao implements DaoInterface<Host>, CustomerDaoInterface<Host> {
     private Session currentSession;
 
     private Transaction currentTransaction;
@@ -65,16 +67,23 @@ public class HostDao implements DaoInterface<Host> {
     public Host findById(int id) {
         return getCurrentSession().get(Host.class, id);
     }
+    public Host findByUser(User user) {
+        HostService hostService = new HostService();
+        List<Host> hosts = hostService.findAll();
+        int id1=0;
+        for (Host hostit:hosts) {
+            if(hostit.getUser().equals(user)){
+                id1=hostit.getHostId();
+                break;
+            }
+        }
+        return getCurrentSession().get(Host.class, id1);
+    }
 
     public void delete(Host entity) {
         getCurrentSession().delete(entity);
     }
 
-    public Host getByUsername(String username)
-    {
-        return (Host) getCurrentSession().createNativeQuery("SELECT * FROM host JOIN user on user.userId = host.userId WHERE username = '" + username + "';", Host.class).getSingleResult();
-
-    }
     @SuppressWarnings("unchecked")
     public List<Host> findAll() {
         return (List<Host>) getCurrentSession().createQuery("from Host").list();

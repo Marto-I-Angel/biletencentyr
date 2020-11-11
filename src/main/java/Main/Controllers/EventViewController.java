@@ -3,18 +3,17 @@ package Main.Controllers;
 import Main.Controllers.VisualClasses.SeatTypeRow;
 import entities.Distributor;
 import entities.Event;
-import entities.EventType;
+import entities.Reservation;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import services.DistributorService;
-import services.EventTypeService;
+import services.EventService;
 import services.SessionService;
 
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -23,8 +22,7 @@ public class EventViewController implements Initializable {
     public DatePicker StartDate_Id;
     public DatePicker EndDate_Id;
     public CheckBox isLimitedPerPerson;
-    public ComboBox<String> EventTypeCB;
-
+    public TextField EventType;
     //Seat Table
     public TableView<SeatTypeRow> SeatTypesTable;
     public TableColumn<SeatTypeRow,String> ColTypeSeats;
@@ -41,23 +39,23 @@ public class EventViewController implements Initializable {
     public TableColumn<Distributor,Float> ColDistributorFee;
 
     public ComboBox<String> DistributorCB;
+    public ComboBox<String> statusCB;
+
 
     ObservableList<SeatTypeRow> seats = FXCollections.observableArrayList();
     ObservableList<Distributor> assignedDistributors =  FXCollections.observableArrayList();
-    ObservableList<String> eventTypesNames = FXCollections.observableArrayList();
     List<Distributor> allDistributors;
 
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-//        Add type events to the combo box
-        EventTypeService service = new EventTypeService();
-        List<EventType> eventTypes = service.findAll();
-        for(EventType x : eventTypes)
-        {
-            eventTypesNames.add(x.getName());
-        }
-        EventTypeCB.setItems(eventTypesNames);
+
+//        Set up the status comboBox
+        statusCB.getItems().add("Active");
+        statusCB.getItems().add("Canceled");
+        statusCB.getItems().add("Completed");
+        statusCB.getItems().add("Pending");
+
 
 //        Add distributors to the combo box
         DistributorService distributorService = new DistributorService();
@@ -75,31 +73,28 @@ public class EventViewController implements Initializable {
 //        Set up distributor table
         ColDistributorId.setCellValueFactory(new PropertyValueFactory<>("distributorId"));
         // Get the name from the user??
-        //ColDistributorName.setCellValueFactory(new PropertyValueFactory<>("distributorId"));
+        //ColDistributorName.setCellValueFactory(new PropertyValueFactory<>(""));
         ColDistributorFee.setCellValueFactory(new PropertyValueFactory<>("fee"));
 
     }
 
     public void SaveEvent() {
         //if everything is filled
-        if(!eventName_id.getText().isEmpty() && !EventTypeCB.getValue().isEmpty() ) {
+        if(!eventName_id.getText().isEmpty() && !EventType.getText().isEmpty() ) {
             //save the data
             Event event = new Event();
-            event.setEventType(new EventType(EventTypeCB.getValue()));
-//            event.setEventName(eventName_id);             trqbva da dobavim Name field v Event
+            event.setEventType(EventType.getText());
+            event.setEventName(eventName_id.getText());
             event.setHost(SessionService.getHost());
             System.out.println(SessionService.getHost());
             event.setListDist(assignedDistributors);
-//            event.setRating(-1);   ?
-//            event.setStatus();???????????????
+//            List<Reservation> reservations =  ;
+//            event.setSeats(reservations);
+            event.setStatus(statusCB.getValue());
 
-            //Ako ne sushtestvuva takuv tip event, da go dobavi kum spisuka
-            if(eventTypesNames.contains(EventTypeCB.getValue()))
-            {
-//                EventTypeService service = new EventTypeService();
-//                 service.add(new EventType(EventTypeCB.getValue()));
-                eventTypesNames.add(EventTypeCB.getValue());
-            }
+            EventService service = new EventService();
+            service.persist(event);
+
         }
     }
     public void createNewSeatsType() {
