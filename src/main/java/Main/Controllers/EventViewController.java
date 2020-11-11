@@ -14,7 +14,7 @@ import services.EventService;
 import services.SessionService;
 
 import java.net.URL;
-import java.util.ArrayList;
+
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -42,11 +42,9 @@ public class EventViewController implements Initializable {
     public ComboBox<String> DistributorCB;
     public ComboBox<String> statusCB;
 
-
     ObservableList<entities.Seats> seats = FXCollections.observableArrayList();
     ObservableList<Distributor> assignedDistributors =  FXCollections.observableArrayList();
     List<Distributor> allDistributors;
-
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -65,7 +63,6 @@ public class EventViewController implements Initializable {
         {
             DistributorCB.getItems().add(x.getUser().getUsername());
         }
-
 
 //        Set up seats type table
         ColTypeSeats.setCellValueFactory(new PropertyValueFactory<>("seatsType"));
@@ -95,7 +92,6 @@ public class EventViewController implements Initializable {
 
             EventService service = new EventService();
             service.persist(event);
-
         }
     }
     public void createNewSeatsType() {

@@ -3,7 +3,6 @@ package services;
 import entities.User;
 import entities.UserRole;
 import org.hibernate.Session;
-import org.hibernate.Transaction;
 import util.HibernateUtil;
 
 import java.util.List;
@@ -25,20 +24,18 @@ public class DatabaseLoader {
     }
     public static void createUserRoles()
     {
-
         Session session = HibernateUtil.getSessionFactory().openSession();
 
+        UserRoleService userRoleService = new UserRoleService();
+        UserService userService = new UserService();
 
-        UserRoleService service = new UserRoleService();
-        Transaction tx = session.beginTransaction();
-
-        List<UserRole> a = service.findAll();
+        List<UserRole> a = userRoleService.findAll();
         if(a.isEmpty()){
-            session.saveOrUpdate(DatabaseLoader.role_admin);
-            session.saveOrUpdate(DatabaseLoader.role_host);
-            session.saveOrUpdate(DatabaseLoader.role_distributor);
+            userRoleService.persist(DatabaseLoader.role_admin);
+            userRoleService.persist(DatabaseLoader.role_host);
+            userRoleService.persist(DatabaseLoader.role_distributor);
             User user = new User("admin", "admin", role_admin);
-            session.save(user);
+            userService.persist(user);
 
         }
         else {
@@ -46,6 +43,5 @@ public class DatabaseLoader {
             role_host = session.load(UserRole.class,2);
             role_distributor = session.load(UserRole.class,3);
         }
-        tx.commit();
     }
 }

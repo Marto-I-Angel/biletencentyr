@@ -77,6 +77,7 @@ public class DistributorDao implements DaoInterface<Distributor> {
         return (Distributor) getCurrentSession().createNativeQuery("SELECT * FROM distributor JOIN user on user.userId = distributor.userId WHERE username = '" + username + "';", Distributor.class).getSingleResult();
 
     }
+
     @SuppressWarnings("unchecked")
     public List<Distributor> findAll() {
         return (List<Distributor>) getCurrentSession().createQuery("from Distributor").list();

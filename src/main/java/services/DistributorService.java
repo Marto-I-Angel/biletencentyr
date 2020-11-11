@@ -3,6 +3,7 @@ package services;
 import dao.DistributorDao;
 import entities.Distributor;
 
+
 import java.util.List;
 
 public class DistributorService {
@@ -30,7 +31,6 @@ public class DistributorService {
         distributorDao.closeCurrentSession();
         return distributor;
     }
-
     public Distributor getByUsername(String username)
     {
         distributorDao.openCurrentSession();

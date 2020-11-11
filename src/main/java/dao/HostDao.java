@@ -1,5 +1,4 @@
 package dao;
-
 import dao.interfaces.DaoInterface;
 import entities.Host;
 import entities.User;
