@@ -24,6 +24,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class AdminController implements Initializable {
@@ -71,8 +72,19 @@ public class AdminController implements Initializable {
     public void delete_db() throws RuntimeException {
         User person = table.getSelectionModel().getSelectedItem();
         UserService userService = new UserService();
-        userService.delete(person.getUserId());
-        refresh();
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Current project is modified");
+        alert.setContentText("Delete user "+person + "?");
+        ButtonType okButton = new ButtonType("Yes", ButtonBar.ButtonData.YES);
+        ButtonType noButton = new ButtonType("No", ButtonBar.ButtonData.NO);
+        ButtonType cancelButton = new ButtonType("Cancel", ButtonBar.ButtonData.CANCEL_CLOSE);
+        alert.getButtonTypes().setAll(okButton, noButton, cancelButton);
+        Optional<ButtonType> result = alert.showAndWait();
+        if(result.get() == okButton) {
+            userService.delete(person.getUserId());
+            refresh();
+        }
+
     }
 
     private void refresh()

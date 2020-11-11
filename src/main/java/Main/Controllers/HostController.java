@@ -33,6 +33,20 @@ public class HostController {
         popupwindow.setScene(scene1);
         popupwindow.showAndWait();
     }
+    public void editSelectedEvent() throws IOException {
+        Stage popupwindow=new Stage();
+        popupwindow.initModality(Modality.APPLICATION_MODAL);
+        popupwindow.setTitle("Add");
+        FXMLLoader loader = new FXMLLoader(Objects.requireNonNull(getClass().getClassLoader().getResource("scenes/eventView.fxml")));
+        EventViewController adder = loader.getController();
+        /*
+            Load the event from the DB and add the values to the opening window.
+        */
+        Parent root = loader.load();
+        Scene scene1= new Scene(root);
+        popupwindow.setScene(scene1);
+        popupwindow.showAndWait();
+    }
 
     public void refresh_event_table() {
     }

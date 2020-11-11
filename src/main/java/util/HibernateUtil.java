@@ -56,9 +56,6 @@ public class HibernateUtil {
 
                 configuration.addAnnotatedClass(Host.class);
 
-                configuration.addAnnotatedClass(Status.class);
-
-                configuration.addAnnotatedClass(EventType.class);
                 configuration.addAnnotatedClass(Event.class);
 
 

@@ -12,17 +12,19 @@ public class Event {
     @Column(name = "eventId", unique = true, updatable = false, nullable = false)
     private int eventId;
 
-    @ManyToOne
-    @JoinColumn(name="eventTypeId", nullable=false)
-    private EventType eventType;
+    @Column(name="eventTypeId", nullable=false)
+    private String eventType;
 
     @ManyToOne
     @JoinColumn(name="hostId", nullable=false)
     private Host host;
 
-    @ManyToOne
-    @JoinColumn(name="statusId", nullable=false)
-    private Status status;
+
+    @Column(name="statusId", nullable=false)
+    private String status;
+
+    @Column(name = "name")
+    private String name;
 
     @Column(name = "rating")
     private int rating;
@@ -42,13 +44,15 @@ public class Event {
 
     }
 
-    public EventType getEventType() {
+    public String getEventType() {
         return eventType;
     }
 
-    public void setEventType(EventType eventType) {
+    public void setEventType(String eventType) {
         this.eventType = eventType;
     }
+
+    public void setEventName(String input) {this.name = input;}
 
     public Host getHost() {
         return host;
@@ -58,11 +62,11 @@ public class Event {
         this.host = host;
     }
 
-    public Status getStatus() {
+    public String getStatus() {
         return status;
     }
 
-    public void setStatus(Status status) {
+    public void setStatus(String status) {
         this.status = status;
     }
 
