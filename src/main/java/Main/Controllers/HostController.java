@@ -47,6 +47,7 @@ public class HostController {
         popupwindow.setScene(scene1);
         popupwindow.showAndWait();
     }
+
     public void refresh_event_table() {
     }
 

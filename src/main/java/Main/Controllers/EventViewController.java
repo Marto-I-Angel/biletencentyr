@@ -14,6 +14,7 @@ import services.EventService;
 import services.SessionService;
 
 import java.net.URL;
+
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -23,6 +24,7 @@ public class EventViewController implements Initializable {
     public DatePicker EndDate_Id;
     public CheckBox isLimitedPerPerson;
     public TextField EventType;
+
     //Seat Table
     public TableView<SeatTypeRow> SeatTypesTable;
     public TableColumn<SeatTypeRow,String> ColTypeSeats;
@@ -66,6 +68,7 @@ public class EventViewController implements Initializable {
         }
 
 
+
 //        Set up seats type table
         ColTypeSeats.setCellValueFactory(new PropertyValueFactory<>("seatType"));
         ColNumSeats.setCellValueFactory(new PropertyValueFactory<>("numberOfSeats"));
@@ -76,10 +79,12 @@ public class EventViewController implements Initializable {
         //ColDistributorName.setCellValueFactory(new PropertyValueFactory<>(""));
         ColDistributorFee.setCellValueFactory(new PropertyValueFactory<>("fee"));
 
+
     }
 
     public void SaveEvent() {
         //if everything is filled
+
         if(!eventName_id.getText().isEmpty() && !EventType.getText().isEmpty() ) {
             //save the data
             Event event = new Event();
@@ -96,6 +101,7 @@ public class EventViewController implements Initializable {
             service.persist(event);
 
         }
+
     }
     public void createNewSeatsType() {
         SeatTypeRow row1 = new SeatTypeRow(type_txt.getText(),count_txt.getText(),price_txt.getText());
@@ -106,6 +112,7 @@ public class EventViewController implements Initializable {
     private void refreshTable() {
         SeatTypesTable.setItems(seats);
         DistributorTable.setItems(assignedDistributors);
+
     }
     public void removeSelected() {
         seats.remove(SeatTypesTable.getSelectionModel().getSelectedIndex());
@@ -125,5 +132,6 @@ public class EventViewController implements Initializable {
 
     public void RemoveDistributor() {
         assignedDistributors.remove(DistributorTable.getSelectionModel().getSelectedIndex());
+
     }
 }
