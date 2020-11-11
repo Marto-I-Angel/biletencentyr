@@ -19,7 +19,6 @@ public class Event {
     @JoinColumn(name="hostId", nullable=false)
     private Host host;
 
-
     @Column(name="statusId", nullable=false)
     private String status;
 
