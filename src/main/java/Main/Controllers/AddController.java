@@ -7,10 +7,9 @@ import entities.UserRole;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.paint.Color;
-import org.hibernate.Session;
-import org.hibernate.Transaction;
+import services.DistributorService;
+import services.HostService;
 import services.UserService;
-import util.HibernateUtil;
 
 import java.util.List;
 
@@ -42,29 +41,27 @@ public class AddController {
     }
 
     public void create(String username, String password, String role_name) {
-
         if (findUser(username)) {
             error_lab.setTextFill(Color.RED);
             error_lab.setText("User already exists");
         } else {
+            UserService userService = new UserService();
             UserRole role = DatabaseLoader.getRole(role_name);
             User user = new User(username, password, role);
-            Session session = HibernateUtil.getSessionFactory().openSession();
-            Transaction tx = session.beginTransaction();
-            session.save(user);
+            userService.persist(user);
             if (role_name.equals("host")) {
+                HostService hostService = new HostService();
                 Host host = new Host(user);
-                session.save(host);
+                hostService.persist(host);
             }
             if (role_name.equals("distributor")) {
+                DistributorService distributorService = new DistributorService();
                 Distributor distributor = new Distributor(user);
-                session.save(distributor);
+                distributorService.persist(distributor);
             }
-            tx.commit();
             error_lab.setTextFill(Color.GREEN);
             error_lab.setText("Success!");
         }
-
     }
 
     private boolean findUser(String username) {
