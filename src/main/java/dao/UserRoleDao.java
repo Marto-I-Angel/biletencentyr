@@ -1,5 +1,6 @@
 package dao;
 
+import dao.interfaces.DaoInterface;
 import entities.UserRole;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
@@ -7,7 +8,7 @@ import util.HibernateUtil;
 
 import java.util.List;
 
-public class UserRoleDao {
+public class UserRoleDao implements DaoInterface<UserRole> {
     private Session currentSession;
 
     private Transaction currentTransaction;
@@ -61,8 +62,7 @@ public class UserRoleDao {
     }
 
     public UserRole findById(int id) {
-        UserRole UserRole = (UserRole) getCurrentSession().get(UserRole.class, id);
-        return UserRole;
+        return getCurrentSession().get(UserRole.class, id);
     }
 
     public void delete(UserRole entity) {
@@ -71,8 +71,7 @@ public class UserRoleDao {
 
     @SuppressWarnings("unchecked")
     public List<UserRole> findAll() {
-        List<UserRole> UserRoles = (List<UserRole>) getCurrentSession().createQuery("from UserRole").list();
-        return UserRoles;
+        return (List<UserRole>) getCurrentSession().createQuery("from UserRole").list();
     }
 
     public void deleteAll() {
