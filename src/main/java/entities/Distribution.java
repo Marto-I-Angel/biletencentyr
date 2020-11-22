@@ -8,12 +8,12 @@ public class Distribution {
     @EmbeddedId
     private DistributionID id = new DistributionID();
 
-    @ManyToOne(fetch= FetchType.EAGER,cascade = CascadeType.ALL)
+    @ManyToOne(fetch= FetchType.EAGER,cascade = {CascadeType.DETACH,CascadeType.PERSIST})
     @MapsId("eventId")
     @JoinColumn(name = "eventId")
     private Event event;
 
-    @ManyToOne(fetch= FetchType.EAGER ,cascade = CascadeType.ALL)
+    @ManyToOne(fetch= FetchType.EAGER ,cascade = {CascadeType.DETACH,CascadeType.PERSIST})
     @MapsId("distributorId")
     @JoinColumn(name = "distributorId")
     private Distributor distributor;

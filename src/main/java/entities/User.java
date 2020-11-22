@@ -44,11 +44,10 @@ public class User {
 
     @Override
     public String toString() {
-        return username;
-//        return "User ID: " + userId + ".\n" +
-//                "Username: " + username + ".\n" +
-//                "Password: " + password + ".\n" +
-//                "User role: " + userRole + ".\n\n";
+        return "User ID: " + userId + ".\n" +
+                "Username: " + username + ".\n" +
+                "Password: " + password + ".\n" +
+                "User role: " + userRole + ".\n\n";
     }
 
     @Override

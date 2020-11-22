@@ -57,8 +57,6 @@ public class EventDao implements DaoInterface<Event> {
         getCurrentSession().save(entity);
     }
 
-
-
     public void update(Event entity) {
         getCurrentSession().update(entity);
     }
