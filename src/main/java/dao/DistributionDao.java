@@ -74,10 +74,16 @@ public class DistributionDao implements DaoInterface<Distribution> {
         return (List<Distribution>) getCurrentSession().createQuery("from Distribution").list();
     }
 
+    @Override
     public void deleteAll() {
+
+    }
+
+    public void deleteAll(int eventId) {
         List<Distribution> entityList = findAll();
         for (Distribution entity : entityList) {
-            delete(entity);
+            if(entity.getEvent().getEventId() == eventId)
+                delete(entity);
         }
     }
 }

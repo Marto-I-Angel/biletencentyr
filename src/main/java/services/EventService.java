@@ -5,6 +5,8 @@ import dao.EventDao;
 import entities.Distribution;
 import entities.Distributor;
 import entities.Event;
+import entities.Seats;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 import java.util.ArrayList;
@@ -55,6 +57,7 @@ public class EventService {
         List<Distribution> listDist = new ArrayList<>();
         DistributorService distributorService = new DistributorService();
         DistributionService distributionService = new DistributionService();
+        distributionService.deleteAll(event.getEventId());
         for(DistributorRow x : input)
         {
             Distributor distributor =  distributorService.loadDistributor(x.getDistributorId());
@@ -72,5 +75,31 @@ public class EventService {
 
     public EventDao eventDao() {
         return eventDao;
+    }
+
+    public Event loadEvent(int eventId) {
+        eventDao.openCurrentSession();
+        Event event = eventDao.openCurrentSession().get(Event.class,eventId);
+        eventDao.closeCurrentSession();
+        return event;
+    }
+    public ObservableList<Seats> loadSeats(int eventId) {
+        ObservableList<Seats> seats = FXCollections.observableArrayList();
+        eventDao.openCurrentSession();
+        seats.addAll(eventDao.openCurrentSession().get(Event.class, eventId).getSeats());
+        eventDao.closeCurrentSession();
+        return seats;
+    }
+    public ObservableList<DistributorRow> loadDistributorRow(int eventId) {
+
+        ObservableList<DistributorRow> tempDistributors = FXCollections.observableArrayList();
+        eventDao.openCurrentSession();
+        List<Distribution> list = eventDao.openCurrentSession().get(Event.class,eventId).getListDist();
+        for(Distribution x : list) {
+            Distributor dist = x.getDistributor();
+            tempDistributors.add(new DistributorRow(dist.getDistributorId(),dist.getUser().getUsername(),x.getFee(),dist.getRating()));
+        }
+        eventDao.closeCurrentSession();
+        return tempDistributors;
     }
 }

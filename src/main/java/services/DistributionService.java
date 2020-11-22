@@ -45,9 +45,9 @@ public class DistributionService {
             return distributions;
         }
 
-        public void deleteAll() {
+        public void deleteAll(int eventId) {
             distributionDao.openCurrentSessionwithTransaction();
-            distributionDao.deleteAll();
+            distributionDao.deleteAll(eventId);
             distributionDao.closeCurrentSessionwithTransaction();
         }
 
