@@ -1,8 +1,8 @@
 package Main.Controllers;
 
+import Main.Controllers.TableRowClasses.DistributorRow;
 import entities.Distributor;
 import entities.Event;
-import entities.Reservation;
 import entities.Seats;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -11,10 +11,12 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import services.DistributorService;
 import services.EventService;
+import services.SeatsService;
 import services.SessionService;
 
 import java.net.URL;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -34,20 +36,29 @@ public class EventViewController implements Initializable {
     public TextField price_txt;
 
     //Distributor Table
-    public TableView<Distributor> DistributorTable;
-    public TableColumn<Distributor,Integer> ColDistributorId;
-    public TableColumn<Distributor,String> ColDistributorName;
-    public TableColumn<Distributor,Float> ColDistributorFee;
+    public TableView<DistributorRow> DistributorTable;
+
+    public TableColumn<DistributorRow,Integer> ColDistributorId;
+    public TableColumn<DistributorRow,String> ColDistributorName;
+    public TableColumn<DistributorRow,Float> ColDistributorFee;
+    public TableColumn<DistributorRow,Integer> ColDistributorRating;
+    public TextField fee;
 
     public ComboBox<String> DistributorCB;
     public ComboBox<String> statusCB;
 
+
+
     ObservableList<entities.Seats> seats = FXCollections.observableArrayList();
-    ObservableList<Distributor> assignedDistributors =  FXCollections.observableArrayList();
+    ObservableList<DistributorRow> tempDistributors =  FXCollections.observableArrayList();
     List<Distributor> allDistributors;
+
+    private Event event;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+
+        event = new Event();
 
 //        Set up the status comboBox
         statusCB.getItems().add("Active");
@@ -70,9 +81,9 @@ public class EventViewController implements Initializable {
         ColPrice.setCellValueFactory(new PropertyValueFactory<>("price"));
 //        Set up distributor table
         ColDistributorId.setCellValueFactory(new PropertyValueFactory<>("distributorId"));
-        // Get the name from the user??
-        //ColDistributorName.setCellValueFactory(new PropertyValueFactory<>(""));
+        ColDistributorName.setCellValueFactory(new PropertyValueFactory<>("username"));
         ColDistributorFee.setCellValueFactory(new PropertyValueFactory<>("fee"));
+        ColDistributorRating.setCellValueFactory(new PropertyValueFactory<>("rating"));
 
     }
 
@@ -80,17 +91,27 @@ public class EventViewController implements Initializable {
         //if everything is filled
         if(!eventName_id.getText().isEmpty() && !EventType.getText().isEmpty() ) {
             //save the data
-            Event event = new Event();
+
             event.setEventType(EventType.getText());
             event.setEventName(eventName_id.getText());
             event.setHost(SessionService.getHost());
             System.out.println(SessionService.getHost());
-            event.setListDist(assignedDistributors);
-            List<Reservation> reservations = new ArrayList<>();
+
+            ObservableList<Distributor> assignedDistributors =  FXCollections.observableArrayList();
+            List<Seats> reservations = new ArrayList<>(seats);
+
+            SeatsService seatsService = new SeatsService();
+            for(Seats x: reservations)
+            seatsService.persist(x);
+
             event.setSeats(reservations);
             event.setStatus(statusCB.getValue());
 
+            event.setBeginDate(StartDate_Id.getEditor().getText());
+            event.setEndDate(EndDate_Id.getEditor().getText());
+
             EventService service = new EventService();
+            service.setDistribution(tempDistributors,event);
             service.persist(event);
         }
     }
@@ -102,7 +123,7 @@ public class EventViewController implements Initializable {
 
     private void refreshTable() {
         SeatTypesTable.setItems(seats);
-        DistributorTable.setItems(assignedDistributors);
+        DistributorTable.setItems(tempDistributors);
     }
     public void removeSelected() {
         seats.remove(SeatTypesTable.getSelectionModel().getSelectedIndex());
@@ -113,14 +134,16 @@ public class EventViewController implements Initializable {
         for(Distributor x : allDistributors)
         {
             if(x.getUser().getUsername().equals(DistributorCB.getValue())) {
-                assignedDistributors.add(x);
-                System.out.println(x);
+                DistributorRow data = new DistributorRow(x.getDistributorId(),x.getUser().getUsername(),Float.parseFloat(fee.getText()),x.getRating());
+                tempDistributors.add(data);
+                System.out.println(data);
             }
         }
         refreshTable();
     }
 
     public void RemoveDistributor() {
-        assignedDistributors.remove(DistributorTable.getSelectionModel().getSelectedIndex());
+        tempDistributors.remove(DistributorTable.getSelectionModel().getSelectedIndex());
+
     }
 }

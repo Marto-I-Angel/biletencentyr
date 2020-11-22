@@ -6,52 +6,52 @@ import entities.Seats;
 import java.util.List;
 
 public class SeatsService {
-    private static SeatsDao userDao;
+    private static SeatsDao seatsDao;
 
     public SeatsService() {
-        userDao = new SeatsDao();
+        seatsDao = new SeatsDao();
     }
 
     public void persist(Seats entity) {
-        userDao.openCurrentSessionwithTransaction();
-        userDao.persist(entity);
-        userDao.closeCurrentSessionwithTransaction();
+        seatsDao.openCurrentSessionwithTransaction();
+        seatsDao.persist(entity);
+        seatsDao.closeCurrentSessionwithTransaction();
     }
 
     public void update(Seats entity) {
-        userDao.openCurrentSessionwithTransaction();
-        userDao.update(entity);
-        userDao.closeCurrentSessionwithTransaction();
+        seatsDao.openCurrentSessionwithTransaction();
+        seatsDao.update(entity);
+        seatsDao.closeCurrentSessionwithTransaction();
     }
 
     public Seats findById(int id) {
-        userDao.openCurrentSession();
-        Seats user = userDao.findById(id);
-        userDao.closeCurrentSession();
-        return user;
+        seatsDao.openCurrentSession();
+        Seats seats = seatsDao.findById(id);
+        seatsDao.closeCurrentSession();
+        return seats;
     }
 
     public void delete(int id) {
-        userDao.openCurrentSessionwithTransaction();
-        Seats user = userDao.findById(id);
-        userDao.delete(user);
-        userDao.closeCurrentSessionwithTransaction();
+        seatsDao.openCurrentSessionwithTransaction();
+        Seats seats = seatsDao.findById(id);
+        seatsDao.delete(seats);
+        seatsDao.closeCurrentSessionwithTransaction();
     }
 
     public List<Seats> findAll() {
-        userDao.openCurrentSession();
-        List<Seats> users = userDao.findAll();
-        userDao.closeCurrentSession();
-        return users;
+        seatsDao.openCurrentSession();
+        List<Seats> seatss = seatsDao.findAll();
+        seatsDao.closeCurrentSession();
+        return seatss;
     }
 
     public void deleteAll() {
-        userDao.openCurrentSessionwithTransaction();
-        userDao.deleteAll();
-        userDao.closeCurrentSessionwithTransaction();
+        seatsDao.openCurrentSessionwithTransaction();
+        seatsDao.deleteAll();
+        seatsDao.closeCurrentSessionwithTransaction();
     }
 
-    public SeatsDao userDao() {
-        return userDao;
+    public SeatsDao seatsDao() {
+        return seatsDao;
     }
 }

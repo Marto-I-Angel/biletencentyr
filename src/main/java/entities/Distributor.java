@@ -1,6 +1,8 @@
 package entities;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "distributor")
@@ -14,8 +16,15 @@ public class Distributor {
     @JoinColumn(name = "userId", nullable = true, unique = true)
     private User user;
 
-    @Column(name = "fee")
-    private float fee;
+//    @ManyToOne(targetEntity = Distribution.class, cascade = CascadeType.ALL)
+//    @JoinColumn(name = "distributionId")
+//    private Distribution distribution;
+
+    @OneToMany(mappedBy = "event", cascade = CascadeType.ALL)
+    private List<Distribution> events = new ArrayList<>();
+
+    @Column(name = "rating")
+    private int rating;
 
     public Distributor(){
 
@@ -23,18 +32,17 @@ public class Distributor {
 
     public Distributor(User user) {
         this.user = user;
-        this.fee = 0;
+        this.rating = 0;
     }
 
-    public Distributor(User user, float fee) {
+    public Distributor(User user, int rating) {
         this.user = user;
-        this.fee = fee;
+        this.rating = rating;
     }
 
     public int getDistributorId() {
         return distributorId;
     }
-
     public User getUser() {
         return user;
     }
@@ -43,11 +51,23 @@ public class Distributor {
         this.user = user;
     }
 
-    public float getFee() {
-        return fee;
+    public int getRating() {
+        return rating;
     }
 
-    public void setFee(float fee) {
-        this.fee = fee;
+    public void setRating(int rating) {
+        this.rating = rating;
+    }
+
+    public void setDistributorId(int distributorId) {
+        this.distributorId = distributorId;
+    }
+
+    public void setEvents(List<Distribution> events) {
+        this.events = events;
+    }
+
+    public List<Distribution> getEvents() {
+        return events;
     }
 }

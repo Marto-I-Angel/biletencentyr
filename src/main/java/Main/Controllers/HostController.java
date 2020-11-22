@@ -23,7 +23,7 @@ public class HostController {
     public TableColumn<Event,String> col_event_date;
     public Label lb_username;
 
-    public void add_new_event() throws IOException {
+    public void add_new_event() throws IOException,RuntimeException {
         Stage popupwindow=new Stage();
         popupwindow.initModality(Modality.APPLICATION_MODAL);
         popupwindow.setTitle("Add");
@@ -33,7 +33,7 @@ public class HostController {
         popupwindow.setScene(scene1);
         popupwindow.showAndWait();
     }
-    public void editSelectedEvent() throws IOException {
+    public void editSelectedEvent() throws IOException,RuntimeException {
         Stage popupwindow=new Stage();
         popupwindow.initModality(Modality.APPLICATION_MODAL);
         popupwindow.setTitle("Add");

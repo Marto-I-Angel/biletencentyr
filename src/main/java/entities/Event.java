@@ -2,7 +2,6 @@ package entities;
 
 import javax.persistence.*;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -21,10 +20,10 @@ public class Event {
     private Host host;
 
     @Column(name = "beginDate")
-    private Date beginDate;
+    private String beginDate;
 
     @Column(name = "endDate")
-    private Date endDate;
+    private String endDate;
 
     @Column(name="statusId", nullable=false)
     private String status;
@@ -32,24 +31,20 @@ public class Event {
     @Column(name = "name")
     private String name;
 
-    @Column(name = "rating")
-    private int rating;
+    @OneToMany(mappedBy = "event",cascade = CascadeType.ALL)
+    private List<Distribution> listDist = new ArrayList<>();
 
-    @ManyToMany(targetEntity = Distributor.class, fetch = FetchType.EAGER)
+    @ManyToMany(targetEntity = Seats.class, fetch = FetchType.EAGER)
     @JoinTable(
-            name = "distribution",
+            name = "reservation",
             joinColumns = @JoinColumn(name = "eventId"),
-            inverseJoinColumns = @JoinColumn(name = "distributorId")
+            inverseJoinColumns = @JoinColumn(name = "seatsId")
     )
-    private List<Distributor> listDist = new ArrayList<>();
-
-    @OneToMany(mappedBy = "event")
-    private List<Reservation> seats = new ArrayList<>();
+    private List<Seats> seats = new ArrayList<>();
 
     public Event() {
 
     }
-
     public String getEventType() {
         return eventType;
     }
@@ -76,43 +71,52 @@ public class Event {
         this.status = status;
     }
 
-    public int getRating() {
-        return rating;
-    }
-
-    public void setRating(int rating) {
-        this.rating = rating;
-    }
-
-    public Date getBeginDate() {
+    public String getBeginDate() {
         return beginDate;
     }
 
-    public void setBeginDate(Date beginDate) {
+    public void setBeginDate(String beginDate) {
         this.beginDate = beginDate;
     }
 
-    public Date getEndDate() {
+    public String getEndDate() {
         return endDate;
     }
 
-    public void setEndDate(Date endDate) {
+    public void setEndDate(String endDate) {
         this.endDate = endDate;
     }
-
-    public List<Distributor> getListDist() {
+    public List<Distribution> getListDist() {
         return listDist;
     }
 
-    public void setListDist(List<Distributor> listDist) {
+
+
+    public void setListDist(List<Distribution> listDist) {
         this.listDist = listDist;
     }
 
-    public List<Reservation> getSeats() {
+    public List<Seats> getSeats() {
         return seats;
     }
 
-    public void setSeats(List<Reservation> seats) {
+    public void setSeats(List<Seats> seats) {
         this.seats = seats;
+    }
+
+    public void setEventId(int eventId) {
+        this.eventId = eventId;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public int getEventId() {
+        return eventId;
+    }
+
+    public String getName() {
+        return name;
     }
 }
