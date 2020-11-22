@@ -12,6 +12,13 @@ public class DistributorService {
         distributorDao = new DistributorDao();
     }
 
+    public Distributor loadDistributor(int distributorId) {
+        distributorDao.openCurrentSession();
+        Distributor distributor = distributorDao.openCurrentSession().load(Distributor.class,distributorId);
+        distributorDao.closeCurrentSession();
+        return distributor;
+    }
+
     public void persist(Distributor entity) {
         distributorDao.openCurrentSessionwithTransaction();
         distributorDao.persist(entity);
@@ -34,7 +41,22 @@ public class DistributorService {
     public Distributor getByUsername(String username)
     {
         distributorDao.openCurrentSession();
-        return distributorDao.getByUsername(username);
+        Distributor distributor = distributorDao.getByUsername(username);
+        distributorDao.closeCurrentSession();
+        return distributor;
+    }
+
+    public void setFee(int distributorId,int eventId, float fee)
+    {
+
+    }
+
+    public float getFee(int distributorId,int eventId)
+    {
+        distributorDao.openCurrentSession();
+        float fee = distributorDao.getFee(distributorId,eventId);
+        distributorDao.closeCurrentSession();
+        return fee;
     }
 
     public void delete(int id) {

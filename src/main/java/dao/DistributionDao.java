@@ -1,19 +1,19 @@
 package dao;
 
 import dao.interfaces.DaoInterface;
-import entities.Event;
+import entities.Distribution;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import util.HibernateUtil;
 
 import java.util.List;
 
-public class EventDao implements DaoInterface<Event> {
+public class DistributionDao implements DaoInterface<Distribution> {
     private Session currentSession;
 
     private Transaction currentTransaction;
 
-    public EventDao(){
+    public DistributionDao(){
 
     }
 
@@ -53,32 +53,30 @@ public class EventDao implements DaoInterface<Event> {
         this.currentTransaction = currentTransaction;
     }
 
-    public void persist(Event entity) {
+    public void persist(Distribution entity) {
         getCurrentSession().save(entity);
     }
 
-
-
-    public void update(Event entity) {
+    public void update(Distribution entity) {
         getCurrentSession().update(entity);
     }
 
-    public Event findById(int id) {
-        return getCurrentSession().get(Event.class, id);
+    public Distribution findById(int id) {
+        return getCurrentSession().get(Distribution.class, id);
     }
 
-    public void delete(Event entity) {
+    public void delete(Distribution entity) {
         getCurrentSession().delete(entity);
     }
 
     @SuppressWarnings("unchecked")
-    public List<Event> findAll() {
-        return (List<Event>) getCurrentSession().createQuery("from Event").list();
+    public List<Distribution> findAll() {
+        return (List<Distribution>) getCurrentSession().createQuery("from Distribution").list();
     }
 
     public void deleteAll() {
-        List<Event> entityList = findAll();
-        for (Event entity : entityList) {
+        List<Distribution> entityList = findAll();
+        for (Distribution entity : entityList) {
             delete(entity);
         }
     }

@@ -31,7 +31,7 @@ public class HibernateUtil {
 
                 settings.put(Environment.USER, "root");
 
-                settings.put(Environment.PASS, "1234");
+                settings.put(Environment.PASS, "");
 
                 settings.put(Environment.DIALECT, "org.hibernate.dialect.MySQL57InnoDBDialect");
 
@@ -44,12 +44,11 @@ public class HibernateUtil {
                 configuration.setProperties(settings);
 
                 configuration.addAnnotatedClass(Distributor.class);
+                configuration.addAnnotatedClass(Distribution.class);
 
                 configuration.addAnnotatedClass(User.class);
 
                 configuration.addAnnotatedClass(UserRole.class);
-
-                configuration.addAnnotatedClass(Reservation.class);
 
                 configuration.addAnnotatedClass(Seats.class);
 

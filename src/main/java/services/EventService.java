@@ -1,8 +1,13 @@
 package services;
 
+import Main.Controllers.TableRowClasses.DistributorRow;
 import dao.EventDao;
+import entities.Distribution;
+import entities.Distributor;
 import entities.Event;
+import javafx.collections.ObservableList;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class EventService {
@@ -45,6 +50,20 @@ public class EventService {
         return events;
     }
 
+    public void setDistribution(ObservableList<DistributorRow> input, Event event)
+    {
+        List<Distribution> listDist = new ArrayList<>();
+        DistributorService distributorService = new DistributorService();
+        DistributionService distributionService = new DistributionService();
+        for(DistributorRow x : input)
+        {
+            Distributor distributor =  distributorService.loadDistributor(x.getDistributorId());
+            Distribution distribution = new Distribution(event,distributor,x.getFee());
+            distributionService.persist(distribution);
+            listDist.add(distribution);
+        }
+        event.setListDist(listDist);
+    }
     public void deleteAll() {
         eventDao.openCurrentSessionwithTransaction();
         eventDao.deleteAll();

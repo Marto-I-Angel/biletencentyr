@@ -21,6 +21,9 @@ public class Seats {
     @Column(name = "price")
     float price;
 
+    @ManyToMany(mappedBy = "seats", fetch = FetchType.EAGER,cascade = CascadeType.ALL)
+    private List<Event> events = new ArrayList<>();
+
     public Seats() {
 
     }
