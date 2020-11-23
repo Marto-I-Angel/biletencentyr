@@ -24,6 +24,12 @@ public class DistributionService {
             distributionDao.closeCurrentSessionwithTransaction();
         }
 
+        public void saveOrUpdate(Distribution entity) {
+            distributionDao.openCurrentSessionwithTransaction();
+            distributionDao.saveOrUpdate(entity);
+            distributionDao.closeCurrentSessionwithTransaction();
+        }
+
         public Distribution findById(int id) {
             distributionDao.openCurrentSession();
             Distribution distribution = distributionDao.findById(id);

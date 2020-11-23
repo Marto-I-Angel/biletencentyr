@@ -1,8 +1,7 @@
 package Main.Controllers;
 
-import Main.Controllers.TableRowClasses.DistributorRow;
-import dao.EventDao;
-import entities.Distribution;
+import javafx.event.ActionEvent;
+import models.DistributorView;
 import entities.Distributor;
 import entities.Event;
 import entities.Seats;
@@ -11,9 +10,7 @@ import javafx.collections.ObservableList;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import org.hibernate.Session;
 import services.*;
-import util.HibernateUtil;
 
 import java.net.URL;
 
@@ -25,7 +22,6 @@ public class EventViewController implements Initializable {
     public TextField eventName_id;
     public DatePicker StartDate_Id;
     public DatePicker EndDate_Id;
-    public CheckBox isLimitedPerPerson;
     public TextField EventType;
     //Seat Table
     public TableView<Seats> SeatTypesTable;
@@ -38,24 +34,25 @@ public class EventViewController implements Initializable {
 
     public TextField fee;
     //Distributor Table
-    public TableView<DistributorRow> DistributorTable;
+    public TableView<DistributorView> DistributorTable;
 
-    public TableColumn<DistributorRow,Integer> ColDistributorId;
-    public TableColumn<DistributorRow,String> ColDistributorName;
-    public TableColumn<DistributorRow,Float> ColDistributorFee;
-    public TableColumn<DistributorRow,Integer> ColDistributorRating;
+    public TableColumn<DistributorView,Integer> ColDistributorId;
+    public TableColumn<DistributorView,String> ColDistributorName;
+    public TableColumn<DistributorView,Float> ColDistributorFee;
+    public TableColumn<DistributorView,Integer> ColDistributorRating;
 
 
     public ComboBox<String> DistributorCB;
     public ComboBox<String> statusCB;
-
+    public TextField ticketLimitTxt;
+    public CheckBox isLimitedPerPerson;
 
 
     ObservableList<entities.Seats> seats = FXCollections.observableArrayList();
-    ObservableList<DistributorRow> tempDistributors =  FXCollections.observableArrayList();
+    ObservableList<DistributorView> tempDistributors =  FXCollections.observableArrayList();
     List<Distributor> allDistributors;
 
-    public Event event= new Event();
+    private Event event= new Event();
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -80,35 +77,32 @@ public class EventViewController implements Initializable {
     }
     public void SaveEvent() {
         //if everything is filled
-        EventService service = new EventService();
+        EventService eventService = new EventService();
+        SeatsService seatsService = new SeatsService();
         if(!eventName_id.getText().isEmpty() && !EventType.getText().isEmpty() ) {
             //save the data
 
                 event.setEventType(EventType.getText());
                 event.setEventName(eventName_id.getText());
                 event.setHost(SessionService.getHost());
-                System.out.println(SessionService.getHost());
-
-                ObservableList<Distributor> assignedDistributors = FXCollections.observableArrayList();
                 List<Seats> reservations = new ArrayList<>(seats);
-
-                SeatsService seatsService = new SeatsService();
-                for (Seats x : reservations)
-                    seatsService.persist(x);
-
-                event.setSeats(reservations);
                 event.setStatus(statusCB.getValue());
-
                 event.setBeginDate(StartDate_Id.getEditor().getText());
                 event.setEndDate(EndDate_Id.getEditor().getText());
 
-            service.setDistribution(tempDistributors, event);
+                if(isLimitedPerPerson.isSelected())
+                event.setTicketLimit(Integer.parseInt(ticketLimitTxt.getText()));
+                else event.setTicketLimit(-1);
 
-            if(service.findById(event.getEventId())==null) {
-                service.persist(event);
+            eventService.setDistribution(tempDistributors, event);
+            if(eventService.findById(event.getEventId())==null) {
+                eventService.persist(event);
             }
-            else{
-                service.update(event);
+            for (Seats x : reservations) {
+                x.setEvent(eventService.findById(this.event.getEventId()));
+                if (seatsService.findById(x.getSeatsId()) == null) {
+                    seatsService.persist(x);
+                }
             }
         }
     }
@@ -129,9 +123,9 @@ public class EventViewController implements Initializable {
 
     public void AddDistributor() {
         for(Distributor x : allDistributors)
-        {
+        {   //findbyUsername shouldbe used here
             if(x.getUser().getUsername().equals(DistributorCB.getValue())) {
-                DistributorRow data = new DistributorRow(x.getDistributorId(),x.getUser().getUsername(),Float.parseFloat(fee.getText()),x.getRating());
+                DistributorView data = new DistributorView(x.getDistributorId(),x.getUser().getUsername(),Float.parseFloat(fee.getText()),x.getRating());
                 tempDistributors.add(data);
                 System.out.println(data);
             }
@@ -154,7 +148,19 @@ public class EventViewController implements Initializable {
         EventService eventService = new EventService();
         this.seats = eventService.loadSeats(this.event.getEventId());
         this.tempDistributors = eventService.loadDistributorRow(this.event.getEventId());
-        //isLimitedPerPerson.setSelected(this.event.get);
+        if(this.event.getTicketLimit() > 0) {
+            isLimitedPerPerson.setSelected(true);
+            ticketLimitTxt.setText(this.event.getTicketLimit()+"");
+        }else isLimitedPerPerson.setSelected(false);
         refreshTable();
+        refreshToggle();
+    }
+
+    public void toggleLimit(ActionEvent actionEvent) {
+        refreshToggle();
+    }
+
+    private void refreshToggle() {
+        ticketLimitTxt.setDisable(!isLimitedPerPerson.isSelected());
     }
 }

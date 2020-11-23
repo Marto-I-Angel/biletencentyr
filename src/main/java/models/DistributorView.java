@@ -1,12 +1,12 @@
-package Main.Controllers.TableRowClasses;
+package models;
 
-public class DistributorRow {
+public class DistributorView {
     private String username;
     private float fee;
     private int distributorId;
     private int rating;
 
-    public DistributorRow(int distributorId, String username, float fee, int rating) {
+    public DistributorView(int distributorId, String username, float fee, int rating) {
         this.distributorId = distributorId;
         this.username = username;
         this.fee = fee;

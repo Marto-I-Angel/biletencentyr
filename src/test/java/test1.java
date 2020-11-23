@@ -21,7 +21,7 @@ public class test1 {
     @Test
     public void testRole(){
         System.out.println("test1 started");
-        UserRole userRole = createRole("testRole");
+        UserRole userRole = createRole();
         session.save(userRole);
 
         User user = createUser("testuser");
@@ -53,9 +53,9 @@ public class test1 {
         transaction.commit();
     }
 
-    private UserRole createRole(String role){
+    private UserRole createRole(){
         UserRole userRole = new UserRole();
-        userRole.setRole(role);
+        userRole.setRole("testRole");
         return userRole;
     }
 

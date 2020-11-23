@@ -1,6 +1,6 @@
 package services;
 
-import Main.Controllers.TableRowClasses.DistributorRow;
+import models.DistributorView;
 import dao.EventDao;
 import entities.Distribution;
 import entities.Distributor;
@@ -52,18 +52,19 @@ public class EventService {
         return events;
     }
 
-    public void setDistribution(ObservableList<DistributorRow> input, Event event)
+    public void setDistribution(ObservableList<DistributorView> input, Event event)
     {
         List<Distribution> listDist = new ArrayList<>();
         DistributorService distributorService = new DistributorService();
         DistributionService distributionService = new DistributionService();
-        distributionService.deleteAll(event.getEventId());
-        for(DistributorRow x : input)
+        for(DistributorView x : input)
         {
             Distributor distributor =  distributorService.loadDistributor(x.getDistributorId());
             Distribution distribution = new Distribution(event,distributor,x.getFee());
-            distributionService.persist(distribution);
-            listDist.add(distribution);
+            if(!listDist.contains(distribution)) {
+                distributionService.persist(distribution);
+                listDist.add(distribution);
+            }
         }
         event.setListDist(listDist);
     }
@@ -90,14 +91,14 @@ public class EventService {
         eventDao.closeCurrentSession();
         return seats;
     }
-    public ObservableList<DistributorRow> loadDistributorRow(int eventId) {
+    public ObservableList<DistributorView> loadDistributorRow(int eventId) {
 
-        ObservableList<DistributorRow> tempDistributors = FXCollections.observableArrayList();
+        ObservableList<DistributorView> tempDistributors = FXCollections.observableArrayList();
         eventDao.openCurrentSession();
         List<Distribution> list = eventDao.openCurrentSession().get(Event.class,eventId).getListDist();
         for(Distribution x : list) {
             Distributor dist = x.getDistributor();
-            tempDistributors.add(new DistributorRow(dist.getDistributorId(),dist.getUser().getUsername(),x.getFee(),dist.getRating()));
+            tempDistributors.add(new DistributorView(dist.getDistributorId(),dist.getUser().getUsername(),x.getFee(),dist.getRating()));
         }
         eventDao.closeCurrentSession();
         return tempDistributors;

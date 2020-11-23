@@ -57,6 +57,10 @@ public class DistributionDao implements DaoInterface<Distribution> {
         getCurrentSession().save(entity);
     }
 
+    public void saveOrUpdate(Distribution entity) {
+        getCurrentSession().saveOrUpdate(entity);
+    }
+
     public void update(Distribution entity) {
         getCurrentSession().update(entity);
     }

@@ -1,6 +1,7 @@
 package entities;
 
 import javax.persistence.*;
+import java.util.Objects;
 
 @Entity
 @Table(name = "distribution")
@@ -36,7 +37,6 @@ public class Distribution {
         return fee+"";
     }
 
-
     public Event getEvent() {
         return event;
     }
@@ -67,5 +67,18 @@ public class Distribution {
 
     public void setFee(float price) {
         this.fee = price;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Distribution)) return false;
+        Distribution that = (Distribution) o;
+        return getDistributor().equals(that.getDistributor());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getDistributor());
     }
 }
