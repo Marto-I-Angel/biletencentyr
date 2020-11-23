@@ -31,15 +31,13 @@ public class Event {
     @Column(name = "name")
     private String name;
 
+    @Column(name = "ticketLimit")
+    private int ticketLimit;
+
     @OneToMany(mappedBy = "event",cascade = CascadeType.ALL)
     private List<Distribution> listDist = new ArrayList<>();
 
-    @ManyToMany(targetEntity = Seats.class, fetch = FetchType.EAGER)
-    @JoinTable(
-            name = "reservation",
-            joinColumns = @JoinColumn(name = "eventId"),
-            inverseJoinColumns = @JoinColumn(name = "seatsId")
-    )
+    @OneToMany(mappedBy = "event", fetch = FetchType.EAGER,cascade = CascadeType.ALL )
     private List<Seats> seats = new ArrayList<>();
 
     public Event() {
@@ -90,7 +88,13 @@ public class Event {
         return listDist;
     }
 
+    public int getTicketLimit() {
+        return ticketLimit;
+    }
 
+    public void setTicketLimit(int ticketLimit) {
+        this.ticketLimit = ticketLimit;
+    }
 
     public void setListDist(List<Distribution> listDist) {
         this.listDist = listDist;

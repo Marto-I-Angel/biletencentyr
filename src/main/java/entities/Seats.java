@@ -21,8 +21,9 @@ public class Seats {
     @Column(name = "price")
     float price;
 
-    @ManyToMany(mappedBy = "seats", fetch = FetchType.EAGER,cascade = CascadeType.ALL)
-    private List<Event> events = new ArrayList<>();
+    @ManyToOne(targetEntity = Event.class,fetch = FetchType.LAZY)
+    @JoinColumn(name = "eventId",referencedColumnName = "eventId")
+    private Event event;
 
     public Seats() {
 
@@ -64,5 +65,13 @@ public class Seats {
 
     public void setSeatsType(String seatsType) {
         this.seatsType = seatsType;
+    }
+
+    public Event getEvent() {
+        return event;
+    }
+
+    public void setEvent(Event event) {
+        this.event = event;
     }
 }

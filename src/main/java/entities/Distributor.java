@@ -16,10 +16,6 @@ public class Distributor {
     @JoinColumn(name = "userId", nullable = true, unique = true)
     private User user;
 
-//    @ManyToOne(targetEntity = Distribution.class, cascade = CascadeType.ALL)
-//    @JoinColumn(name = "distributionId")
-//    private Distribution distribution;
-
     @OneToMany(mappedBy = "event", cascade = CascadeType.ALL)
     private List<Distribution> events = new ArrayList<>();
 
