@@ -36,6 +36,10 @@ public class Distributor {
         this.rating = rating;
     }
 
+    public boolean distributionEquals(Event event) {
+        return distributorId == event.getEventId();
+    }
+
     public int getDistributorId() {
         return distributorId;
     }

@@ -2,10 +2,13 @@ package dao;
 
 import dao.interfaces.DaoInterface;
 import entities.Distribution;
+import entities.Distributor;
+import entities.Event;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import util.HibernateUtil;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class DistributionDao implements DaoInterface<Distribution> {
@@ -65,8 +68,23 @@ public class DistributionDao implements DaoInterface<Distribution> {
         getCurrentSession().update(entity);
     }
 
+    //method has to be reworked , id of distribution is embedded id
     public Distribution findById(int id) {
         return getCurrentSession().get(Distribution.class, id);
+    }
+
+    public List<Event> findByDistributorId(int id) {
+        List<Event> events = new ArrayList<>();
+
+        // i < 10 should be   i < number of distributions
+        for(int i = 1; i < 10; i++){
+            if(getCurrentSession().get(Event.class,i) != null) {
+                if(getCurrentSession().get(Distributor.class, id).distributionEquals(getCurrentSession().get(Event.class,i))){
+                    events.add(getCurrentSession().get(Event.class,i));
+                }
+            }
+        }
+        return events;
     }
 
     public void delete(Distribution entity) {

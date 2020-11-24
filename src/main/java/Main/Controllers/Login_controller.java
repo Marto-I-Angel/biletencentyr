@@ -1,18 +1,22 @@
 package Main.Controllers;
 
 import entities.User;
-
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.PasswordField;
+import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import services.DistributorService;
 import services.HostService;
 import services.SessionService;
 import services.UserService;
+
 import java.io.IOException;
 import java.net.URL;
 import java.util.List;
@@ -41,6 +45,7 @@ public class Login_controller implements Initializable  {
             } else {
                 label.setText("Loading...");
                 HostService hostService = new HostService();
+                DistributorService distributorService = new DistributorService();
                 UserService userService = new UserService();
                 List<User> list = userService.findAll();
 
@@ -63,6 +68,7 @@ public class Login_controller implements Initializable  {
                         if(iter.checkRole("distributor"))
                         {
                             itsdistributor = true;
+                            SessionService.setDistributor(distributorService.getByUsername(iter.getUsername()));
                             break;
                         }
                     }
@@ -102,6 +108,19 @@ public class Login_controller implements Initializable  {
 
                     Scene scene = new Scene (root);
                     stage.setTitle("Host-control");
+                    stage.setResizable(false);
+                    stage.setScene(scene);
+                    stage.show();
+                }
+                if(itsdistributor)
+                {
+                    Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
+                    FXMLLoader loader = new FXMLLoader(Objects.requireNonNull(getClass().getClassLoader().getResource("scenes/distributor.fxml")));
+                    Parent root = loader.load();
+                    DistributorController distributor = loader.getController();
+
+                    Scene scene = new Scene (root);
+                    stage.setTitle("Distributor Scene");
                     stage.setResizable(false);
                     stage.setScene(scene);
                     stage.show();

@@ -10,7 +10,7 @@ public final class SessionService {
     public static void setHost(Host input) {
         host = input;
     }
-    public void setDistributor(Distributor input) {
+    public static void setDistributor(Distributor input) {
         distributor = input;
     }
     public static Host getHost()

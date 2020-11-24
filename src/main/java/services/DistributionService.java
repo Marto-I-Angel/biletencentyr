@@ -2,6 +2,7 @@ package services;
 
 import dao.DistributionDao;
 import entities.Distribution;
+import entities.Event;
 
 import java.util.List;
 
@@ -35,6 +36,13 @@ public class DistributionService {
             Distribution distribution = distributionDao.findById(id);
             distributionDao.closeCurrentSession();
             return distribution;
+        }
+
+        public List<Event> findByDistributorId(int id) {
+            distributionDao.openCurrentSession();
+            List<Event> events = distributionDao.findByDistributorId(id);
+            distributionDao.closeCurrentSession();
+            return events;
         }
 
         public void delete(int id) {
