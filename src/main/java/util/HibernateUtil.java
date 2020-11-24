@@ -31,7 +31,7 @@ public class HibernateUtil {
 
                 settings.put(Environment.USER, "root");
 
-                settings.put(Environment.PASS, "");
+                settings.put(Environment.PASS, "1234");
 
                 settings.put(Environment.DIALECT, "org.hibernate.dialect.MySQL57InnoDBDialect");
 
@@ -55,6 +55,8 @@ public class HibernateUtil {
                 configuration.addAnnotatedClass(Host.class);
 
                 configuration.addAnnotatedClass(Event.class);
+
+                configuration.addAnnotatedClass(Distribution.class);
 
 
                 ServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder()

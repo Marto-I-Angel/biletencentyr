@@ -6,6 +6,7 @@
 <?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
 <?import javafx.scene.control.TableColumn?>
@@ -68,6 +69,7 @@
         <CheckBox fx:id="isLimitedPerPerson" layoutX="21.0" layoutY="386.0" mnemonicParsing="false" onAction="#toggleLimit" text="Ticket per person limit" />
       <TextField fx:id="ticketLimitTxt" disable="true" layoutX="21.0" layoutY="407.0" prefHeight="25.0" prefWidth="139.0" promptText="Max Tickets per person" />
         <Button layoutX="214.0" layoutY="431.0" mnemonicParsing="false" onAction="#SaveEvent" text="Save" />
+      <Label fx:id="saveErrorLabel" alignment="CENTER" layoutX="250.0" layoutY="435.0" prefWidth="232.0" textFill="#FF0000" textAlignment="CENTER" wrapText="true"/>
     </Pane>
     <Text layoutX="242.0" layoutY="43.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Add/Edit Event" textAlignment="CENTER" />
 </AnchorPane>

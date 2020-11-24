@@ -41,11 +41,11 @@ public class EventViewController implements Initializable {
     public TableColumn<DistributorView,Float> ColDistributorFee;
     public TableColumn<DistributorView,Integer> ColDistributorRating;
 
-
     public ComboBox<String> DistributorCB;
     public ComboBox<String> statusCB;
     public TextField ticketLimitTxt;
     public CheckBox isLimitedPerPerson;
+    public Label saveErrorLabel;
 
 
     ObservableList<entities.Seats> seats = FXCollections.observableArrayList();
@@ -105,6 +105,9 @@ public class EventViewController implements Initializable {
                 }
             }
         }
+        else {
+            saveErrorLabel.setText("All fields must be filled before saving!");
+        }
     }
     public void createNewSeatsType() {
         entities.Seats row1 = new entities.Seats(type_txt.getText(),count_txt.getText(),price_txt.getText());
@@ -123,7 +126,7 @@ public class EventViewController implements Initializable {
 
     public void AddDistributor() {
         for(Distributor x : allDistributors)
-        {   //findbyUsername shouldbe used here
+        {
             if(x.getUser().getUsername().equals(DistributorCB.getValue())) {
                 DistributorView data = new DistributorView(x.getDistributorId(),x.getUser().getUsername(),Float.parseFloat(fee.getText()),x.getRating());
                 tempDistributors.add(data);

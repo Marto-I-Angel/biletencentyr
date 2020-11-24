@@ -1,8 +1,6 @@
 package entities;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @Table(name = "seats")
@@ -16,13 +14,13 @@ public class Seats {
     private String seatsType;
 
     @Column(name = "numberOfSeats")
-    int numberOfSeats;
+    private int numberOfSeats;
 
     @Column(name = "price")
-    float price;
+    private float price;
 
     @ManyToOne(targetEntity = Event.class,fetch = FetchType.LAZY)
-    @JoinColumn(name = "eventId",referencedColumnName = "eventId")
+    @JoinColumn(name = "eventId", referencedColumnName = "eventId")
     private Event event;
 
     public Seats() {
