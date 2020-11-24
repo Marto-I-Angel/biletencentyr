@@ -1,6 +1,7 @@
 package dao;
 
 import dao.interfaces.DaoInterface;
+import dao.interfaces.DistributionDaoInterface;
 import entities.Distribution;
 import entities.Distributor;
 import entities.Event;
@@ -11,7 +12,7 @@ import util.HibernateUtil;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DistributionDao implements DaoInterface<Distribution> {
+public class DistributionDao implements DaoInterface<Distribution> , DistributionDaoInterface<Event> {
     private Session currentSession;
 
     private Transaction currentTransaction;
