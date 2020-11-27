@@ -1,5 +1,7 @@
 package models;
 
+import java.util.Objects;
+
 public class DistributorView {
     private String username;
     private float fee;
@@ -11,6 +13,9 @@ public class DistributorView {
         this.username = username;
         this.fee = fee;
         this.rating = rating;
+    }
+    public DistributorView(String username) {
+        this.username = username;
     }
 
     public int getRating() {
@@ -53,5 +58,13 @@ public class DistributorView {
                 ", distributorId=" + distributorId +
                 ", rating=" + rating +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        DistributorView that = (DistributorView) o;
+        return Objects.equals(username, that.username);
     }
 }

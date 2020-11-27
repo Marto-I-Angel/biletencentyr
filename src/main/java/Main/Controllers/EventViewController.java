@@ -57,8 +57,6 @@ public class EventViewController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-
-//        Add distributors to the combo box
         DistributorService distributorService = new DistributorService();
         allDistributors = distributorService.findAll();
         for (Distributor x : allDistributors)
@@ -66,15 +64,16 @@ public class EventViewController implements Initializable {
             DistributorCB.getItems().add(x.getUser().getUsername());
         }
 
-//        Set up seats type table
+        //        Set up seats type table
         ColTypeSeats.setCellValueFactory(new PropertyValueFactory<>("seatsType"));
         ColNumSeats.setCellValueFactory(new PropertyValueFactory<>("numberOfSeats"));
         ColPrice.setCellValueFactory(new PropertyValueFactory<>("price"));
-//        Set up distributor table
+        //        Set up distributor table
         ColDistributorId.setCellValueFactory(new PropertyValueFactory<>("distributorId"));
         ColDistributorName.setCellValueFactory(new PropertyValueFactory<>("username"));
         ColDistributorFee.setCellValueFactory(new PropertyValueFactory<>("fee"));
         ColDistributorRating.setCellValueFactory(new PropertyValueFactory<>("rating"));
+
     }
     public void SaveEvent() {
         //if everything is filled
@@ -114,7 +113,7 @@ public class EventViewController implements Initializable {
         }
     }
     public void createNewSeatsType() {
-        entities.Seats row1 = new entities.Seats(type_txt.getText(),count_txt.getText(),price_txt.getText());
+        Seats row1 = new Seats(type_txt.getText(),count_txt.getText(),price_txt.getText());
         seats.add(row1);
         refreshTable();
     }
@@ -134,15 +133,15 @@ public class EventViewController implements Initializable {
             if(x.getUser().getUsername().equals(DistributorCB.getValue())) {
                 DistributorView data = new DistributorView(x.getDistributorId(),x.getUser().getUsername(),Float.parseFloat(fee.getText()),x.getRating());
                 tempDistributors.add(data);
-                System.out.println(data);
+                DistributorCB.getItems().remove(data.getUsername());
             }
         }
         refreshTable();
     }
 
     public void RemoveDistributor() {
+        DistributorCB.getItems().add(DistributorTable.getSelectionModel().getSelectedItem().getUsername());
         tempDistributors.remove(DistributorTable.getSelectionModel().getSelectedIndex());
-
     }
 
     public void setEvent(Event event) {
@@ -159,6 +158,18 @@ public class EventViewController implements Initializable {
             isLimitedPerPerson.setSelected(true);
             ticketLimitTxt.setText(this.event.getTicketLimit()+"");
         }else isLimitedPerPerson.setSelected(false);
+
+        //        Add distributors to the combo box
+        DistributorService distributorService = new DistributorService();
+        allDistributors = distributorService.findAll();
+
+        for(DistributorView view : this.tempDistributors){
+            for(int i = 0; i < DistributorCB.getItems().size(); i++){
+                if(DistributorCB.getItems().get(i).equals(view.getUsername())){
+                    DistributorCB.getItems().remove(view.getUsername());
+                }
+            }
+        }
         refreshTable();
         refreshToggle();
     }
