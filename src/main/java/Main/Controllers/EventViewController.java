@@ -1,6 +1,7 @@
 package Main.Controllers;
 
 import javafx.event.ActionEvent;
+import javafx.stage.Stage;
 import models.DistributorView;
 import entities.Distributor;
 import entities.Event;
@@ -104,6 +105,9 @@ public class EventViewController implements Initializable {
                     seatsService.persist(x);
                 }
             }
+                //close the window
+            Stage stage = (Stage) eventName_id.getScene().getWindow();
+            stage.close();
         }
         else {
             saveErrorLabel.setText("All fields must be filled before saving!");

@@ -13,6 +13,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.MouseEvent;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import services.EventService;
@@ -58,6 +59,8 @@ public class HostController implements Initializable {
             Scene scene1 = new Scene(root);
             popupwindow.setScene(scene1);
             popupwindow.showAndWait();
+
+            refresh_event_table();
         }
     }
 
@@ -88,6 +91,12 @@ public class HostController implements Initializable {
         col_event_date_end.setCellValueFactory(new PropertyValueFactory<>("endDate"));
         col_event_status.setCellValueFactory(new PropertyValueFactory<>("status"));
 
+        refresh_event_table();
+    }
+
+    public void delete_selected_event(MouseEvent mouseEvent) {
+        EventService eventService=new EventService();
+        eventService.delete(event_table.getSelectionModel().getSelectedItem().getEventId());
         refresh_event_table();
     }
 }

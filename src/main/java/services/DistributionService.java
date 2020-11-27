@@ -31,18 +31,19 @@ public class DistributionService {
             distributionDao.closeCurrentSessionwithTransaction();
         }
 
+        public Distribution findDistribution(int distributorId,int eventId)
+        {
+            distributionDao.openCurrentSession();
+            Distribution distribution = distributionDao.findDistribution(distributorId,eventId);
+            distributionDao.closeCurrentSession();
+            return distribution;
+        }
+
         public Distribution findById(int id) {
             distributionDao.openCurrentSession();
             Distribution distribution = distributionDao.findById(id);
             distributionDao.closeCurrentSession();
             return distribution;
-        }
-
-        public List<Event> findByDistributorId(int id) {
-            distributionDao.openCurrentSession();
-            List<Event> events = distributionDao.findByDistributorId(id);
-            distributionDao.closeCurrentSession();
-            return events;
         }
 
         public void delete(int id) {

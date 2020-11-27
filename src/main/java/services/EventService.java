@@ -8,6 +8,7 @@ import entities.Event;
 import entities.Seats;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import models.EventView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -102,5 +103,32 @@ public class EventService {
         }
         eventDao.closeCurrentSession();
         return tempDistributors;
+    }
+
+    public ObservableList<EventView> toEventView(List<Event> all,int distributorId) {
+        ObservableList<EventView> list = FXCollections.observableArrayList();
+        DistributionService distributionService = new DistributionService();
+        SeatsService seatsService = new SeatsService();
+        for(Event x : all)
+        {
+            Distribution distribution = distributionService.findDistribution(distributorId,x.getEventId());
+            list.add(new EventView(x.getName(),x.getEventType(),x.getBeginDate(),
+                    x.getEndDate(),x.getStatus(),distribution.getFee(),seatsService.getTotalTickets(x.getEventId()),seatsService.getSoldTickets(x.getEventId())));
+        }
+        return list;
+    }
+
+    public List<Event> findByDistributorId(int id) {
+        List<Event> events = new ArrayList<>();
+        DistributionService distributionService = new DistributionService();
+        List<Distribution> distributions=  distributionService.findAll();
+        for(Distribution x : distributions)
+        {
+            if(x.getDistributor().getDistributorId() == id)
+            {
+                events.add(x.getEvent());
+            }
+        }
+        return events;
     }
 }

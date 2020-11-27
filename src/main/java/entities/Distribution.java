@@ -19,6 +19,8 @@ public class Distribution {
     @JoinColumn(name = "distributorId")
     private Distributor distributor;
 
+
+
     @Column(name = "fee")
     private float fee;
 
@@ -30,6 +32,7 @@ public class Distribution {
         this.event = event;
         this.distributor = distributor;
         this.fee = price;
+        id = new DistributionID(event.getEventId(),distributor.getDistributorId());
     }
 
     @Override

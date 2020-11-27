@@ -54,4 +54,23 @@ public class SeatsService {
     public SeatsDao seatsDao() {
         return seatsDao;
     }
+
+    public int getTotalTickets(int eventId) {
+        seatsDao.openCurrentSessionwithTransaction();
+        int n = seatsDao.getTotalTickets(eventId);
+        seatsDao.closeCurrentSessionwithTransaction();
+        return n;
+    }
+
+    public int getSoldTickets(int eventId) {
+        seatsDao.openCurrentSessionwithTransaction();
+        int n = seatsDao.getSoldTickets(eventId);
+        seatsDao.closeCurrentSessionwithTransaction();
+        return n;
+    }
+    public void reserveSeats(Seats seats, int numberOfReservations) throws Exception {
+        seatsDao.openCurrentSessionwithTransaction();
+        seatsDao.reserveSeats(seats,numberOfReservations);
+        seatsDao.closeCurrentSessionwithTransaction();
+    }
 }
