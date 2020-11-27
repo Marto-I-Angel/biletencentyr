@@ -82,26 +82,32 @@ public class SeatsDao implements DaoInterface<Seats> {
     }
 
     public int getTotalTickets(int eventId) {
-        List<Seats> entityList = findAll();
+        List<Seats> entityList = findSeatsByEventId(eventId);
         int n = 0;
         for (Seats seats : entityList) {
-            if(seats.getEvent().getEventId() == eventId) n+=seats.getNumberOfSeats();
+            n += seats.getNumberOfSeats();
         }
         return n;
     }
 
     public int getSoldTickets(int eventId) {
-        List<Seats> entityList = findAll();
+        List<Seats> entityList = findSeatsByEventId(eventId);
         int n = 0;
         for (Seats seats : entityList) {
-            if(seats.getEvent().getEventId() == eventId) n+=seats.getNumberOfReservedSeats();
+            n += seats.getNumberOfReservedSeats();
         }
         return n;
+    }
 
+    public List<Seats> findSeatsByEventId(int eventId) {
+        List<Seats> entityList = (List<Seats>) getCurrentSession().createNativeQuery("SELECT SEATS.* FROM SEATS " +
+                "JOIN EVENT ON SEATS.EVENTID = EVENT.EVENTID " +
+                "WHERE SEATS.EVENTID = " + eventId + ";",Seats.class).list();
+        return entityList;
     }
 
     public void reserveSeats(Seats seats,int numberOfReservations) throws Exception {
-        if(seats.getNumberOfReservedSeats()+numberOfReservations>seats.getNumberOfSeats()) throw new Exception("You cant reserve this many seats!");
+        if(seats.getNumberOfReservedSeats()+numberOfReservations>seats.getNumberOfSeats()) throw new Exception("You can't reserve this many seats!");
         seats.setNumberOfReservedSeats(seats.getNumberOfReservedSeats()+numberOfReservations);
     }
 }

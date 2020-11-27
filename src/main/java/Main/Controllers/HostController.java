@@ -44,6 +44,8 @@ public class HostController implements Initializable {
         Scene scene1= new Scene(root);
         popupwindow.setScene(scene1);
         popupwindow.showAndWait();
+
+        refresh_event_table();
     }
     public void editSelectedEvent() throws IOException,RuntimeException {
         if(event_table.getSelectionModel().getSelectedIndex()>=0) {

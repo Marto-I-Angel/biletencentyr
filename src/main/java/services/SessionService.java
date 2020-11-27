@@ -26,6 +26,4 @@ public final class SessionService {
         host = null;
         distributor = null;
     }
-
-
 }

@@ -131,4 +131,12 @@ public class EventService {
         }
         return events;
     }
+
+    /*  or
+        public List<Event> findByDistributorId(int distributorId) {
+        return (List<Event>) getCurrentSession().createNativeQuery("SELECT EVENT.* FROM EVENT " +
+                "JOIN DISTRIBUTION ON EVENT.EVENTID = DISTRIBUTION.EVENTID " +
+                "WHERE DISTRIBUTION.DISTRIBUTORID = " + distributorId + ";",Event.class).list();
+    }
+     */
 }
