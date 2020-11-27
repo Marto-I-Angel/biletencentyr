@@ -9,10 +9,12 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
+import models.EventView;
 import services.DistributionService;
 import services.EventService;
 import services.SessionService;
@@ -25,35 +27,40 @@ import java.util.ResourceBundle;
 
 public class DistributorController implements Initializable {
 
-    public TableView<Event> event_table;
-    public TableColumn<Event,String> col_event_name;
-    public TableColumn<Event,String> col_Type_event;
-    public TableColumn<Event,String> col_event_date_begin;
-    public TableColumn<Event,String> col_event_date_end;
-    public TableColumn<Event,String> col_event_status;
+    public TableView<EventView> event_table;
+    public TableColumn<EventView,String> col_event_name;
+    public TableColumn<EventView,String> col_Type_event;
+    public TableColumn<EventView,String> col_event_date_begin;
+    public TableColumn<EventView,String> col_event_date_end;
+    public TableColumn<EventView,String> col_event_status;
+    public TableColumn<EventView,String> col_fee;
+    public TableColumn<EventView,String> col_tickets;
+    public Label lb_username;
+    public Label label_rating;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         col_event_name.setCellValueFactory(new PropertyValueFactory<>("name"));
-        col_Type_event.setCellValueFactory(new PropertyValueFactory<>("eventType"));
+        col_Type_event.setCellValueFactory(new PropertyValueFactory<>("type"));
         col_event_date_begin.setCellValueFactory(new PropertyValueFactory<>("beginDate"));
         col_event_date_end.setCellValueFactory(new PropertyValueFactory<>("endDate"));
         col_event_status.setCellValueFactory(new PropertyValueFactory<>("status"));
+        col_fee.setCellValueFactory(new PropertyValueFactory<>("fee"));
+        col_tickets.setCellValueFactory(new PropertyValueFactory<>("tickets"));
+
 
         refresh_event_table();
     }
 
     public void refresh_event_table() {
         EventService eventService = new EventService();
-        List<Event> all = eventService.findAll();
+        List<Event> all;
         //  fix logic here to get events that belong only to current distributor
-
-        DistributionService distributionService = new DistributionService();
-        all = distributionService.findByDistributorId(SessionService.getDistributor().getDistributorId());  //gets currently logged in distributor id
+        all = eventService.findByDistributorId(SessionService.getDistributor().getDistributorId());  //gets currently logged in distributor id
 
 
-        ObservableList<Event> events = FXCollections.observableArrayList();
-        events.setAll(all);
+
+        ObservableList<EventView> events = eventService.toEventView(all,SessionService.getDistributor().getDistributorId());
         event_table.setItems(events);
     }
 
@@ -66,5 +73,11 @@ public class DistributorController implements Initializable {
         stage.setResizable(false);
         stage.setScene(scene);
         stage.show();
+    }
+
+    public void check_sold_tickets(ActionEvent actionEvent) {
+    }
+
+    public void sell_ticket(ActionEvent actionEvent) {
     }
 }

@@ -16,6 +16,9 @@ public class Seats {
     @Column(name = "numberOfSeats")
     private int numberOfSeats;
 
+    @Column(name = "numberOfReservedSeats")
+    private int numberOfReservedSeats;
+
     @Column(name = "price")
     private float price;
 
@@ -30,6 +33,7 @@ public class Seats {
     public Seats(String text, String text1, String text2) {
         setSeatsType(text);
         setNumberOfSeats(Integer.parseInt(text1));
+        setNumberOfReservedSeats(0);
         setPrice(text2);
     }
 
@@ -71,5 +75,13 @@ public class Seats {
 
     public void setEvent(Event event) {
         this.event = event;
+    }
+
+    public int getNumberOfReservedSeats() {
+        return this.numberOfReservedSeats;
+    }
+
+    public void setNumberOfReservedSeats(int numberOfReservedSeats) {
+        this.numberOfReservedSeats = numberOfReservedSeats;
     }
 }

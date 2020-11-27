@@ -71,7 +71,7 @@ public class SeatsDao implements DaoInterface<Seats> {
 
     @SuppressWarnings("unchecked")
     public List<Seats> findAll() {
-        return (List<Seats>) getCurrentSession().createQuery("from User").list();
+        return (List<Seats>) getCurrentSession().createQuery("from Seats").list();
     }
 
     public void deleteAll() {
@@ -79,5 +79,29 @@ public class SeatsDao implements DaoInterface<Seats> {
         for (Seats entity : entityList) {
             delete(entity);
         }
+    }
+
+    public int getTotalTickets(int eventId) {
+        List<Seats> entityList = findAll();
+        int n = 0;
+        for (Seats seats : entityList) {
+            if(seats.getEvent().getEventId() == eventId) n+=seats.getNumberOfSeats();
+        }
+        return n;
+    }
+
+    public int getSoldTickets(int eventId) {
+        List<Seats> entityList = findAll();
+        int n = 0;
+        for (Seats seats : entityList) {
+            if(seats.getEvent().getEventId() == eventId) n+=seats.getNumberOfReservedSeats();
+        }
+        return n;
+
+    }
+
+    public void reserveSeats(Seats seats,int numberOfReservations) throws Exception {
+        if(seats.getNumberOfReservedSeats()+numberOfReservations>seats.getNumberOfSeats()) throw new Exception("You cant reserve this many seats!");
+        seats.setNumberOfReservedSeats(seats.getNumberOfReservedSeats()+numberOfReservations);
     }
 }

@@ -1,18 +1,15 @@
 package dao;
 
 import dao.interfaces.DaoInterface;
-import dao.interfaces.DistributionDaoInterface;
 import entities.Distribution;
-import entities.Distributor;
-import entities.Event;
+import entities.DistributionID;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import util.HibernateUtil;
 
-import java.util.ArrayList;
 import java.util.List;
 
-public class DistributionDao implements DaoInterface<Distribution> , DistributionDaoInterface<Event> {
+public class DistributionDao implements DaoInterface<Distribution> {
     private Session currentSession;
 
     private Transaction currentTransaction;
@@ -69,24 +66,17 @@ public class DistributionDao implements DaoInterface<Distribution> , Distributio
         getCurrentSession().update(entity);
     }
 
-    //method has to be reworked , id of distribution is embedded id
+    @Override
     public Distribution findById(int id) {
+        return null;
+    }
+
+    //method has to be reworked , id of distribution is embedded id
+    public Distribution findById(DistributionID id) {
         return getCurrentSession().get(Distribution.class, id);
     }
 
-    public List<Event> findByDistributorId(int id) {
-        List<Event> events = new ArrayList<>();
 
-        // i < 10 should be   i < number of distributions
-        for(int i = 1; i < 10; i++){
-            if(getCurrentSession().get(Event.class,i) != null) {
-                if(getCurrentSession().get(Distributor.class, id).distributionEquals(getCurrentSession().get(Event.class,i))){
-                    events.add(getCurrentSession().get(Event.class,i));
-                }
-            }
-        }
-        return events;
-    }
 
     public void delete(Distribution entity) {
         getCurrentSession().delete(entity);
@@ -108,5 +98,9 @@ public class DistributionDao implements DaoInterface<Distribution> , Distributio
             if(entity.getEvent().getEventId() == eventId)
                 delete(entity);
         }
+    }
+
+    public Distribution findDistribution(int distributorId, int eventId) {
+        return this.findById(new DistributionID(eventId,distributorId));
     }
 }

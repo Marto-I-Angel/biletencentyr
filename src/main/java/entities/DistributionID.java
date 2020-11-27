@@ -6,6 +6,8 @@ import java.io.Serializable;
 
 @Embeddable
 public class DistributionID implements Serializable {
+    private static final long serialVersionUID = 1L;
+
     @Column(name = "eventId")
     private int eventId;
 
@@ -15,6 +17,11 @@ public class DistributionID implements Serializable {
     public DistributionID() {
         eventId = -1;
         distributorId = -1;
+    }
+
+    public DistributionID(int eventId, int distributorId) {
+        this.eventId = eventId;
+        this.distributorId = distributorId;
     }
 
     public int getEventId() {
