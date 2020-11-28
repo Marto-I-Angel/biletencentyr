@@ -63,7 +63,7 @@ public class EventService {
             Distributor distributor =  distributorService.loadDistributor(x.getDistributorId());
             Distribution distribution = new Distribution(event,distributor,x.getFee());
             if(!listDist.contains(distribution)) {
-                distributionService.persist(distribution);
+                distributionService.saveOrUpdate(distribution);
                 listDist.add(distribution);
             }
         }

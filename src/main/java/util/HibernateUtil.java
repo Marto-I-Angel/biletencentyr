@@ -51,6 +51,7 @@ public class HibernateUtil {
                 configuration.addAnnotatedClass(UserRole.class);
 
                 configuration.addAnnotatedClass(Seats.class);
+                configuration.addAnnotatedClass(SoldTickets.class);
 
                 configuration.addAnnotatedClass(Host.class);
 

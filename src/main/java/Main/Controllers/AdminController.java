@@ -71,7 +71,7 @@ public class AdminController implements Initializable {
         User person = table.getSelectionModel().getSelectedItem();
         UserService userService = new UserService();
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setTitle("Current project is modified");
+        alert.setTitle("Deleting an account");
         alert.setContentText("Delete user "+person + "?");
         ButtonType okButton = new ButtonType("Yes", ButtonBar.ButtonData.YES);
         ButtonType noButton = new ButtonType("No", ButtonBar.ButtonData.NO);

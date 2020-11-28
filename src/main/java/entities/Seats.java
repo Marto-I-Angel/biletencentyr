@@ -1,6 +1,8 @@
 package entities;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "seats")
@@ -25,6 +27,9 @@ public class Seats {
     @ManyToOne(targetEntity = Event.class,fetch = FetchType.LAZY)
     @JoinColumn(name = "eventId", referencedColumnName = "eventId")
     private Event event;
+
+//    @OneToMany(mappedBy = "seats",cascade = CascadeType.ALL)
+//    private List<SoldTickets> soldTickets = new ArrayList<>();
 
     public Seats() {
 
@@ -84,4 +89,12 @@ public class Seats {
     public void setNumberOfReservedSeats(int numberOfReservedSeats) {
         this.numberOfReservedSeats = numberOfReservedSeats;
     }
+
+//    public List<SoldTickets> getSoldTickets() {
+//        return soldTickets;
+//    }
+//
+//    public void setSoldTickets(List<SoldTickets> soldTickets) {
+//        this.soldTickets = soldTickets;
+//    }
 }
