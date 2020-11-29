@@ -13,6 +13,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import models.EventView;
 import services.DistributionService;
@@ -78,6 +79,20 @@ public class DistributorController implements Initializable {
     public void check_sold_tickets(ActionEvent actionEvent) {
     }
 
-    public void sell_ticket(ActionEvent actionEvent) {
+    public void sell_ticket(ActionEvent actionEvent) throws IOException {
+        Stage popUpWindow=new Stage();
+        popUpWindow.initModality(Modality.APPLICATION_MODAL);
+        popUpWindow.setTitle("Create a ticket");
+        FXMLLoader loader = new FXMLLoader(Objects.requireNonNull(getClass().getClassLoader().getResource("scenes/ticketEditor.fxml")));
+        Parent root = loader.load();
+        TicketEditorController adder = loader.getController();
+        EventService eventService = new EventService();
+        adder.setEvent(eventService.findById(this.event_table.getSelectionModel().getSelectedItem().getEventId()));
+        Scene scene1= new Scene(root);
+        popUpWindow.setScene(scene1);
+        popUpWindow.showAndWait();
+
+        refresh_event_table();
+
     }
 }

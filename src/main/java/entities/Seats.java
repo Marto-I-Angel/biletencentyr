@@ -44,12 +44,15 @@ public class Seats {
 
     @Override
     public String toString() {
-        return "SeatsID: " + seatsId + "\n" +
-                "SeatsType: " + seatsType + "\n";
+        return "Type: " + seatsType + "\n" + "  Price: " +price + "  free: " + (numberOfSeats -numberOfReservedSeats) + "/" + numberOfSeats;
     }
     public String getPrice() {
         return String.format("%.2f", price) + "лв.";
     }
+    public float getPriceAsFloat() {
+        return price;
+    }
+
     public void setPrice(String input) {
         if(input.contains("л"))
             this.price = Float.parseFloat(input.substring(0,input.indexOf("л")));

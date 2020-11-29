@@ -6,8 +6,10 @@ import java.util.Objects;
 @Entity
 @Table(name = "soldtickets")
 public class SoldTickets {
-    @EmbeddedId
-    private SoldTicketsID id = new SoldTicketsID();
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "soldTicketsId", unique = true, updatable = false, nullable = false)
+    private int id;
 
     @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.DETACH, CascadeType.PERSIST})
     @MapsId("seatsId")
@@ -33,10 +35,9 @@ public class SoldTickets {
         this.distributor = distributor;
         this.dateBought = dateBought;
         this.numberOfTickets = numberOfTickets;
-        this.id = new SoldTicketsID(seats.getSeatsId(),distributor.getDistributorId());
     }
 
-    public SoldTicketsID getId() {
+    public int getId() {
         return id;
     }
 
@@ -56,7 +57,7 @@ public class SoldTickets {
         return numberOfTickets;
     }
 
-    public void setId(SoldTicketsID id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -103,7 +104,4 @@ public class SoldTickets {
         return Objects.hash(getId(), getSeats(), getDistributor(), getDateBought(), getNumberOfTickets());
     }
 }
-
-
-    //other data
 

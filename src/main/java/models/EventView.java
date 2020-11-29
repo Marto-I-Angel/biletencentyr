@@ -2,6 +2,8 @@ package models;
 
 public class EventView {
 
+    private int eventId;
+
     private String name;
     private String type;
     private String beginDate;
@@ -13,7 +15,8 @@ public class EventView {
 
     private String tickets;
 
-    public EventView(String name, String type, String beginDate, String endDate, String status, float fee, int totalTickets, int soldTickets) {
+    public EventView(int eventId,String name, String type, String beginDate, String endDate, String status, float fee, int totalTickets, int soldTickets) {
+        this.eventId = eventId;
         this.name = name;
         this.type = type;
         this.beginDate = beginDate;
@@ -90,5 +93,13 @@ public class EventView {
     private String calcTickets() {
         if(soldTickets == totalTickets ) return "FULL!";
         return this.soldTickets + "/" + this.totalTickets;
+    }
+
+    public int getEventId() {
+        return this.eventId;
+    }
+
+    public void setEventId(int eventId) {
+        this.eventId = eventId;
     }
 }
