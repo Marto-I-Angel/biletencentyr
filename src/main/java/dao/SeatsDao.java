@@ -2,7 +2,6 @@ package dao;
 
 import dao.interfaces.DaoInterface;
 import entities.Seats;
-import entities.User;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import util.HibernateUtil;
@@ -109,5 +108,6 @@ public class SeatsDao implements DaoInterface<Seats> {
     public void reserveSeats(Seats seats,int numberOfReservations) throws Exception {
         if(seats.getNumberOfReservedSeats()+numberOfReservations>seats.getNumberOfSeats()) throw new Exception("You can't reserve this many seats!");
         seats.setNumberOfReservedSeats(seats.getNumberOfReservedSeats()+numberOfReservations);
+        update(seats);
     }
 }

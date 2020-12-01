@@ -1,8 +1,5 @@
 package Main.Controllers;
 
-import javafx.event.ActionEvent;
-import javafx.stage.Stage;
-import models.DistributorView;
 import entities.Distributor;
 import entities.Event;
 import entities.Seats;
@@ -11,10 +8,14 @@ import javafx.collections.ObservableList;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import services.*;
+import javafx.stage.Stage;
+import models.DistributorView;
+import services.DistributorService;
+import services.EventService;
+import services.SeatsService;
+import services.SessionService;
 
 import java.net.URL;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -32,7 +33,6 @@ public class EventViewController implements Initializable {
     public TextField type_txt;
     public TextField count_txt;
     public TextField price_txt;
-
     public TextField fee;
     //Distributor Table
     public TableView<DistributorView> DistributorTable;
@@ -79,8 +79,9 @@ public class EventViewController implements Initializable {
         //if everything is filled
         EventService eventService = new EventService();
         SeatsService seatsService = new SeatsService();
-        if(!eventName_id.getText().isEmpty() && !EventType.getText().isEmpty() ) {
-            //save the data
+        try {
+            if(!eventName_id.getText().isEmpty() && !EventType.getText().isEmpty() && !seats.isEmpty()) {
+                //save the data
 
                 event.setEventType(EventType.getText());
                 event.setEventName(eventName_id.getText());
@@ -91,25 +92,37 @@ public class EventViewController implements Initializable {
                 event.setEndDate(EndDate_Id.getEditor().getText());
 
                 if(isLimitedPerPerson.isSelected())
-                event.setTicketLimit(Integer.parseInt(ticketLimitTxt.getText()));
+                    if(Integer.parseInt(ticketLimitTxt.getText())>0)
+                    event.setTicketLimit(Integer.parseInt(ticketLimitTxt.getText()));
+                    else throw new Exception("Wrong ticket limit!");
                 else event.setTicketLimit(-1);
 
-            eventService.setDistribution(tempDistributors, event);
-            if(eventService.findById(event.getEventId())==null) {
-                eventService.persist(event);
-            }
-            for (Seats x : reservations) {
-                x.setEvent(eventService.findById(this.event.getEventId()));
-                if (seatsService.findById(x.getSeatsId()) == null) {
-                    seatsService.persist(x);
+                eventService.setDistribution(tempDistributors, event);
+                if(eventService.findById(event.getEventId())==null) {
+                    eventService.persist(event);
                 }
-            }
+                for (Seats x : reservations) {
+                    x.setEvent(eventService.findById(this.event.getEventId()));
+                    if (seatsService.findById(x.getSeatsId()) == null) {
+                        seatsService.persist(x);
+                    }
+                }
+//                Notification
+//                TrayNotification tray = new TrayNotification();
+//                tray.setTitle("Created a new event!");
+//                tray.setMessage("The event " + event.getName() + " has been added to the Database!");
+//                tray.setNotificationType(NotificationType.SUCCESS);
+//                tray.setAnimationType(AnimationType.POPUP);
+//                tray.showAndWait();
+
+
                 //close the window
-            Stage stage = (Stage) eventName_id.getScene().getWindow();
-            stage.close();
-        }
-        else {
-            saveErrorLabel.setText("All fields must be filled before saving!");
+                Stage stage = (Stage) eventName_id.getScene().getWindow();
+                stage.close();
+            }
+            else { throw new Exception("All required fields must be filled before saving!"); }
+        } catch (Exception e) {
+            saveErrorLabel.setText(e.getMessage());
         }
     }
     public void createNewSeatsType() {
@@ -174,7 +187,7 @@ public class EventViewController implements Initializable {
         refreshToggle();
     }
 
-    public void toggleLimit(ActionEvent actionEvent) {
+    public void toggleLimit() {
         refreshToggle();
     }
 

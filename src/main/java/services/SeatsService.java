@@ -73,4 +73,11 @@ public class SeatsService {
         seatsDao.reserveSeats(seats,numberOfReservations);
         seatsDao.closeCurrentSessionwithTransaction();
     }
+
+    public List<Seats> getAllByEvent(int eventId) {
+        seatsDao.openCurrentSession();
+        List<Seats> seats = seatsDao.findSeatsByEventId(eventId);
+        seatsDao.closeCurrentSession();
+        return seats;
+    }
 }

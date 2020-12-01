@@ -63,7 +63,7 @@ public class EventService {
             Distributor distributor =  distributorService.loadDistributor(x.getDistributorId());
             Distribution distribution = new Distribution(event,distributor,x.getFee());
             if(!listDist.contains(distribution)) {
-                distributionService.persist(distribution);
+                distributionService.saveOrUpdate(distribution);
                 listDist.add(distribution);
             }
         }
@@ -112,7 +112,7 @@ public class EventService {
         for(Event x : all)
         {
             Distribution distribution = distributionService.findDistribution(distributorId,x.getEventId());
-            list.add(new EventView(x.getName(),x.getEventType(),x.getBeginDate(),
+            list.add(new EventView(x.getEventId(),x.getName(),x.getEventType(),x.getBeginDate(),
                     x.getEndDate(),x.getStatus(),distribution.getFee(),seatsService.getTotalTickets(x.getEventId()),seatsService.getSoldTickets(x.getEventId())));
         }
         return list;
