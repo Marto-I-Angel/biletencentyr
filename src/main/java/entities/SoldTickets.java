@@ -12,13 +12,11 @@ public class SoldTickets {
     private int id;
 
     @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.DETACH, CascadeType.PERSIST})
-    @MapsId("seatsId")
-    @JoinColumn(name = "seatsId")
+    @JoinColumn(name = "seatsId", referencedColumnName = "seatsId")
     private Seats seats;
 
     @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.DETACH, CascadeType.PERSIST})
-    @MapsId("distributorId")
-    @JoinColumn(name = "distributorId")
+    @JoinColumn(name = "distributorId", referencedColumnName = "distributorId")
     private Distributor distributor;
 
     @Column(name = "dateBought")
