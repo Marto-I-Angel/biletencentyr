@@ -1,9 +1,12 @@
 package services;
 
 import dao.SoldTicketsDao;
+import entities.Event;
+import entities.Seats;
 import entities.SoldTickets;
 import models.TicketView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class TicketService {
@@ -53,9 +56,19 @@ public class TicketService {
         }
 
         public List<TicketView> getTicketViews(int distributorId) {
-            ticketDao.openCurrentSession();
-            List<TicketView> ticketView = ticketDao.getTicketViews(distributorId);
-            ticketDao.closeCurrentSession();
+            EventService eventService = new EventService();
+
+            List<SoldTickets> all = findAll();
+            List<TicketView> ticketView = new ArrayList<>();
+            for(SoldTickets x : all){
+                if(x.getDistributor().getDistributorId() == distributorId)
+                {
+                    Seats seats = x.getSeats();
+                    Event event = eventService.findById(seats.getEvent().getEventId());
+
+                    ticketView.add(new TicketView(event.getName(),seats.getSeatsType(),x.getNumberOfTickets(),x.getDateBought(),seats.getPriceAsFloat(),x.getTypePayment(),x.getFirstName(),x.getMiddleName(),x.getLastName()));
+                }
+            }
             return ticketView;
         }
 

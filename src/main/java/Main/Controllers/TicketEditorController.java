@@ -81,11 +81,10 @@ public class TicketEditorController implements Initializable {
         TicketService ticketService = new TicketService();
         SeatsService seatsService = new SeatsService();
         seatsService.reserveSeats(seatsService.findById(seats.getSeatsId()),Integer.parseInt(txt_number_of_tickets.getText()));
-        SoldTickets ticket = new SoldTickets(SeatsList.getSelectionModel().getSelectedItem(),SessionService.getDistributor(),lbl_current_date.getText(),Integer.parseInt(txt_number_of_tickets.getText()));
+        SoldTickets ticket = new SoldTickets(SeatsList.getSelectionModel().getSelectedItem(),SessionService.getDistributor(),lbl_current_date.getText(),Integer.parseInt(txt_number_of_tickets.getText()),CB_payment_method.getSelectionModel().getSelectedItem());
         ticket.setFirstName(txt_first_name.getText());
         ticket.setMiddleName(txt_middle_name.getText());
         ticket.setLastName(txt_last_name.getText());
         ticketService.persist(ticket);
-        //we have to save the three names
     }
 }

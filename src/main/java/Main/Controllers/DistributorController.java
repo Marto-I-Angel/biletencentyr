@@ -1,6 +1,7 @@
 package Main.Controllers;
 
 import entities.Event;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
@@ -16,8 +17,10 @@ import javafx.scene.input.MouseEvent;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import models.EventView;
+import models.TicketView;
 import services.EventService;
 import services.SessionService;
+import services.TicketService;
 
 import java.io.IOException;
 import java.net.URL;
@@ -40,14 +43,14 @@ public class DistributorController implements Initializable {
     public Label label_rating;
 
     //Ticket table (tab2)
-    public TableView ticket_table;
-    public TableColumn col_event_name_2;
-    public TableColumn col_type_seats;
-    public TableColumn col_number_of_seats;
-    public TableColumn col_date_bought;
-    public TableColumn col_total_value;
-    public TableColumn col_person_names;
-    public TableColumn col_payment_type;
+    public TableView<TicketView> ticket_table;
+    public TableColumn<TicketView,String> col_event_name_2;
+    public TableColumn<TicketView,String> col_type_seats;
+    public TableColumn<TicketView,Integer> col_number_of_seats;
+    public TableColumn<TicketView,String> col_date_bought;
+    public TableColumn<TicketView,Float> col_total_value;
+    public TableColumn<TicketView,String> col_person_names;
+    public TableColumn<TicketView,String> col_payment_type;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -59,7 +62,17 @@ public class DistributorController implements Initializable {
         col_fee.setCellValueFactory(new PropertyValueFactory<>("fee"));
         col_tickets.setCellValueFactory(new PropertyValueFactory<>("tickets"));
 
+        col_event_name_2.setCellValueFactory(new PropertyValueFactory<>("eventName"));
+        col_type_seats.setCellValueFactory(new PropertyValueFactory<>("typeSeats"));
+        col_number_of_seats.setCellValueFactory(new PropertyValueFactory<>("numberOfSeats"));
+        col_date_bought.setCellValueFactory(new PropertyValueFactory<>("dateBought"));
+        col_total_value.setCellValueFactory(new PropertyValueFactory<>("totalValue"));
+        col_person_names.setCellValueFactory(new PropertyValueFactory<>("personNames"));
+        col_payment_type.setCellValueFactory(new PropertyValueFactory<>("typePayment"));
+
+
         refresh_event_table();
+        refresh_ticket_table();
     }
 
     public void refresh_event_table() {
@@ -69,6 +82,13 @@ public class DistributorController implements Initializable {
 
         ObservableList<EventView> events = eventService.toEventView(all,SessionService.getDistributor().getDistributorId());
         event_table.setItems(events);
+    }
+    public void refresh_ticket_table() {
+        TicketService ticketService = new TicketService();
+        List<TicketView> all = ticketService.getTicketViews(SessionService.getDistributor().getDistributorId());
+        ObservableList<TicketView> tickets = FXCollections.observableArrayList();
+        tickets.addAll(all);
+        ticket_table.setItems(tickets);
     }
 
     public void logout(ActionEvent actionEvent) throws IOException {
@@ -82,11 +102,11 @@ public class DistributorController implements Initializable {
         stage.show();
     }
 
-    public void check_sold_tickets(ActionEvent actionEvent) {
+    public void check_sold_tickets() {
 
     }
 
-    public void sell_ticket(ActionEvent actionEvent) throws IOException {
+    public void sell_ticket() throws IOException {
         Stage popUpWindow=new Stage();
         popUpWindow.initModality(Modality.APPLICATION_MODAL);
         popUpWindow.setTitle("Create a ticket");
@@ -100,10 +120,6 @@ public class DistributorController implements Initializable {
         popUpWindow.showAndWait();
 
         refresh_event_table();
-
-    }
-
-    public void refresh_ticket_table(MouseEvent mouseEvent) {
 
     }
 }

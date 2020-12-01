@@ -40,11 +40,12 @@ public class SoldTickets {
     public SoldTickets() {
     }
 
-    public SoldTickets(Seats seats, Distributor distributor, String dateBought, int numberOfTickets) {
+    public SoldTickets(Seats seats, Distributor distributor, String dateBought, int numberOfTickets,String typePayment) {
         this.seats = seats;
         this.distributor = distributor;
         this.dateBought = dateBought;
         this.numberOfTickets = numberOfTickets;
+        this.typePayment = typePayment;
     }
 
     public int getId() {
