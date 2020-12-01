@@ -74,7 +74,6 @@ public class DistributorController implements Initializable {
         refresh_event_table();
         refresh_ticket_table();
     }
-
     public void refresh_event_table() {
         EventService eventService = new EventService();
         List<Event> all;
@@ -100,10 +99,6 @@ public class DistributorController implements Initializable {
         stage.setResizable(false);
         stage.setScene(scene);
         stage.show();
-    }
-
-    public void check_sold_tickets() {
-
     }
 
     public void sell_ticket() throws IOException {

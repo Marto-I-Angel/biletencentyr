@@ -19,9 +19,6 @@ public class Distributor {
     @OneToMany(mappedBy = "event", cascade = CascadeType.ALL)
     private List<Distribution> events = new ArrayList<>();
 
-//    @OneToMany(cascade = CascadeType.ALL)
-//    private List<SoldTickets> soldTickets = new ArrayList<>();
-
     @Column(name = "rating")
     private int rating;
 
@@ -72,6 +69,10 @@ public class Distributor {
 
     public List<Distribution> getEvents() {
         return events;
+    }
+
+    public void addToRating(int tickets) {
+        this.rating += tickets;
     }
 
 //    public List<SoldTickets> getSoldTickets() {

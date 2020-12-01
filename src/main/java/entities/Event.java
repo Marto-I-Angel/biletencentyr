@@ -34,6 +34,9 @@ public class Event {
     @Column(name = "ticketLimit")
     private int ticketLimit;
 
+    @Column(name = "location")
+    private String location;
+
     @OneToMany(mappedBy = "event",cascade = CascadeType.ALL)
     private List<Distribution> listDist = new ArrayList<>();
 
@@ -122,5 +125,13 @@ public class Event {
 
     public String getName() {
         return name;
+    }
+
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
     }
 }

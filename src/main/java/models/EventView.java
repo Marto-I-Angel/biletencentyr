@@ -12,10 +12,10 @@ public class EventView {
     private float fee;
     private int totalTickets;
     private int soldTickets;
-
+    private String location;
     private String tickets;
 
-    public EventView(int eventId,String name, String type, String beginDate, String endDate, String status, float fee, int totalTickets, int soldTickets) {
+    public EventView(int eventId,String name, String type, String beginDate, String endDate, String status, float fee, int totalTickets, int soldTickets, String location) {
         this.eventId = eventId;
         this.name = name;
         this.type = type;
@@ -26,6 +26,7 @@ public class EventView {
         this.totalTickets = totalTickets;
         this.soldTickets = soldTickets;
         this.tickets = this.getTickets();
+        this.location = location;
     }
 
     public String getName() {
@@ -101,5 +102,13 @@ public class EventView {
 
     public void setEventId(int eventId) {
         this.eventId = eventId;
+    }
+
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
     }
 }

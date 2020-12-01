@@ -86,5 +86,7 @@ public class TicketEditorController implements Initializable {
         ticket.setMiddleName(txt_middle_name.getText());
         ticket.setLastName(txt_last_name.getText());
         ticketService.persist(ticket);
+
+        SessionService.getDistributor().addToRating(Integer.parseInt(txt_number_of_tickets.getText()));
     }
 }

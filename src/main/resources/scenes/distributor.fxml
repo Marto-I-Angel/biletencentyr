@@ -18,7 +18,6 @@
         </font>
     </Label>
     <Button layoutX="661.0" layoutY="336.0" mnemonicParsing="false" onAction="#logout" text="Log out" />
-   <Button layoutX="626.0" layoutY="301.0" mnemonicParsing="false" onAction="#check_sold_tickets" text="Check all sold tickets" />
    <Label layoutX="613.0" layoutY="50.0" text="Current rating:" />
    <Label fx:id="label_rating" layoutX="711.0" layoutY="50.0" text="0" />
    <TabPane prefHeight="441.0" prefWidth="591.0" tabClosingPolicy="UNAVAILABLE">
