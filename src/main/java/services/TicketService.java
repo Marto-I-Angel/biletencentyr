@@ -2,6 +2,7 @@ package services;
 
 import dao.SoldTicketsDao;
 import entities.SoldTickets;
+import models.TicketView;
 
 import java.util.List;
 
@@ -49,6 +50,13 @@ public class TicketService {
             List<SoldTickets> tickets = ticketDao.findAll();
             ticketDao.closeCurrentSession();
             return tickets;
+        }
+
+        public List<TicketView> getTicketViews(int distributorId) {
+            ticketDao.openCurrentSession();
+            List<TicketView> ticketView = ticketDao.getTicketViews(distributorId);
+            ticketDao.closeCurrentSession();
+            return ticketView;
         }
 
         public SoldTicketsDao ticketDao() {

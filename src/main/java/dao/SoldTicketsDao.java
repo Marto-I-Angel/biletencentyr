@@ -1,7 +1,9 @@
 package dao;
 
 import dao.interfaces.DaoInterface;
+import entities.Distributor;
 import entities.SoldTickets;
+import models.TicketView;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import util.HibernateUtil;
@@ -82,5 +84,15 @@ public class SoldTicketsDao implements DaoInterface<SoldTickets> {
     @Override
     public void deleteAll() {
         
+    }
+
+    public List<TicketView> getTicketViews(int distributorId) {
+        return getCurrentSession().createNativeQuery(
+                "SELECT event.name,seats.seatsTypeId,soldtickets.numberOfSeats,soldtickets.dateBought,seats.price,soldtickets.firstName,soldtickets.middleName,soldtickets.lastName,soldtickets.paymentType " +
+                        "FROM  soldtickets" +
+                        "JOIN seats on soldtickets.seatsId = seats.seatsId " +
+                        "JOIN event on event.eventId = seats.eventId" +
+                        "WHERE soldtickets.distributorId = '" + distributorId + "';"
+                , TicketView.class).getResultList();
     }
 }

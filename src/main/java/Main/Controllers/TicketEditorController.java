@@ -52,7 +52,7 @@ public class TicketEditorController implements Initializable {
         this.SeatsList.getItems().setAll(list);
 
         limit = this.event.getTicketLimit() != -1;
-        if(limit) lbl_total_sum.setText(this.event.getTicketLimit()+"");
+        if(limit) lbl_ticket_limit.setText(this.event.getTicketLimit()+"");
     }
     public void proceed() {
         //if everything is filled and the number of tickets is under the limit, proceed to payment
@@ -77,10 +77,14 @@ public class TicketEditorController implements Initializable {
     }
 
     public void createTicket() throws Exception {
-        SoldTickets ticket = new SoldTickets(SeatsList.getSelectionModel().getSelectedItem(),SessionService.getDistributor(),lbl_current_date.getText(),Integer.parseInt(txt_number_of_tickets.getText()));
+        Seats seats = SeatsList.getSelectionModel().getSelectedItem();
         TicketService ticketService = new TicketService();
         SeatsService seatsService = new SeatsService();
-        seatsService.reserveSeats(seatsService.findById(ticket.getSeats().getSeatsId()),ticket.getNumberOfTickets());
+        seatsService.reserveSeats(seatsService.findById(seats.getSeatsId()),Integer.parseInt(txt_number_of_tickets.getText()));
+        SoldTickets ticket = new SoldTickets(SeatsList.getSelectionModel().getSelectedItem(),SessionService.getDistributor(),lbl_current_date.getText(),Integer.parseInt(txt_number_of_tickets.getText()));
+        ticket.setFirstName(txt_first_name.getText());
+        ticket.setMiddleName(txt_middle_name.getText());
+        ticket.setLastName(txt_last_name.getText());
         ticketService.persist(ticket);
         //we have to save the three names
     }

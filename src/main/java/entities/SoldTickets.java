@@ -12,12 +12,10 @@ public class SoldTickets {
     private int id;
 
     @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.DETACH, CascadeType.PERSIST})
-    @MapsId("seatsId")
     @JoinColumn(name = "seatsId")
     private Seats seats;
 
     @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.DETACH, CascadeType.PERSIST})
-    @MapsId("distributorId")
     @JoinColumn(name = "distributorId")
     private Distributor distributor;
 
@@ -26,6 +24,18 @@ public class SoldTickets {
 
     @Column(name = "numberOfTickets")
     private int numberOfTickets;
+
+    @Column(name = "firstName")
+    private String firstName;
+
+    @Column(name = "middleName")
+    private String middleName;
+
+    @Column(name = "lastName")
+    private String lastName;
+
+    @Column(name = "typePayment")
+    private String typePayment;
 
     public SoldTickets() {
     }
@@ -39,6 +49,38 @@ public class SoldTickets {
 
     public int getId() {
         return id;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getMiddleName() {
+        return middleName;
+    }
+
+    public void setMiddleName(String middleName) {
+        this.middleName = middleName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public String getTypePayment() {
+        return typePayment;
+    }
+
+    public void setTypePayment(String typePayment) {
+        this.typePayment = typePayment;
     }
 
     public Seats getSeats() {
@@ -55,10 +97,6 @@ public class SoldTickets {
 
     public int getNumberOfTickets() {
         return numberOfTickets;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public void setSeats(Seats seats) {

@@ -19,8 +19,6 @@ public class Distribution {
     @JoinColumn(name = "distributorId")
     private Distributor distributor;
 
-
-
     @Column(name = "fee")
     private float fee;
 
