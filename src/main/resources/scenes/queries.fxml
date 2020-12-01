@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <AnchorPane layoutX="-17.0" layoutY="-207.0" prefHeight="200.0" prefWidth="200.0" />
+      <TabPane prefHeight="400.0" prefWidth="600.0" tabClosingPolicy="UNAVAILABLE">
+        <tabs>
+          <Tab text="Distributors">
+            <content>
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="361.0" prefWidth="600.0">
+                     <children>
+                        <ListView layoutX="11.0" layoutY="8.0" prefHeight="235.0" prefWidth="578.0" />
+                        <DatePicker fx:id="datepicker_from" layoutX="51.0" layoutY="288.0" />
+                        <DatePicker fx:id="datepicker_to" layoutX="399.0" layoutY="288.0" />
+                        <Label layoutX="16.0" layoutY="292.0" text="From:" />
+                        <Label layoutX="383.0" layoutY="292.0" text="To:" />
+                     </children>
+                  </AnchorPane>
+            </content>
+          </Tab>
+          <Tab text="Events">
+            <content>
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="360.0" prefWidth="600.0">
+                     <children>
+                        <ListView layoutX="11.0" layoutY="8.0" prefHeight="235.0" prefWidth="578.0" />
+                        <DatePicker fx:id="datepicker_from1" layoutX="51.0" layoutY="288.0" />
+                        <DatePicker fx:id="datepicker_to1" layoutX="399.0" layoutY="288.0" />
+                        <Label layoutX="16.0" layoutY="292.0" text="From:" />
+                        <Label layoutX="383.0" layoutY="292.0" text="To:" />
+                     </children>
+                  </AnchorPane>
+            </content>
+          </Tab>
+        </tabs>
+      </TabPane>
+   </children>
+</AnchorPane>
