@@ -1,5 +1,6 @@
 package Main.Controllers;
 
+import entities.Distribution;
 import entities.Event;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -9,24 +10,29 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.*;
 import javafx.scene.control.Label;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.input.MouseEvent;
+import javafx.scene.paint.Color;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import notifications.CheckForNewEvent;
 import models.EventView;
 import models.TicketView;
+import services.DistributionService;
 import services.EventService;
 import services.SessionService;
 import services.TicketService;
 
+import java.awt.*;
 import java.io.IOException;
 import java.net.URL;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.ResourceBundle;
+import java.util.concurrent.ScheduledThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
 public class DistributorController implements Initializable {
 
@@ -51,6 +57,7 @@ public class DistributorController implements Initializable {
     public TableColumn<TicketView,Float> col_total_value;
     public TableColumn<TicketView,String> col_person_names;
     public TableColumn<TicketView,String> col_payment_type;
+    public Label lbl_notification_msg;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -73,11 +80,17 @@ public class DistributorController implements Initializable {
 
         refresh_event_table();
         refresh_ticket_table();
+
+        //notification setup
+        Runnable r = new CheckForNewEvent(this);
+        ScheduledThreadPoolExecutor executor = new ScheduledThreadPoolExecutor(5);
+        executor.scheduleAtFixedRate(r,0,5, TimeUnit.SECONDS);
+
     }
     public void refresh_event_table() {
         EventService eventService = new EventService();
         List<Event> all;
-        all = eventService.findByDistributorId(SessionService.getDistributor().getDistributorId());
+        all = eventService.findByDistributorId(SessionService.getDistributor().getDistributorId(),true);
 
         ObservableList<EventView> events = eventService.toEventView(all,SessionService.getDistributor().getDistributorId());
         event_table.setItems(events);
@@ -116,5 +129,38 @@ public class DistributorController implements Initializable {
 
         refresh_event_table();
 
+    }
+
+    public void notificationUpdate(int num) {
+        if(num > 0) {
+            lbl_notification_msg.setTextFill(Color.BLUE);
+            lbl_notification_msg.setText("THERE ARE " + num + " NOTIFICATION/S FOR YOU!");
+        }
+        else
+        {
+            lbl_notification_msg.setText("There are no new notifications :(");
+        }
+    }
+
+    public void show_notifications() {
+        EventService eventService = new EventService();
+        DistributionService distributionService = new DistributionService();
+        List<Event> list = eventService.findByDistributorId(SessionService.getDistributor().getDistributorId(),false);
+        for(Event x: list) {
+
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setTitle("New Event");
+            alert.setContentText("You have been chosen to distribute tickets for the selected event:" +x.getName());
+            ButtonType okButton = new ButtonType("Accept", ButtonBar.ButtonData.YES);
+            ButtonType cancelButton = new ButtonType("Decline", ButtonBar.ButtonData.CANCEL_CLOSE);
+            alert.getButtonTypes().setAll(okButton, cancelButton);
+            Optional<ButtonType> result = alert.showAndWait();
+            Distribution distribution =  distributionService.findDistribution(SessionService.getDistributor().getDistributorId(),x.getEventId());
+
+            if (result.get() == okButton) {
+                distribution.setAccepted(true);
+                distributionService.update(distribution);
+            }else distributionService.delete(distribution.getId());
+        }
     }
 }

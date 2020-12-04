@@ -118,25 +118,17 @@ public class EventService {
         return list;
     }
 
-    public List<Event> findByDistributorId(int id) {
+    public List<Event> findByDistributorId(int id, boolean type) {
         List<Event> events = new ArrayList<>();
         DistributionService distributionService = new DistributionService();
         List<Distribution> distributions=  distributionService.findAll();
         for(Distribution x : distributions)
         {
-            if(x.getDistributor().getDistributorId() == id)
+            if(x.getDistributor().getDistributorId() == id && x.isAccepted() == type)
             {
                 events.add(x.getEvent());
             }
         }
         return events;
     }
-
-    /*  or
-        public List<Event> findByDistributorId(int distributorId) {
-        return (List<Event>) getCurrentSession().createNativeQuery("SELECT EVENT.* FROM EVENT " +
-                "JOIN DISTRIBUTION ON EVENT.EVENTID = DISTRIBUTION.EVENTID " +
-                "WHERE DISTRIBUTION.DISTRIBUTORID = " + distributorId + ";",Event.class).list();
-    }
-     */
 }

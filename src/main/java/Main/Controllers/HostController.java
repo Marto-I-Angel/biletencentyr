@@ -16,6 +16,8 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import notifications.CheckForNewEvent;
+import notifications.CheckForSoldTickets;
 import services.EventService;
 import services.SessionService;
 
@@ -24,6 +26,8 @@ import java.net.URL;
 import java.util.List;
 import java.util.Objects;
 import java.util.ResourceBundle;
+import java.util.concurrent.ScheduledThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
 public class HostController implements Initializable {
 
@@ -34,6 +38,7 @@ public class HostController implements Initializable {
     public TableColumn<Event,String> col_event_date_end;
     public TableColumn<Event,String> col_event_status;
     public Label lb_username;
+    public Label lbl_notification;
 
     public void add_new_event() throws IOException,RuntimeException {
         Stage popupwindow=new Stage();
@@ -63,6 +68,7 @@ public class HostController implements Initializable {
             popupwindow.showAndWait();
 
             refresh_event_table();
+
         }
     }
     public void refresh_event_table() {
@@ -93,11 +99,21 @@ public class HostController implements Initializable {
         col_event_status.setCellValueFactory(new PropertyValueFactory<>("status"));
 
         refresh_event_table();
+
+        //notification setup
+        //TODO: change the soldTicketsNum from 0 to the number of tickets since the last check!
+        Runnable r = new CheckForSoldTickets(0,this);
+        ScheduledThreadPoolExecutor executor = new ScheduledThreadPoolExecutor(5);
+        executor.scheduleAtFixedRate(r,0,5, TimeUnit.SECONDS);
     }
 
     public void delete_selected_event(MouseEvent mouseEvent) {
         EventService eventService=new EventService();
         eventService.delete(event_table.getSelectionModel().getSelectedItem().getEventId());
         refresh_event_table();
+    }
+
+    public void updateNotification(String s) {
+        lbl_notification.setText(s);
     }
 }

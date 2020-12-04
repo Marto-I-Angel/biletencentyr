@@ -7,6 +7,7 @@ import entities.SoldTickets;
 import models.TicketView;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 public class TicketService {
@@ -76,4 +77,21 @@ public class TicketService {
             return ticketDao;
         }
 
+    public List<SoldTickets> findAllByEvent(int hostId) {
+        EventService eventService = new EventService();
+
+        List<SoldTickets> all = findAll();
+        List<SoldTickets> list = new ArrayList<>();
+        for(SoldTickets x : all)
+        {
+            Seats seats = x.getSeats();
+            Event event = eventService.findById(seats.getEvent().getEventId());
+            if(event.getHost().getHostId() == hostId)
+            {
+                list.add(x);
+            }
+        }
+        return list;
+
+    }
 }

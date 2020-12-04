@@ -74,9 +74,8 @@ public class AdminController implements Initializable {
         alert.setTitle("Deleting an account");
         alert.setContentText("Delete user "+person + "?");
         ButtonType okButton = new ButtonType("Yes", ButtonBar.ButtonData.YES);
-        ButtonType noButton = new ButtonType("No", ButtonBar.ButtonData.NO);
         ButtonType cancelButton = new ButtonType("Cancel", ButtonBar.ButtonData.CANCEL_CLOSE);
-        alert.getButtonTypes().setAll(okButton, noButton, cancelButton);
+        alert.getButtonTypes().setAll(okButton, cancelButton);
         Optional<ButtonType> result = alert.showAndWait();
         if(result.get() == okButton) {
             userService.delete(person.getUserId());

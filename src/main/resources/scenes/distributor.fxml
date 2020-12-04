@@ -71,4 +71,6 @@
        </Tab>
      </tabs>
    </TabPane>
+   <Button layoutX="633.0" layoutY="108.0" mnemonicParsing="false" onAction="#show_notifications" text="Show notifications" />
+   <Label fx:id="lbl_notification_msg" layoutX="635.0" layoutY="146.0" text="no new notifications" />
 </AnchorPane>

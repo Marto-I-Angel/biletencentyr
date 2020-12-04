@@ -31,7 +31,7 @@ public final class SessionService {
         distributor = null;
     }
     public static Date toDateFromDatePicker(String sDate) throws ParseException {
-        return new SimpleDateFormat("dd.MM.yyyy").parse(sDate);
+        return new SimpleDateFormat("MM/dd/yyyy").parse(sDate);
     }
     public static Date toDateFromLocalDate(String sDate) throws ParseException {
         return new SimpleDateFormat("yyyy-MM-dd").parse(sDate);
