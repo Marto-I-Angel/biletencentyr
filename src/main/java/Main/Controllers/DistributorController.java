@@ -11,20 +11,18 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.control.Label;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.paint.Color;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import notifications.CheckForNewEvent;
 import models.EventView;
 import models.TicketView;
+import notifications.CheckForNewEvent;
 import services.DistributionService;
 import services.EventService;
 import services.SessionService;
 import services.TicketService;
 
-import java.awt.*;
 import java.io.IOException;
 import java.net.URL;
 import java.util.List;
@@ -162,5 +160,16 @@ public class DistributorController implements Initializable {
                 distributionService.update(distribution);
             }else distributionService.delete(distribution.getId());
         }
+    }
+
+    public void viewEvents(ActionEvent actionEvent) throws IOException {
+        Stage popUpWindow=new Stage();
+        popUpWindow.initModality(Modality.APPLICATION_MODAL);
+        popUpWindow.setTitle("Queries");
+        FXMLLoader loader = new FXMLLoader(Objects.requireNonNull(getClass().getClassLoader().getResource("scenes/queries.fxml")));
+        Parent root = loader.load();
+        Scene scene1= new Scene(root);
+        popUpWindow.setScene(scene1);
+        popUpWindow.showAndWait();
     }
 }

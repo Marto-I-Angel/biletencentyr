@@ -39,4 +39,5 @@
     </Pane>
     <Button layoutX="502.0" layoutY="58.0" mnemonicParsing="false" onAction="#logout" text="Log out" />
    <Label fx:id="lbl_notification" layoutX="427.0" layoutY="367.0" text="No notifications" />
+   <Button fx:id="bt_viewdistributors" layoutX="486.0" layoutY="163.0" onAction="#viewDistributors" mnemonicParsing="false" text="View distributors" />
 </AnchorPane>

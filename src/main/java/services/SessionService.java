@@ -36,12 +36,12 @@ public final class SessionService {
     public static Date toDateFromLocalDate(String sDate) throws ParseException {
         return new SimpleDateFormat("yyyy-MM-dd").parse(sDate);
     }
-    public static boolean inPeriod(Date begin, Date end, Date period){
-        //if user gives start date after end date
-        if(begin.after(end)){
-            return period.after(end) && period.before(begin);
+    public static boolean inPeriod(Date from, Date to, Date period){
+        //if user gives "from" date after "to" date
+        if(from.after(to)){
+            return period.after(to) && period.before(from);
         }
-        else if(begin.equals(end)) return begin.equals(period);
-        else return period.after(begin) && period.before(end);
+        else if(from.equals(to)) return from.equals(period);
+        else return period.after(from) && period.before(to);
     }
 }

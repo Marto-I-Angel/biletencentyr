@@ -9,6 +9,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -16,7 +17,6 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import notifications.CheckForNewEvent;
 import notifications.CheckForSoldTickets;
 import services.EventService;
 import services.SessionService;
@@ -39,6 +39,7 @@ public class HostController implements Initializable {
     public TableColumn<Event,String> col_event_status;
     public Label lb_username;
     public Label lbl_notification;
+    public Button bt_viewdistributors;
 
     public void add_new_event() throws IOException,RuntimeException {
         Stage popupwindow=new Stage();
@@ -115,5 +116,16 @@ public class HostController implements Initializable {
 
     public void updateNotification(String s) {
         lbl_notification.setText(s);
+    }
+
+    public void viewDistributors(ActionEvent actionEvent) throws IOException {
+        Stage popUpWindow=new Stage();
+        popUpWindow.initModality(Modality.APPLICATION_MODAL);
+        popUpWindow.setTitle("Queries");
+        FXMLLoader loader = new FXMLLoader(Objects.requireNonNull(getClass().getClassLoader().getResource("scenes/queries.fxml")));
+        Parent root = loader.load();
+        Scene scene1= new Scene(root);
+        popUpWindow.setScene(scene1);
+        popUpWindow.showAndWait();
     }
 }
