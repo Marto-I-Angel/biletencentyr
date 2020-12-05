@@ -1,11 +1,13 @@
 package Main.Controllers;
 
+import entities.Distributor;
 import entities.Event;
 import entities.Seats;
 import entities.SoldTickets;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.text.Text;
+import services.DistributorService;
 import services.SeatsService;
 import services.SessionService;
 import services.TicketService;
@@ -80,6 +82,8 @@ public class TicketEditorController implements Initializable {
         Seats seats = SeatsList.getSelectionModel().getSelectedItem();
         TicketService ticketService = new TicketService();
         SeatsService seatsService = new SeatsService();
+        DistributorService distributorService = new DistributorService();
+
         seatsService.reserveSeats(seatsService.findById(seats.getSeatsId()),Integer.parseInt(txt_number_of_tickets.getText()));
         SoldTickets ticket = new SoldTickets(SeatsList.getSelectionModel().getSelectedItem(),SessionService.getDistributor(),lbl_current_date.getText(),Integer.parseInt(txt_number_of_tickets.getText()),CB_payment_method.getSelectionModel().getSelectedItem());
         ticket.setFirstName(txt_first_name.getText());
@@ -87,6 +91,8 @@ public class TicketEditorController implements Initializable {
         ticket.setLastName(txt_last_name.getText());
         ticketService.persist(ticket);
 
-        SessionService.getDistributor().addToRating(Integer.parseInt(txt_number_of_tickets.getText()));
+        Distributor distributor = SessionService.getDistributor();
+        distributor.addToRating(Integer.parseInt(txt_number_of_tickets.getText()));
+        distributorService.update(distributor);
     }
 }

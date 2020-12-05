@@ -64,34 +64,41 @@ public class TicketService {
             for(SoldTickets x : all){
                 if(x.getDistributor().getDistributorId() == distributorId)
                 {
-                    Seats seats = x.getSeats();
-                    Event event = eventService.findById(seats.getEvent().getEventId());
-
-                    ticketView.add(new TicketView(event.getName(),seats.getSeatsType(),x.getNumberOfTickets(),x.getDateBought(),seats.getPriceAsFloat(),x.getTypePayment(),x.getFirstName(),x.getMiddleName(),x.getLastName()));
+                    ticketView.add(entityToModel(x));
                 }
             }
             return ticketView;
         }
 
         public SoldTicketsDao ticketDao() {
-            return ticketDao;
-        }
+        return ticketDao;
+    }
 
-    public List<SoldTickets> findAllByEvent(int hostId) {
+    public List<TicketView> findAllByEvent(int hostId) {
         EventService eventService = new EventService();
 
         List<SoldTickets> all = findAll();
-        List<SoldTickets> list = new ArrayList<>();
+        List<TicketView> list = new ArrayList<>();
         for(SoldTickets x : all)
         {
             Seats seats = x.getSeats();
             Event event = eventService.findById(seats.getEvent().getEventId());
             if(event.getHost().getHostId() == hostId)
             {
-                list.add(x);
+                list.add(entityToModel(x));
             }
         }
         return list;
 
+    }
+    private TicketView entityToModel(SoldTickets entity)
+    {
+        EventService eventService = new EventService();
+        TicketView ticketView;
+                Seats seats = entity.getSeats();
+                Event event = eventService.findById(seats.getEvent().getEventId());
+
+                ticketView = new TicketView(event.getName(),seats.getSeatsType(),entity.getNumberOfTickets(),entity.getDateBought(),seats.getPriceAsFloat(),entity.getTypePayment(),entity.getFirstName(),entity.getMiddleName(),entity.getLastName());
+        return ticketView;
     }
 }

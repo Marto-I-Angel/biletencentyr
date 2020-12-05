@@ -10,6 +10,7 @@ import java.util.Date;
 public final class SessionService {
     private static Host host;
     private static Distributor distributor;
+    private static int notifNumber;
 
     public static void setHost(Host input) {
         host = input;
@@ -43,5 +44,13 @@ public final class SessionService {
         }
         else if(from.equals(to)) return from.equals(period);
         else return period.after(from) && period.before(to);
+    }
+
+    public static int getNotifNumber() {
+        return notifNumber;
+    }
+
+    public static void setNotifNumber(int notifNumber) {
+        SessionService.notifNumber = notifNumber;
     }
 }

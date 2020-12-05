@@ -4,13 +4,11 @@ import entities.Distributor;
 import entities.Event;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import services.DistributorService;
 import services.EventService;
 import services.SessionService;
-
 import java.net.URL;
 import java.text.ParseException;
 import java.util.List;
@@ -42,7 +40,7 @@ public class QueryController implements Initializable {
         }
     }
 
-    public void showDistributor(ActionEvent actionEvent) {
+    public void showDistributor() {
         if(TF_distributorName.getText() != null){
             DistributorService distributorService = new DistributorService();
             List<Distributor> list = distributorService.findAll();
@@ -54,7 +52,7 @@ public class QueryController implements Initializable {
         }
     }
 
-    public void showEvent(ActionEvent actionEvent) throws ParseException {
+    public void showEvent() throws ParseException {
         if(TF_eventName.getText() != null){
             EventService eventService = new EventService();
             List<Event> list = eventService.findAll();

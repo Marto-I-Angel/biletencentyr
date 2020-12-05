@@ -2,13 +2,16 @@
 
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
 <AnchorPane prefHeight="448.0" prefWidth="802.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Main.Controllers.DistributorController">
@@ -18,8 +21,6 @@
         </font>
     </Label>
     <Button layoutX="661.0" layoutY="336.0" mnemonicParsing="false" onAction="#logout" text="Log out" />
-   <Label layoutX="613.0" layoutY="50.0" text="Current rating:" />
-   <Label fx:id="label_rating" layoutX="711.0" layoutY="50.0" text="0" />
    <TabPane prefHeight="441.0" prefWidth="591.0" tabClosingPolicy="UNAVAILABLE">
      <tabs>
        <Tab text="Events">
@@ -49,7 +50,7 @@
          <content>
            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                   <children>
-                     <TableView fx:id="ticket_table" layoutX="6.0" layoutY="14.0" prefHeight="308.0" prefWidth="582.0">
+                     <TableView fx:id="ticket_table" layoutX="6.0" layoutY="14.0" prefHeight="335.0" prefWidth="582.0">
                        <columns>
                          <TableColumn fx:id="col_event_name_2" prefWidth="86.0" text="Event Name" />
                          <TableColumn fx:id="col_type_seats" prefWidth="71.0" text="Type Seats" />
@@ -60,7 +61,7 @@
                            <TableColumn fx:id="col_payment_type" prefWidth="88.0" text="Payment Type" />
                        </columns>
                      </TableView>
-                     <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="52.0" layoutY="344.0" onMouseClicked="#refresh_ticket_table" pickOnBounds="true" preserveRatio="true">
+                     <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="118.0" layoutY="368.0" onMouseClicked="#refresh_ticket_table" pickOnBounds="true" preserveRatio="true">
                         <image>
                            <Image url="@../Images/Refresh_button.png" />
                         </image>
@@ -69,9 +70,31 @@
                </AnchorPane>
          </content>
        </Tab>
+         <Tab text="Account Details">
+             <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                 <Pane layoutX="8.0" layoutY="40.0" prefHeight="360.0" prefWidth="574.0" style="-fx-border-color: #888888;">
+                     <Label layoutX="14.0" layoutY="24.0" text="Current rating:" />
+                     <Label fx:id="lbl_rating" layoutX="116.0" layoutY="24.0" text="0" />
+                     <Label layoutX="258.0" layoutY="36.0" text="Username : " />
+                     <Label layoutX="256.0" layoutY="247.0" text="Password : " />
+                     <Label layoutX="178.0" layoutY="82.0" text="New Password (Optional) :" />
+                     <Label layoutX="191.0" layoutY="119.0" text="Confirm new Password :" />
+                     <TextField fx:id="txt_username" layoutX="339.0" layoutY="32.0" />
+                     <PasswordField fx:id="txt_newPass" layoutX="338.0" layoutY="78.0" />
+                     <PasswordField fx:id="txt_newPass2" layoutX="338.0" layoutY="115.0" />
+                     <PasswordField fx:id="txt_pass" layoutX="335.0" layoutY="243.0" />
+                     <Button layoutX="370.0" layoutY="286.0" mnemonicParsing="false" onAction="#updateAccount" text="Save updates" />
+                  <Label fx:id="lbl_error" layoutX="287.0" layoutY="180.0" textFill="#c92a2a" />
+                 </Pane>
+             </AnchorPane>
+         </Tab>
      </tabs>
    </TabPane>
-   <Button layoutX="633.0" layoutY="108.0" mnemonicParsing="false" onAction="#show_notifications" text="Show notifications" />
-   <Label fx:id="lbl_notification_msg" layoutX="635.0" layoutY="146.0" text="no new notifications" />
-   <Button fx:id="bt_viewevents" layoutX="663.0" layoutY="212.0" mnemonicParsing="false" onAction="#viewEvents" text="View events" />
+   <Button layoutX="651.0" layoutY="269.0" mnemonicParsing="false" onAction="#viewEvents" text="View events" />
+   <Label fx:id="lbl_notification_msg" alignment="CENTER" contentDisplay="CENTER" layoutX="637.0" layoutY="216.0" text="no new notifications" textAlignment="CENTER" />
+   <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="674.0" layoutY="177.0" onMouseClicked="#show_notifications" pickOnBounds="true" preserveRatio="true" style="-fx-cursor: pointer;">
+      <image>
+         <Image url="@../Images/Notification_button.png" />
+      </image>
+   </ImageView>
 </AnchorPane>

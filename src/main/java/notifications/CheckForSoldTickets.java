@@ -2,16 +2,18 @@ package notifications;
 
 import Main.Controllers.HostController;
 import javafx.application.Platform;
+import models.TicketView;
 import services.SessionService;
 import services.TicketService;
 
+import java.util.List;
+
 public class CheckForSoldTickets implements Runnable {
-    private int soldTicketsNum;
     private HostController hostController;
     private TicketService ticketService = new TicketService();
     public CheckForSoldTickets(int soldTicketsNum, HostController hostController)
     {
-        this.soldTicketsNum = soldTicketsNum;
+        SessionService.setNotifNumber(soldTicketsNum);
         this.hostController = hostController;
     }
 
@@ -22,24 +24,21 @@ public class CheckForSoldTickets implements Runnable {
 
     private void checkForSoldTickets()
     {
-        int soldTickets = ticketService.findAllByEvent(SessionService.getHost().getHostId()).size();
-        if(soldTicketsNum != soldTickets)
+        int soldTicketsNum = SessionService.getNotifNumber();
+        List<TicketView> soldTickets = ticketService.findAllByEvent(SessionService.getHost().getHostId());
+        if(soldTicketsNum != soldTickets.size())
         {
             Platform.runLater(() -> // back to the FX thread
                     {
-                        hostController.updateNotification((soldTickets - soldTicketsNum) + " TICKETS HAVE BEEN SOLD!!");
+                        hostController.updateNotification((soldTickets.size() - soldTicketsNum), soldTickets );
                     });
             //TODO: SHOW THE NUMBER OF TICKETS THAT HAVE BEEN SOLD SINCE LAST CHECK!
         }
         else {
             Platform.runLater(() -> // back to the FX thread
             {
-                hostController.updateNotification("No new tickets have been sold.");
+                hostController.updateNotification(0, null);
             });
         }
-    }
-
-    public void setSoldTicketsNum(int soldTicketsNum) {
-        this.soldTicketsNum = soldTicketsNum;
     }
 }

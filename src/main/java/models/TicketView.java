@@ -74,4 +74,10 @@ public class TicketView {
     public void setTypePayment(String typePayment) {
         this.typePayment = typePayment;
     }
+
+    @Override
+    public String toString(){
+        return "Name:" + eventName + "   Type of Seat: " + typeSeats + "  Number of tickets: " + numberOfSeats + "  Total Value: " + totalValue +
+                ".лв   \nType of Payment: " + typePayment + "   Bought by: " + personNames + "   Date:" + dateBought;
+    }
 }

@@ -1,6 +1,8 @@
 package Main.Controllers;
 
 import entities.Event;
+import entities.Host;
+import entities.User;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -9,17 +11,16 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.input.MouseEvent;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import models.TicketView;
 import notifications.CheckForSoldTickets;
 import services.EventService;
+import services.HostService;
 import services.SessionService;
+import services.UserService;
 
 import java.io.IOException;
 import java.net.URL;
@@ -40,6 +41,15 @@ public class HostController implements Initializable {
     public Label lb_username;
     public Label lbl_notification;
     public Button bt_viewdistributors;
+    public TextField txt_username;
+    public TextField txt_pass;
+    public TextField txt_newPass;
+    public TextField txt_newPass2;
+    public ListView<TicketView> listView_sold_tickets;
+    public Label lbl_error;
+
+    private int tempNumNotif;
+    private Runnable r = new CheckForSoldTickets(0,this);
 
     public void add_new_event() throws IOException,RuntimeException {
         Stage popupwindow=new Stage();
@@ -101,24 +111,37 @@ public class HostController implements Initializable {
 
         refresh_event_table();
 
+        String username = SessionService.getHost().getUser().getUsername();
+        lb_username.setText(username);
+        txt_username.setText(username);
+
         //notification setup
         //TODO: change the soldTicketsNum from 0 to the number of tickets since the last check!
-        Runnable r = new CheckForSoldTickets(0,this);
         ScheduledThreadPoolExecutor executor = new ScheduledThreadPoolExecutor(5);
         executor.scheduleAtFixedRate(r,0,5, TimeUnit.SECONDS);
     }
 
-    public void delete_selected_event(MouseEvent mouseEvent) {
+    public void delete_selected_event() {
         EventService eventService=new EventService();
         eventService.delete(event_table.getSelectionModel().getSelectedItem().getEventId());
         refresh_event_table();
     }
 
-    public void updateNotification(String s) {
-        lbl_notification.setText(s);
+    public void updateNotification(int num,List<TicketView> list) {
+        if(num>0 ) {
+            if(num != tempNumNotif) {
+                tempNumNotif = num;
+                lbl_notification.setText(num + " TICKETS HAVE BEEN SOLD!!");
+                listView_sold_tickets.getItems().setAll(list);
+            }
+        }
+        else {
+            lbl_notification.setText("No new notifications");
+            listView_sold_tickets.getItems().clear();
+        }
     }
 
-    public void viewDistributors(ActionEvent actionEvent) throws IOException {
+    public void viewDistributors() throws IOException {
         Stage popUpWindow=new Stage();
         popUpWindow.initModality(Modality.APPLICATION_MODAL);
         popUpWindow.setTitle("Queries");
@@ -127,5 +150,41 @@ public class HostController implements Initializable {
         Scene scene1= new Scene(root);
         popUpWindow.setScene(scene1);
         popUpWindow.showAndWait();
+    }
+
+    public void btn_mark_seen() {
+        if(!lbl_notification.getText().equals("No new notifications"))
+        SessionService.setNotifNumber(Integer.parseInt(lbl_notification.getText().
+                substring(0,lbl_notification.getText().indexOf(' '))));
+    }
+
+    public void updateAccount() {
+        Host host = SessionService.getHost();
+        if(txt_pass.getText().equals(host.getUser().getPassword()))
+        {
+            if(!txt_newPass.getText().isEmpty() && txt_newPass.getText().length()>=5)
+            {
+                if(txt_newPass.getText().equals(txt_newPass2.getText())) {
+                    User user = host.getUser();
+                    user.setPassword(txt_newPass.getText());
+                    user.setUsername(txt_username.getText());
+                    txt_newPass.setText("");
+                    txt_newPass2.setText("");
+                    txt_username.setText(host.getUser().getUsername());
+                    lbl_error.setText("");
+
+                    HostService hostService = new HostService();
+                    UserService userService = new UserService();
+                    userService.update(user);
+                    hostService.update(host);
+                }
+                else lbl_error.setText("The new passwords dont match!");
+            }
+            else lbl_error.setText("The new Password does not meet the requirements!");
+        }
+        else{
+            lbl_error.setText("Wrong password");
+        }
+
     }
 }

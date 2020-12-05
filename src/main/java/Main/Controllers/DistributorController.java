@@ -1,7 +1,6 @@
 package Main.Controllers;
 
-import entities.Distribution;
-import entities.Event;
+import entities.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -18,10 +17,7 @@ import javafx.stage.Stage;
 import models.EventView;
 import models.TicketView;
 import notifications.CheckForNewEvent;
-import services.DistributionService;
-import services.EventService;
-import services.SessionService;
-import services.TicketService;
+import services.*;
 
 import java.io.IOException;
 import java.net.URL;
@@ -44,7 +40,6 @@ public class DistributorController implements Initializable {
     public TableColumn<EventView,String> col_fee;
     public TableColumn<EventView,String> col_tickets;
     public Label lb_username;
-    public Label label_rating;
 
     //Ticket table (tab2)
     public TableView<TicketView> ticket_table;
@@ -56,6 +51,12 @@ public class DistributorController implements Initializable {
     public TableColumn<TicketView,String> col_person_names;
     public TableColumn<TicketView,String> col_payment_type;
     public Label lbl_notification_msg;
+    public Label lbl_rating;
+    public TextField txt_username;
+    public PasswordField txt_newPass;
+    public PasswordField txt_newPass2;
+    public PasswordField txt_pass;
+    public Label lbl_error;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -79,6 +80,8 @@ public class DistributorController implements Initializable {
         refresh_event_table();
         refresh_ticket_table();
 
+        lbl_rating.setText(SessionService.getDistributor().getRating()+"");
+
         //notification setup
         Runnable r = new CheckForNewEvent(this);
         ScheduledThreadPoolExecutor executor = new ScheduledThreadPoolExecutor(5);
@@ -99,6 +102,9 @@ public class DistributorController implements Initializable {
         ObservableList<TicketView> tickets = FXCollections.observableArrayList();
         tickets.addAll(all);
         ticket_table.setItems(tickets);
+
+        lbl_rating.setText(SessionService.getDistributor().getRating()+"");
+
     }
 
     public void logout(ActionEvent actionEvent) throws IOException {
@@ -125,7 +131,7 @@ public class DistributorController implements Initializable {
         popUpWindow.setScene(scene1);
         popUpWindow.showAndWait();
 
-        refresh_event_table();
+        refresh_ticket_table();
 
     }
 
@@ -162,7 +168,7 @@ public class DistributorController implements Initializable {
         }
     }
 
-    public void viewEvents(ActionEvent actionEvent) throws IOException {
+    public void viewEvents() throws IOException {
         Stage popUpWindow=new Stage();
         popUpWindow.initModality(Modality.APPLICATION_MODAL);
         popUpWindow.setTitle("Queries");
@@ -171,5 +177,35 @@ public class DistributorController implements Initializable {
         Scene scene1= new Scene(root);
         popUpWindow.setScene(scene1);
         popUpWindow.showAndWait();
+    }
+
+    public void updateAccount() {
+        Distributor distributor = SessionService.getDistributor();
+        if(txt_pass.getText().equals(distributor.getUser().getPassword()))
+        {
+            if(!txt_newPass.getText().isEmpty() && txt_newPass.getText().length()>=5)
+            {
+                if(txt_newPass.getText().equals(txt_newPass2.getText())) {
+                    User user = distributor.getUser();
+                    user.setPassword(txt_newPass.getText());
+                    user.setUsername(txt_username.getText());
+                    txt_newPass.setText("");
+                    txt_newPass2.setText("");
+                    txt_username.setText(distributor.getUser().getUsername());
+                    lbl_error.setText("");
+
+                    DistributorService distributorService = new DistributorService();
+                    UserService userService = new UserService();
+                    userService.update(user);
+                    distributorService.update(distributor);
+                }
+                else lbl_error.setText("The new passwords dont match!");
+            }
+            else lbl_error.setText("The new Password does not meet the requirements!");
+        }
+        else{
+            lbl_error.setText("Wrong password");
+        }
+
     }
 }
