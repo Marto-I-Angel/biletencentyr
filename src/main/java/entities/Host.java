@@ -1,6 +1,7 @@
 package entities;
 
 import javax.persistence.*;
+import java.util.Objects;
 
 @Entity
 @Table(name = "host")
@@ -27,7 +28,6 @@ public class Host {
         return "Host: " + user;
     }
 
-
     public int getHostId() {
         return hostId;
     }
@@ -38,6 +38,15 @@ public class Host {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Host host = (Host) o;
+        return hostId == host.hostId &&
+                Objects.equals(user, host.user);
     }
 }
 

@@ -169,7 +169,7 @@ public class DistributorController implements Initializable {
     }
 
     public void viewEvents() throws IOException {
-        Stage popUpWindow=new Stage();
+        Stage popUpWindow = new Stage();
         popUpWindow.initModality(Modality.APPLICATION_MODAL);
         popUpWindow.setTitle("Queries");
         FXMLLoader loader = new FXMLLoader(Objects.requireNonNull(getClass().getClassLoader().getResource("scenes/queries.fxml")));

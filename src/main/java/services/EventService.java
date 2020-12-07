@@ -104,6 +104,17 @@ public class EventService {
         eventDao.closeCurrentSession();
         return tempDistributors;
     }
+    public List<Distributor> loadDistributors(int eventId) {
+
+        List<Distributor> tempDistributors = new ArrayList<>();
+        eventDao.openCurrentSession();
+        List<Distribution> list = eventDao.openCurrentSession().get(Event.class,eventId).getListDist();
+        for(Distribution x : list) {
+            tempDistributors.add(x.getDistributor());
+        }
+        eventDao.closeCurrentSession();
+        return tempDistributors;
+    }
 
     public ObservableList<EventView> toEventView(List<Event> all,int distributorId) {
         ObservableList<EventView> list = FXCollections.observableArrayList();

@@ -73,7 +73,7 @@ public class HostDao implements DaoInterface<Host> {
 
     public Host getByUsername(String username)
     {
-        return (Host) getCurrentSession().createNativeQuery("SELECT * FROM host JOIN user on user.userId = host.userId WHERE username = '" + username + "';", Host.class).getSingleResult();
+        return getCurrentSession().createNativeQuery("SELECT * FROM host JOIN user on user.userId = host.userId WHERE username = '" + username + "';", Host.class).getSingleResult();
 
     }
     @SuppressWarnings("unchecked")

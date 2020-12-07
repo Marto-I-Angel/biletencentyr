@@ -45,6 +45,7 @@
                  <Text layoutX="37.0" layoutY="363.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Number of tickets:" />
             <Label layoutX="37.0" layoutY="309.0" text="Ticket limit:" />
             <Label fx:id="lbl_ticket_limit" layoutX="114.0" layoutY="309.0" text="-" />
+            <Label fx:id="label_ticketlimit_warning" layoutX="220.0" layoutY="309.0" textAlignment="CENTER" textFill="#ff0000" />
             </AnchorPane>
         </Tab>
         <Tab fx:id="payment_tab" closable="false" disable="true" text="Payment">
@@ -80,7 +81,7 @@
                             <Font size="18.0" />
                         </font>
                     </Text>
-                    <Label layoutX="242.0" layoutY="23.0" text="Date of purchace:" />
+                    <Label layoutX="242.0" layoutY="23.0" text="Date of purchase:" />
                     <Label fx:id="lbl_current_date" layoutX="347.0" layoutY="23.0" text="dd/MM/yyyy" />
                 </Pane>
             </AnchorPane>

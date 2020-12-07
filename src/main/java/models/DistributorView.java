@@ -52,12 +52,9 @@ public class DistributorView {
 
     @Override
     public String toString() {
-        return "DistributorRow{" +
-                "username='" + username + '\'' +
-                ", fee=" + fee +
-                ", distributorId=" + distributorId +
-                ", rating=" + rating +
-                '}';
+        return " username: " + username +
+                "  fee: " + fee +
+                "  rating: " + rating;
     }
 
     @Override

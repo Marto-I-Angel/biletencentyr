@@ -32,6 +32,10 @@ public final class SessionService {
         distributor = null;
     }
     public static Date toDateFromDatePicker(String sDate) throws ParseException {
+        if (sDate.equals("")){
+            return null;
+        }
+        else if(sDate.contains("."))return new SimpleDateFormat("dd.MM.yyyy").parse(sDate);
         return new SimpleDateFormat("MM/dd/yyyy").parse(sDate);
     }
     public static Date toDateFromLocalDate(String sDate) throws ParseException {
@@ -39,7 +43,10 @@ public final class SessionService {
     }
     public static boolean inPeriod(Date from, Date to, Date period){
         //if user gives "from" date after "to" date
-        if(from.after(to)){
+        if(from == null && to == null) return true;
+        else if(from == null) return period.before(to);
+        else if(to == null) return period.after(from);
+        else if(from.after(to)){
             return period.after(to) && period.before(from);
         }
         else if(from.equals(to)) return from.equals(period);

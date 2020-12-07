@@ -74,12 +74,4 @@ public class Distributor {
     public void addToRating(int tickets) {
         this.rating += tickets;
     }
-
-//    public List<SoldTickets> getSoldTickets() {
-//        return soldTickets;
-//    }
-//
-//    public void setSoldTickets(List<SoldTickets> soldTickets) {
-//        this.soldTickets = soldTickets;
-//    }
 }

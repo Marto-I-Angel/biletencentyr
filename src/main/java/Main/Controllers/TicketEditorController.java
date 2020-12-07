@@ -35,6 +35,7 @@ public class TicketEditorController implements Initializable {
     public TextField txt_last_name;
     public TextField txt_middle_name;
     public TextField txt_first_name;
+    public Label label_ticketlimit_warning;
 
     private Event event;
     private boolean limit;
@@ -55,6 +56,7 @@ public class TicketEditorController implements Initializable {
 
         limit = this.event.getTicketLimit() != -1;
         if(limit) lbl_ticket_limit.setText(this.event.getTicketLimit()+"");
+
     }
     public void proceed() {
         //if everything is filled and the number of tickets is under the limit, proceed to payment
@@ -64,7 +66,9 @@ public class TicketEditorController implements Initializable {
             lbl_current_date.setText(LocalDate.now().toString());
             tabPane.getSelectionModel().select(payment_tab);
         }
-        //else
+        else{
+            label_ticketlimit_warning.setText("<--- DO NOT EXCEED THE TICKET LIMIT");
+        }
     }
     public void set() {
         Seats seats = SeatsList.getSelectionModel().getSelectedItem();

@@ -14,9 +14,6 @@ import services.DistributorService;
 import services.EventService;
 import services.SeatsService;
 import services.SessionService;
-import tray.animations.AnimationType;
-import tray.notification.NotificationType;
-import tray.notification.TrayNotification;
 
 import java.net.URL;
 import java.util.ArrayList;
@@ -118,13 +115,13 @@ public class EventViewController implements Initializable {
                         seatsService.persist(x);
                     }
                 }
-                TrayNotification tray = new TrayNotification();
-                tray.setTitle("Created a new event!");
-                tray.setMessage("The event " + event.getName() + " has been added to the Database!");
-                tray.setNotificationType(NotificationType.SUCCESS);
-                tray.setAnimationType(AnimationType.POPUP);
-                tray.showAndWait();
 
+//                TrayNotification tray = new TrayNotification();
+//                tray.setTitle("Created a new event!");
+//                tray.setMessage("The event " + event.getName() + " has been added to the Database!");
+//                tray.setNotificationType(NotificationType.SUCCESS);
+//                tray.setAnimationType(AnimationType.POPUP);
+//                tray.showAndWait();
 
                 //close the window
                 Stage stage = (Stage) eventName_id.getScene().getWindow();

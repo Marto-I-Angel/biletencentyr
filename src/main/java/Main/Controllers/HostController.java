@@ -28,16 +28,15 @@ import java.util.List;
 import java.util.Objects;
 import java.util.ResourceBundle;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
 
 public class HostController implements Initializable {
 
     public TableView<Event> event_table;
-    public TableColumn<Event,String> col_event_name;
-    public TableColumn<Event,String> col_Type_event;
-    public TableColumn<Event,String> col_event_date_begin;
-    public TableColumn<Event,String> col_event_date_end;
-    public TableColumn<Event,String> col_event_status;
+    public TableColumn<Event, String> col_event_name;
+    public TableColumn<Event, String> col_Type_event;
+    public TableColumn<Event, String> col_event_date_begin;
+    public TableColumn<Event, String> col_event_date_end;
+    public TableColumn<Event, String> col_event_status;
     public Label lb_username;
     public Label lbl_notification;
     public Button bt_viewdistributors;
@@ -49,22 +48,23 @@ public class HostController implements Initializable {
     public Label lbl_error;
 
     private int tempNumNotif;
-    private Runnable r = new CheckForSoldTickets(0,this);
+    private Runnable r = new CheckForSoldTickets(0, this);
 
-    public void add_new_event() throws IOException,RuntimeException {
-        Stage popupwindow=new Stage();
+    public void add_new_event() throws IOException, RuntimeException {
+        Stage popupwindow = new Stage();
         popupwindow.initModality(Modality.APPLICATION_MODAL);
         popupwindow.setTitle("Add");
         FXMLLoader loader = new FXMLLoader(Objects.requireNonNull(getClass().getClassLoader().getResource("scenes/eventView.fxml")));
         Parent root = loader.load();
-        Scene scene1= new Scene(root);
+        Scene scene1 = new Scene(root);
         popupwindow.setScene(scene1);
         popupwindow.showAndWait();
 
         refresh_event_table();
     }
-    public void editSelectedEvent() throws IOException,RuntimeException {
-        if(event_table.getSelectionModel().getSelectedIndex()>=0) {
+
+    public void editSelectedEvent() throws IOException, RuntimeException {
+        if (event_table.getSelectionModel().getSelectedIndex() >= 0) {
             Stage popupwindow = new Stage();
             popupwindow.initModality(Modality.APPLICATION_MODAL);
             popupwindow.setTitle("Add");
@@ -82,6 +82,7 @@ public class HostController implements Initializable {
 
         }
     }
+
     public void refresh_event_table() {
         EventService eventService = new EventService();
         List<Event> all = eventService.findAll();
@@ -95,7 +96,7 @@ public class HostController implements Initializable {
         stage.setTitle("Login Screen");
         Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getClassLoader().getResource("scenes/login.fxml")));
         SessionService.logout();
-        Scene scene = new Scene (root);
+        Scene scene = new Scene(root);
         stage.setResizable(false);
         stage.setScene(scene);
         stage.show();
@@ -118,53 +119,54 @@ public class HostController implements Initializable {
         //notification setup
         //TODO: change the soldTicketsNum from 0 to the number of tickets since the last check!
         ScheduledThreadPoolExecutor executor = new ScheduledThreadPoolExecutor(5);
-        executor.scheduleAtFixedRate(r,0,5, TimeUnit.SECONDS);
+        //executor.scheduleAtFixedRate(r, 0, 5, TimeUnit.SECONDS);
     }
 
     public void delete_selected_event() {
-        EventService eventService=new EventService();
+        EventService eventService = new EventService();
         eventService.delete(event_table.getSelectionModel().getSelectedItem().getEventId());
         refresh_event_table();
     }
 
-    public void updateNotification(int num,List<TicketView> list) {
-        if(num>0 ) {
-            if(num != tempNumNotif) {
+    public void updateNotification(int num, List<TicketView> list) {
+        if (num > 0) {
+            if (num != tempNumNotif) {
                 tempNumNotif = num;
                 lbl_notification.setText(num + " TICKETS HAVE BEEN SOLD!!");
                 listView_sold_tickets.getItems().setAll(list);
             }
-        }
-        else {
+        } else {
             lbl_notification.setText("No new notifications");
             listView_sold_tickets.getItems().clear();
         }
     }
 
     public void viewDistributors() throws IOException {
-        Stage popUpWindow=new Stage();
+
+        Stage popUpWindow = new Stage();
         popUpWindow.initModality(Modality.APPLICATION_MODAL);
         popUpWindow.setTitle("Queries");
         FXMLLoader loader = new FXMLLoader(Objects.requireNonNull(getClass().getClassLoader().getResource("scenes/queries.fxml")));
         Parent root = loader.load();
-        Scene scene1= new Scene(root);
+
+        Scene scene1 = new Scene(root);
         popUpWindow.setScene(scene1);
         popUpWindow.showAndWait();
+
+
     }
 
     public void btn_mark_seen() {
-        if(!lbl_notification.getText().equals("No new notifications"))
-        SessionService.setNotifNumber(Integer.parseInt(lbl_notification.getText().
-                substring(0,lbl_notification.getText().indexOf(' '))));
+        if (!lbl_notification.getText().equals("No new notifications"))
+            SessionService.setNotifNumber(Integer.parseInt(lbl_notification.getText().
+                    substring(0, lbl_notification.getText().indexOf(' '))));
     }
 
     public void updateAccount() {
         Host host = SessionService.getHost();
-        if(txt_pass.getText().equals(host.getUser().getPassword()))
-        {
-            if(!txt_newPass.getText().isEmpty() && txt_newPass.getText().length()>=5)
-            {
-                if(txt_newPass.getText().equals(txt_newPass2.getText())) {
+        if (txt_pass.getText().equals(host.getUser().getPassword())) {
+            if (!txt_newPass.getText().isEmpty() && txt_newPass.getText().length() >= 5) {
+                if (txt_newPass.getText().equals(txt_newPass2.getText())) {
                     User user = host.getUser();
                     user.setPassword(txt_newPass.getText());
                     user.setUsername(txt_username.getText());
@@ -177,12 +179,9 @@ public class HostController implements Initializable {
                     UserService userService = new UserService();
                     userService.update(user);
                     hostService.update(host);
-                }
-                else lbl_error.setText("The new passwords dont match!");
-            }
-            else lbl_error.setText("The new Password does not meet the requirements!");
-        }
-        else{
+                } else lbl_error.setText("The new passwords dont match!");
+            } else lbl_error.setText("The new Password does not meet the requirements!");
+        } else {
             lbl_error.setText("Wrong password");
         }
 

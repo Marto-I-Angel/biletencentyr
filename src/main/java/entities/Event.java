@@ -46,6 +46,17 @@ public class Event {
     public Event() {
 
     }
+
+    @Override
+    public String toString() {
+        return  " Name: " + name +
+                "  Type: " + eventType + "\n" +
+                " BeginDate: " + beginDate +
+                "  EndDate: " + endDate + "\n" +
+                " Status: " + status +
+                "  Location: " + location ;
+    }
+
     public String getEventType() {
         return eventType;
     }
