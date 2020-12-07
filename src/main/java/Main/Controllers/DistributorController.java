@@ -17,6 +17,7 @@ import javafx.stage.Stage;
 import models.EventView;
 import models.TicketView;
 import notifications.CheckForNewEvent;
+import notifications.CheckForUpcomingEvent;
 import services.*;
 
 import java.io.IOException;
@@ -57,6 +58,11 @@ public class DistributorController implements Initializable {
     public PasswordField txt_newPass2;
     public PasswordField txt_pass;
     public Label lbl_error;
+    public ListView<String> listNotif;
+
+    private int tempNum;
+    private ScheduledThreadPoolExecutor executor = new ScheduledThreadPoolExecutor(2);
+
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -80,12 +86,15 @@ public class DistributorController implements Initializable {
         refresh_event_table();
         refresh_ticket_table();
 
+        lb_username.setText(SessionService.getDistributor().getUser().getUsername());
         lbl_rating.setText(SessionService.getDistributor().getRating()+"");
+        txt_username.setText(SessionService.getDistributor().getUser().getUsername());
 
         //notification setup
         Runnable r = new CheckForNewEvent(this);
-        ScheduledThreadPoolExecutor executor = new ScheduledThreadPoolExecutor(5);
-        executor.scheduleAtFixedRate(r,0,5, TimeUnit.SECONDS);
+        Runnable r1 = new CheckForUpcomingEvent(this);
+        executor.scheduleAtFixedRate(r, 0, 5, TimeUnit.SECONDS);
+        executor.scheduleAtFixedRate(r1,0,1, TimeUnit.HOURS);
 
     }
     public void refresh_event_table() {
@@ -108,6 +117,7 @@ public class DistributorController implements Initializable {
     }
 
     public void logout(ActionEvent actionEvent) throws IOException {
+        executor.shutdown();
         Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
         stage.setTitle("Login Screen");
         Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getClassLoader().getResource("scenes/login.fxml")));
@@ -136,9 +146,14 @@ public class DistributorController implements Initializable {
     }
 
     public void notificationUpdate(int num) {
+        num+=listNotif.getItems().size();
         if(num > 0) {
-            lbl_notification_msg.setTextFill(Color.BLUE);
             lbl_notification_msg.setText("THERE ARE " + num + " NOTIFICATION/S FOR YOU!");
+            if(num - listNotif.getItems().size() != tempNum) {
+                tempNum = num - listNotif.getItems().size();
+                clearList();
+                listNotif.getItems().add("There are " + num + " pending events waiting for you!");
+            }
         }
         else
         {
@@ -207,5 +222,16 @@ public class DistributorController implements Initializable {
             lbl_error.setText("Wrong password");
         }
 
+    }
+
+    public void upcomingEventNotif(List<Event> upcomingEvents) {
+        for(Event x : upcomingEvents)
+        {
+            listNotif.getItems().add("The event "+x.getName()+ " will occur in under a week\n and has unsold tickets!");
+        }
+    }
+
+    public void clearList() {
+        listNotif.getItems().clear();
     }
 }

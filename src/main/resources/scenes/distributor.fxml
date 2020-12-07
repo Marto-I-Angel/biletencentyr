@@ -2,6 +2,7 @@
 
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
@@ -88,13 +89,21 @@
                  </Pane>
              </AnchorPane>
          </Tab>
+         <Tab>
+           <content>
+             <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                  <children>
+                     <ListView fx:id="listNotif" layoutX="16.0" layoutY="17.0" prefHeight="285.0" prefWidth="559.0" />
+                     <Button layoutX="195.0" layoutY="346.0" mnemonicParsing="false" onAction="#show_notifications" text="Solve notifications" />
+                     <Button layoutX="90.0" layoutY="346.0" mnemonicParsing="false" onAction="#clearList" text="Clear" />
+                  </children>
+               </AnchorPane>
+           </content>
+            <graphic>
+               <Label fx:id="lbl_notification_msg" alignment="CENTER" contentDisplay="CENTER" text="No new notifications" textAlignment="CENTER" />
+            </graphic>
+         </Tab>
      </tabs>
    </TabPane>
    <Button layoutX="651.0" layoutY="269.0" mnemonicParsing="false" onAction="#viewEvents" text="View events" />
-   <Label fx:id="lbl_notification_msg" alignment="CENTER" contentDisplay="CENTER" layoutX="637.0" layoutY="216.0" text="no new notifications" textAlignment="CENTER" />
-   <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="674.0" layoutY="177.0" onMouseClicked="#show_notifications" pickOnBounds="true" preserveRatio="true" style="-fx-cursor: pointer;">
-      <image>
-         <Image url="@../Images/Notification_button.png" />
-      </image>
-   </ImageView>
 </AnchorPane>

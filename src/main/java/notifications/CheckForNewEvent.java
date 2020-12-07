@@ -2,7 +2,6 @@ package notifications;
 
 import Main.Controllers.DistributorController;
 import javafx.application.Platform;
-import javafx.scene.Parent;
 import services.EventService;
 import services.SessionService;
 

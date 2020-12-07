@@ -28,6 +28,7 @@ public class Host {
         return "Host: " + user;
     }
 
+
     public int getHostId() {
         return hostId;
     }
