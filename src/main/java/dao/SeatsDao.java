@@ -1,6 +1,7 @@
 package dao;
 
 import dao.interfaces.DaoInterface;
+import entities.Distribution;
 import entities.Seats;
 import org.hibernate.Session;
 import org.hibernate.Transaction;

@@ -37,14 +37,6 @@ public class UserDao implements DaoInterface<User> {
         currentSession.close();
     }
 
-//    private static SessionFactory getSessionFactory() {
-//        Configuration configuration = new Configuration().configure();
-//        StandardServiceRegistryBuilder builder = new StandardServiceRegistryBuilder()
-//                .applySettings(configuration.getProperties());
-//        SessionFactory sessionFactory = configuration.buildSessionFactory(builder.build());
-//        return sessionFactory;
-//    }
-
     public Session getCurrentSession() {
         return currentSession;
     }

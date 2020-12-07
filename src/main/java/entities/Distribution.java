@@ -19,10 +19,11 @@ public class Distribution {
     @JoinColumn(name = "distributorId")
     private Distributor distributor;
 
-
-
     @Column(name = "fee")
     private float fee;
+
+    @Column(name = "accepted")
+    private boolean accepted;
 
     public Distribution(){
 
@@ -33,6 +34,7 @@ public class Distribution {
         this.distributor = distributor;
         this.fee = price;
         id = new DistributionID(event.getEventId(),distributor.getDistributorId());
+        this.accepted = false;
     }
 
     @Override
@@ -70,6 +72,14 @@ public class Distribution {
 
     public void setFee(float price) {
         this.fee = price;
+    }
+
+    public boolean isAccepted() {
+        return accepted;
+    }
+
+    public void setAccepted(boolean accepted) {
+        this.accepted = accepted;
     }
 
     @Override

@@ -17,6 +17,7 @@ import services.SessionService;
 
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -47,6 +48,7 @@ public class EventViewController implements Initializable {
     public TextField ticketLimitTxt;
     public CheckBox isLimitedPerPerson;
     public Label saveErrorLabel;
+    public TextArea txt_location;
 
 
     ObservableList<entities.Seats> seats = FXCollections.observableArrayList();
@@ -88,6 +90,12 @@ public class EventViewController implements Initializable {
                 event.setHost(SessionService.getHost());
                 List<Seats> reservations = new ArrayList<>(seats);
                 event.setStatus(statusCB.getValue());
+                event.setLocation(txt_location.getText());
+                
+                //DateCheck
+                Date begin = SessionService.toDateFromDatePicker(StartDate_Id.getEditor().getText());
+                Date end = SessionService.toDateFromDatePicker(StartDate_Id.getEditor().getText());
+                if(begin.after(end)) throw new Exception("Wrong Dates");
                 event.setBeginDate(StartDate_Id.getEditor().getText());
                 event.setEndDate(EndDate_Id.getEditor().getText());
 
@@ -107,14 +115,13 @@ public class EventViewController implements Initializable {
                         seatsService.persist(x);
                     }
                 }
-//                Notification
+
 //                TrayNotification tray = new TrayNotification();
 //                tray.setTitle("Created a new event!");
 //                tray.setMessage("The event " + event.getName() + " has been added to the Database!");
 //                tray.setNotificationType(NotificationType.SUCCESS);
 //                tray.setAnimationType(AnimationType.POPUP);
 //                tray.showAndWait();
-
 
                 //close the window
                 Stage stage = (Stage) eventName_id.getScene().getWindow();

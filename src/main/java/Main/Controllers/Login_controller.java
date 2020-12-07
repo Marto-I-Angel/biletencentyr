@@ -16,7 +16,6 @@ import services.DistributorService;
 import services.HostService;
 import services.SessionService;
 import services.UserService;
-
 import java.io.IOException;
 import java.net.URL;
 import java.util.List;
@@ -49,35 +48,35 @@ public class Login_controller implements Initializable  {
                 UserService userService = new UserService();
                 List<User> list = userService.findAll();
 
-                boolean itsadmin = false;
-                boolean itshost = false;
-                boolean itsdistributor = false;
+                boolean itsAdmin = false;
+                boolean itsHost = false;
+                boolean itsDistributor = false;
                 for (User iter:list) {
                     if(iter.equals(user)){
                         if(iter.checkRole("admin"))
                         {
-                            itsadmin = true;
+                            itsAdmin = true;
                             break;
                         }
                         if(iter.checkRole("host"))
                         {
-                            itshost = true;
+                            itsHost = true;
                             SessionService.setHost(hostService.getByUsername(iter.getUsername()));
                             break;
                         }
                         if(iter.checkRole("distributor"))
                         {
-                            itsdistributor = true;
+                            itsDistributor = true;
                             SessionService.setDistributor(distributorService.getByUsername(iter.getUsername()));
                             break;
                         }
                     }
                 }
-                if(!itsadmin && !itshost && !itsdistributor){
+                if(!itsAdmin && !itsHost && !itsDistributor){
                     label.setText("Incorrect username or password!");
                 }
 
-                if(itsadmin)
+                if(itsAdmin)
                 {
 
                     Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
@@ -95,7 +94,7 @@ public class Login_controller implements Initializable  {
                     stage.setScene(scene);
                     stage.show();
                 }
-                if(itshost)
+                if(itsHost)
                 {
                     Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
                     FXMLLoader loader = new FXMLLoader(Objects.requireNonNull(getClass().getClassLoader().getResource("scenes/host.fxml")));
@@ -112,13 +111,11 @@ public class Login_controller implements Initializable  {
                     stage.setScene(scene);
                     stage.show();
                 }
-                if(itsdistributor)
+                if(itsDistributor)
                 {
                     Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
                     FXMLLoader loader = new FXMLLoader(Objects.requireNonNull(getClass().getClassLoader().getResource("scenes/distributor.fxml")));
                     Parent root = loader.load();
-                    DistributorController distributor = loader.getController();
-
                     Scene scene = new Scene (root);
                     stage.setTitle("Distributor Scene");
                     stage.setResizable(false);

@@ -34,6 +34,9 @@ public class Event {
     @Column(name = "ticketLimit")
     private int ticketLimit;
 
+    @Column(name = "location")
+    private String location;
+
     @OneToMany(mappedBy = "event",cascade = CascadeType.ALL)
     private List<Distribution> listDist = new ArrayList<>();
 
@@ -43,6 +46,17 @@ public class Event {
     public Event() {
 
     }
+
+    @Override
+    public String toString() {
+        return  " Name: " + name +
+                "  Type: " + eventType + "\n" +
+                " BeginDate: " + beginDate +
+                "  EndDate: " + endDate + "\n" +
+                " Status: " + status +
+                "  Location: " + location ;
+    }
+
     public String getEventType() {
         return eventType;
     }
@@ -84,6 +98,7 @@ public class Event {
     public void setEndDate(String endDate) {
         this.endDate = endDate;
     }
+
     public List<Distribution> getListDist() {
         return listDist;
     }
@@ -122,5 +137,13 @@ public class Event {
 
     public String getName() {
         return name;
+    }
+
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
     }
 }

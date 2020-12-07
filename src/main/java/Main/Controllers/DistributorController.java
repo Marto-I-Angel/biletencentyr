@@ -1,6 +1,7 @@
 package Main.Controllers;
 
-import entities.Event;
+import entities.*;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
@@ -8,22 +9,25 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Label;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.input.MouseEvent;
+import javafx.scene.paint.Color;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import models.EventView;
-import services.EventService;
-import services.SessionService;
+import models.TicketView;
+import notifications.CheckForNewEvent;
+import notifications.CheckForUpcomingEvent;
+import services.*;
 
 import java.io.IOException;
 import java.net.URL;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.ResourceBundle;
+import java.util.concurrent.ScheduledThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
 public class DistributorController implements Initializable {
 
@@ -37,17 +41,28 @@ public class DistributorController implements Initializable {
     public TableColumn<EventView,String> col_fee;
     public TableColumn<EventView,String> col_tickets;
     public Label lb_username;
-    public Label label_rating;
 
     //Ticket table (tab2)
-    public TableView ticket_table;
-    public TableColumn col_event_name_2;
-    public TableColumn col_type_seats;
-    public TableColumn col_number_of_seats;
-    public TableColumn col_date_bought;
-    public TableColumn col_total_value;
-    public TableColumn col_person_names;
-    public TableColumn col_payment_type;
+    public TableView<TicketView> ticket_table;
+    public TableColumn<TicketView,String> col_event_name_2;
+    public TableColumn<TicketView,String> col_type_seats;
+    public TableColumn<TicketView,Integer> col_number_of_seats;
+    public TableColumn<TicketView,String> col_date_bought;
+    public TableColumn<TicketView,Float> col_total_value;
+    public TableColumn<TicketView,String> col_person_names;
+    public TableColumn<TicketView,String> col_payment_type;
+    public Label lbl_notification_msg;
+    public Label lbl_rating;
+    public TextField txt_username;
+    public PasswordField txt_newPass;
+    public PasswordField txt_newPass2;
+    public PasswordField txt_pass;
+    public Label lbl_error;
+    public ListView<String> listNotif;
+
+    private int tempNum;
+    private ScheduledThreadPoolExecutor executor = new ScheduledThreadPoolExecutor(2);
+
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -59,19 +74,50 @@ public class DistributorController implements Initializable {
         col_fee.setCellValueFactory(new PropertyValueFactory<>("fee"));
         col_tickets.setCellValueFactory(new PropertyValueFactory<>("tickets"));
 
-        refresh_event_table();
-    }
+        col_event_name_2.setCellValueFactory(new PropertyValueFactory<>("eventName"));
+        col_type_seats.setCellValueFactory(new PropertyValueFactory<>("typeSeats"));
+        col_number_of_seats.setCellValueFactory(new PropertyValueFactory<>("numberOfSeats"));
+        col_date_bought.setCellValueFactory(new PropertyValueFactory<>("dateBought"));
+        col_total_value.setCellValueFactory(new PropertyValueFactory<>("totalValue"));
+        col_person_names.setCellValueFactory(new PropertyValueFactory<>("personNames"));
+        col_payment_type.setCellValueFactory(new PropertyValueFactory<>("typePayment"));
 
+
+        refresh_event_table();
+        refresh_ticket_table();
+
+        lb_username.setText(SessionService.getDistributor().getUser().getUsername());
+        lbl_rating.setText(SessionService.getDistributor().getRating()+"");
+        txt_username.setText(SessionService.getDistributor().getUser().getUsername());
+
+        //notification setup
+        Runnable r = new CheckForNewEvent(this);
+        Runnable r1 = new CheckForUpcomingEvent(this);
+        executor.scheduleAtFixedRate(r, 0, 5, TimeUnit.SECONDS);
+        executor.scheduleAtFixedRate(r1,0,1, TimeUnit.HOURS);
+
+    }
     public void refresh_event_table() {
         EventService eventService = new EventService();
         List<Event> all;
-        all = eventService.findByDistributorId(SessionService.getDistributor().getDistributorId());
+        all = eventService.findByDistributorId(SessionService.getDistributor().getDistributorId(),true);
 
         ObservableList<EventView> events = eventService.toEventView(all,SessionService.getDistributor().getDistributorId());
         event_table.setItems(events);
     }
+    public void refresh_ticket_table() {
+        TicketService ticketService = new TicketService();
+        List<TicketView> all = ticketService.getTicketViews(SessionService.getDistributor().getDistributorId());
+        ObservableList<TicketView> tickets = FXCollections.observableArrayList();
+        tickets.addAll(all);
+        ticket_table.setItems(tickets);
+
+        lbl_rating.setText(SessionService.getDistributor().getRating()+"");
+
+    }
 
     public void logout(ActionEvent actionEvent) throws IOException {
+        executor.shutdown();
         Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
         stage.setTitle("Login Screen");
         Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getClassLoader().getResource("scenes/login.fxml")));
@@ -82,11 +128,7 @@ public class DistributorController implements Initializable {
         stage.show();
     }
 
-    public void check_sold_tickets(ActionEvent actionEvent) {
-
-    }
-
-    public void sell_ticket(ActionEvent actionEvent) throws IOException {
+    public void sell_ticket() throws IOException {
         Stage popUpWindow=new Stage();
         popUpWindow.initModality(Modality.APPLICATION_MODAL);
         popUpWindow.setTitle("Create a ticket");
@@ -99,11 +141,97 @@ public class DistributorController implements Initializable {
         popUpWindow.setScene(scene1);
         popUpWindow.showAndWait();
 
-        refresh_event_table();
+        refresh_ticket_table();
 
     }
 
-    public void refresh_ticket_table(MouseEvent mouseEvent) {
+    public void notificationUpdate(int num) {
+        num+=listNotif.getItems().size();
+        if(num > 0) {
+            lbl_notification_msg.setText("THERE ARE " + num + " NOTIFICATION/S FOR YOU!");
+            if(num - listNotif.getItems().size() != tempNum) {
+                tempNum = num - listNotif.getItems().size();
+                clearList();
+                listNotif.getItems().add("There are " + num + " pending events waiting for you!");
+            }
+        }
+        else
+        {
+            lbl_notification_msg.setText("There are no new notifications :(");
+        }
+    }
 
+    public void show_notifications() {
+        EventService eventService = new EventService();
+        DistributionService distributionService = new DistributionService();
+        List<Event> list = eventService.findByDistributorId(SessionService.getDistributor().getDistributorId(),false);
+        for(Event x: list) {
+
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setTitle("New Event");
+            alert.setContentText("You have been chosen to distribute tickets for the selected event:" +x.getName());
+            ButtonType okButton = new ButtonType("Accept", ButtonBar.ButtonData.YES);
+            ButtonType cancelButton = new ButtonType("Decline", ButtonBar.ButtonData.CANCEL_CLOSE);
+            alert.getButtonTypes().setAll(okButton, cancelButton);
+            Optional<ButtonType> result = alert.showAndWait();
+            Distribution distribution =  distributionService.findDistribution(SessionService.getDistributor().getDistributorId(),x.getEventId());
+
+            if (result.get() == okButton) {
+                distribution.setAccepted(true);
+                distributionService.update(distribution);
+            }else distributionService.delete(distribution.getId());
+        }
+    }
+
+    public void viewEvents() throws IOException {
+        Stage popUpWindow = new Stage();
+        popUpWindow.initModality(Modality.APPLICATION_MODAL);
+        popUpWindow.setTitle("Queries");
+        FXMLLoader loader = new FXMLLoader(Objects.requireNonNull(getClass().getClassLoader().getResource("scenes/queries.fxml")));
+        Parent root = loader.load();
+        Scene scene1= new Scene(root);
+        popUpWindow.setScene(scene1);
+        popUpWindow.showAndWait();
+    }
+
+    public void updateAccount() {
+        Distributor distributor = SessionService.getDistributor();
+        if(txt_pass.getText().equals(distributor.getUser().getPassword()))
+        {
+            if(!txt_newPass.getText().isEmpty() && txt_newPass.getText().length()>=5)
+            {
+                if(txt_newPass.getText().equals(txt_newPass2.getText())) {
+                    User user = distributor.getUser();
+                    user.setPassword(txt_newPass.getText());
+                    user.setUsername(txt_username.getText());
+                    txt_newPass.setText("");
+                    txt_newPass2.setText("");
+                    txt_username.setText(distributor.getUser().getUsername());
+                    lbl_error.setText("");
+
+                    DistributorService distributorService = new DistributorService();
+                    UserService userService = new UserService();
+                    userService.update(user);
+                    distributorService.update(distributor);
+                }
+                else lbl_error.setText("The new passwords dont match!");
+            }
+            else lbl_error.setText("The new Password does not meet the requirements!");
+        }
+        else{
+            lbl_error.setText("Wrong password");
+        }
+
+    }
+
+    public void upcomingEventNotif(List<Event> upcomingEvents) {
+        for(Event x : upcomingEvents)
+        {
+            listNotif.getItems().add("The event "+x.getName()+ " will occur in under a week\n and has unsold tickets!");
+        }
+    }
+
+    public void clearList() {
+        listNotif.getItems().clear();
     }
 }

@@ -104,6 +104,17 @@ public class EventService {
         eventDao.closeCurrentSession();
         return tempDistributors;
     }
+    public List<Distributor> loadDistributors(int eventId) {
+
+        List<Distributor> tempDistributors = new ArrayList<>();
+        eventDao.openCurrentSession();
+        List<Distribution> list = eventDao.openCurrentSession().get(Event.class,eventId).getListDist();
+        for(Distribution x : list) {
+            tempDistributors.add(x.getDistributor());
+        }
+        eventDao.closeCurrentSession();
+        return tempDistributors;
+    }
 
     public ObservableList<EventView> toEventView(List<Event> all,int distributorId) {
         ObservableList<EventView> list = FXCollections.observableArrayList();
@@ -113,30 +124,22 @@ public class EventService {
         {
             Distribution distribution = distributionService.findDistribution(distributorId,x.getEventId());
             list.add(new EventView(x.getEventId(),x.getName(),x.getEventType(),x.getBeginDate(),
-                    x.getEndDate(),x.getStatus(),distribution.getFee(),seatsService.getTotalTickets(x.getEventId()),seatsService.getSoldTickets(x.getEventId())));
+                    x.getEndDate(),x.getStatus(),distribution.getFee(),seatsService.getTotalTickets(x.getEventId()),seatsService.getSoldTickets(x.getEventId()),x.getLocation()));
         }
         return list;
     }
 
-    public List<Event> findByDistributorId(int id) {
+    public List<Event> findByDistributorId(int id, boolean type) {
         List<Event> events = new ArrayList<>();
         DistributionService distributionService = new DistributionService();
         List<Distribution> distributions=  distributionService.findAll();
         for(Distribution x : distributions)
         {
-            if(x.getDistributor().getDistributorId() == id)
+            if(x.getDistributor().getDistributorId() == id && x.isAccepted() == type)
             {
                 events.add(x.getEvent());
             }
         }
         return events;
     }
-
-    /*  or
-        public List<Event> findByDistributorId(int distributorId) {
-        return (List<Event>) getCurrentSession().createNativeQuery("SELECT EVENT.* FROM EVENT " +
-                "JOIN DISTRIBUTION ON EVENT.EVENTID = DISTRIBUTION.EVENTID " +
-                "WHERE DISTRIBUTION.DISTRIBUTORID = " + distributorId + ";",Event.class).list();
-    }
-     */
 }
