@@ -57,8 +57,6 @@ public class TicketService {
         }
 
         public List<TicketView> getTicketViews(int distributorId) {
-            EventService eventService = new EventService();
-
             List<SoldTickets> all = findAll();
             List<TicketView> ticketView = new ArrayList<>();
             for(SoldTickets x : all){

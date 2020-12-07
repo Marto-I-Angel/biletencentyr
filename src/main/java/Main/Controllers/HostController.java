@@ -17,6 +17,7 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import models.TicketView;
 import notifications.CheckForSoldTickets;
+import notifications.CheckForUpcomingEvent;
 import services.EventService;
 import services.HostService;
 import services.SessionService;
@@ -45,11 +46,12 @@ public class HostController implements Initializable {
     public TextField txt_pass;
     public TextField txt_newPass;
     public TextField txt_newPass2;
-    public ListView<TicketView> listView_sold_tickets;
+    public ListView<String> listView_sold_tickets;
     public Label lbl_error;
 
+    private ScheduledThreadPoolExecutor executor = new ScheduledThreadPoolExecutor(2);
+
     private int tempNumNotif;
-    private Runnable r = new CheckForSoldTickets(0,this);
 
     public void add_new_event() throws IOException,RuntimeException {
         Stage popupwindow=new Stage();
@@ -91,6 +93,7 @@ public class HostController implements Initializable {
     }
 
     public void logout(ActionEvent actionEvent) throws IOException {
+        executor.shutdown();
         Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
         stage.setTitle("Login Screen");
         Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getClassLoader().getResource("scenes/login.fxml")));
@@ -117,8 +120,12 @@ public class HostController implements Initializable {
 
         //notification setup
         //TODO: change the soldTicketsNum from 0 to the number of tickets since the last check!
-        ScheduledThreadPoolExecutor executor = new ScheduledThreadPoolExecutor(5);
+        Runnable r = new CheckForSoldTickets(0,this);
+        Runnable r1 = new CheckForUpcomingEvent(this);
+
+        ScheduledThreadPoolExecutor executor = new ScheduledThreadPoolExecutor(2);
         executor.scheduleAtFixedRate(r,0,5, TimeUnit.SECONDS);
+        executor.scheduleAtFixedRate(r1,0,1,TimeUnit.HOURS);
     }
 
     public void delete_selected_event() {
@@ -132,7 +139,9 @@ public class HostController implements Initializable {
             if(num != tempNumNotif) {
                 tempNumNotif = num;
                 lbl_notification.setText(num + " TICKETS HAVE BEEN SOLD!!");
-                listView_sold_tickets.getItems().setAll(list);
+                for(TicketView x : list) {
+                    listView_sold_tickets.getItems().add(x.toString());
+                }
             }
         }
         else {
@@ -156,6 +165,7 @@ public class HostController implements Initializable {
         if(!lbl_notification.getText().equals("No new notifications"))
         SessionService.setNotifNumber(Integer.parseInt(lbl_notification.getText().
                 substring(0,lbl_notification.getText().indexOf(' '))));
+        listView_sold_tickets.getItems().clear();
     }
 
     public void updateAccount() {
@@ -186,5 +196,12 @@ public class HostController implements Initializable {
             lbl_error.setText("Wrong password");
         }
 
+    }
+
+    public void upcomingEventNotif(List<Event> upcomingEvents) {
+        for(Event x : upcomingEvents)
+        {
+            listView_sold_tickets.getItems().add("The event "+x.getName()+ " will occur in under a week\n and has unsold tickets!");
+        }
     }
 }

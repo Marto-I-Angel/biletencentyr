@@ -7,6 +7,7 @@ import entities.SoldTickets;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.text.Text;
+import javafx.stage.Stage;
 import services.DistributorService;
 import services.SeatsService;
 import services.SessionService;
@@ -94,5 +95,9 @@ public class TicketEditorController implements Initializable {
         Distributor distributor = SessionService.getDistributor();
         distributor.addToRating(Integer.parseInt(txt_number_of_tickets.getText()));
         distributorService.update(distributor);
+
+        //close the window
+        Stage stage = (Stage) this.txt_last_name.getScene().getWindow();
+        stage.close();
     }
 }

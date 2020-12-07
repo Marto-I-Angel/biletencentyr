@@ -87,6 +87,7 @@ public class Event {
     public void setEndDate(String endDate) {
         this.endDate = endDate;
     }
+
     public List<Distribution> getListDist() {
         return listDist;
     }
