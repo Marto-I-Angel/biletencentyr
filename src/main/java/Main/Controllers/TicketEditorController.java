@@ -61,14 +61,21 @@ public class TicketEditorController implements Initializable {
     }
     public void proceed() {
         //if everything is filled and the number of tickets is under the limit, proceed to payment
+        Seats seats = SeatsList.getSelectionModel().getSelectedItem();
+        int freeSeats = seats.getNumberOfSeats() - seats.getNumberOfReservedSeats();
         if(Integer.parseInt(txt_number_of_tickets.getText()) <= this.event.getTicketLimit() || !limit ) {
-            payment_tab.setDisable(false);
-            payment_tab.getContent().setDisable(false);
-            lbl_current_date.setText(LocalDate.now().toString());
-            tabPane.getSelectionModel().select(payment_tab);
+            if(Integer.parseInt(txt_number_of_tickets.getText()) <= freeSeats){
+                payment_tab.setDisable(false);
+                payment_tab.getContent().setDisable(false);
+                lbl_current_date.setText(LocalDate.now().toString());
+                tabPane.getSelectionModel().select(payment_tab);
+            }
+            else{
+                label_ticketlimit_warning.setText("NOT ENOUGH FREE SEATS!");
+            }
         }
         else{
-            label_ticketlimit_warning.setText("<--- DO NOT EXCEED THE TICKET LIMIT");
+            label_ticketlimit_warning.setText("<--- DO NOT EXCEED THE TICKET LIMIT!");
         }
     }
     public void set() {

@@ -32,7 +32,6 @@ public class CheckForSoldTickets implements Runnable {
                     {
                         hostController.updateNotification((soldTickets.size() - soldTicketsNum), soldTickets );
                     });
-            //TODO: SHOW THE NUMBER OF TICKETS THAT HAVE BEEN SOLD SINCE LAST CHECK!
         }
         else {
             Platform.runLater(() -> // back to the FX thread

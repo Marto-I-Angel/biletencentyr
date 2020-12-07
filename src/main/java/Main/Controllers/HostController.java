@@ -46,7 +46,7 @@ public class HostController implements Initializable {
     public TextField txt_pass;
     public TextField txt_newPass;
     public TextField txt_newPass2;
-    public ListView<TicketView> listView_sold_tickets;
+    public ListView<String> listView_sold_tickets;
     public Label lbl_error;
 
     private ScheduledThreadPoolExecutor executor = new ScheduledThreadPoolExecutor(2);
